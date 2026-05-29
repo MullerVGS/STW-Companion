@@ -1,0 +1,275 @@
+:root {
+  --bg: #0e1116;
+  --bg-elev: #161b22;
+  --bg-elev-2: #1c232d;
+  --border: #2a323d;
+  --text: #e6edf3;
+  --text-dim: #9aa7b4;
+  --accent: #3aa0ff;
+  --radius: 10px;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* ---------- boot / error ---------- */
+.boot { padding: 48px; max-width: 720px; margin: 0 auto; }
+.boot .error { color: #ff7b72; background: #2a1518; border: 1px solid #5a2326; padding: 12px 16px; border-radius: var(--radius); }
+
+/* ---------- shell ---------- */
+.app { display: flex; flex-direction: column; min-height: 100%; }
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 14px 20px;
+  background: var(--bg-elev);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.brand { display: flex; align-items: baseline; gap: 10px; }
+.brand h1 { font-size: 18px; margin: 0; letter-spacing: 0.2px; }
+.subtitle {
+  font-size: 12px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.progress { display: flex; align-items: center; gap: 12px; min-width: 280px; }
+.progress-bar {
+  flex: 1;
+  height: 8px;
+  background: var(--bg-elev-2);
+  border-radius: 99px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2f9e44, #51cf66);
+  transition: width 0.25s ease;
+}
+.progress-label { font-size: 12px; color: var(--text-dim); white-space: nowrap; }
+
+.layout { display: flex; align-items: flex-start; flex: 1; }
+
+/* ---------- sidebar ---------- */
+.sidebar {
+  width: 250px;
+  flex-shrink: 0;
+  padding: 16px;
+  border-right: 1px solid var(--border);
+  position: sticky;
+  top: 57px;
+  max-height: calc(100vh - 57px);
+  overflow-y: auto;
+}
+.sidebar-head { display: flex; align-items: center; justify-content: space-between; }
+.sidebar-head h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin: 0 0 4px; }
+.link { background: none; border: none; color: var(--accent); font-size: 12px; padding: 0; }
+
+.facet-group { margin-top: 16px; }
+.facet-group h3 { font-size: 12px; color: var(--text-dim); margin: 0 0 8px; font-weight: 600; }
+.facet-values { display: flex; flex-direction: column; gap: 4px; }
+
+.facet {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 10px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-align: left;
+  transition: background 0.12s, border-color 0.12s;
+}
+.facet:hover { background: var(--bg-elev-2); }
+.facet.is-active { border-color: var(--accent); background: #15314d; }
+.facet-label { text-transform: capitalize; }
+.facet-count { font-size: 11px; color: var(--text-dim); background: var(--bg); padding: 1px 7px; border-radius: 99px; }
+/* rarity-tinted facet dots */
+.facet[class*="rarity-"]::before {
+  content: "";
+  width: 8px; height: 8px; border-radius: 50%;
+  margin-right: -2px; flex-shrink: 0;
+}
+.facet.rarity-common::before { background: #9aa3ad; }
+.facet.rarity-uncommon::before { background: #5ca72f; }
+.facet.rarity-rare::before { background: #3aa0ff; }
+.facet.rarity-epic::before { background: #b14bff; }
+.facet.rarity-legendary::before { background: #ff8a3d; }
+.facet.rarity-mythic::before { background: #ffd24a; }
+
+/* ---------- content ---------- */
+.content { flex: 1; padding: 16px 20px 48px; min-width: 0; }
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.search {
+  flex: 1;
+  min-width: 200px;
+  padding: 8px 12px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+}
+.search:focus { outline: none; border-color: var(--accent); }
+
+.segmented { display: inline-flex; background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.segmented button { padding: 8px 14px; background: none; border: none; color: var(--text-dim); }
+.segmented button.is-active { background: var(--accent); color: #06121f; font-weight: 600; }
+
+.result-count { font-size: 12px; color: var(--text-dim); white-space: nowrap; }
+
+.toolbar-actions { display: flex; gap: 8px; margin-left: auto; }
+.toolbar-actions button {
+  padding: 8px 12px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.toolbar-actions button:hover { background: var(--bg-elev-2); }
+.toolbar-actions .danger:hover { border-color: #5a2326; color: #ff7b72; }
+
+.empty { color: var(--text-dim); padding: 40px; text-align: center; }
+
+/* ---------- grid + cards ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+  gap: 12px;
+}
+
+.card {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--rarity, var(--border));
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  /* cheap, dependency-free virtualization for large grids */
+  content-visibility: auto;
+  contain-intrinsic-size: 200px;
+}
+
+.card-tile {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  border: none;
+  padding: 0;
+  background:
+    radial-gradient(circle at 50% 35%, color-mix(in srgb, var(--rarity) 30%, transparent), transparent 70%),
+    var(--bg-elev-2);
+  display: grid;
+  place-items: center;
+}
+.card-tile img { width: 100%; height: 100%; object-fit: contain; }
+
+.card-placeholder {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--rarity, var(--text-dim));
+  opacity: 0.85;
+}
+
+/* the "not collected" look: same icon, desaturated + dimmed */
+.card.is-missing .card-tile img,
+.card.is-missing .card-placeholder {
+  filter: grayscale(1) brightness(0.5);
+  opacity: 0.55;
+}
+.card.is-missing { opacity: 0.92; }
+.card.is-owned .card-tile { box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--rarity) 70%, transparent); }
+
+.card-check {
+  position: absolute;
+  top: 4px; right: 4px;
+  width: 20px; height: 20px;
+  display: grid; place-items: center;
+  background: #2f9e44;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 700;
+}
+.card-qty {
+  position: absolute;
+  bottom: 4px; right: 4px;
+  background: rgba(0,0,0,0.7);
+  padding: 1px 6px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.card-meta { padding: 8px; display: flex; flex-direction: column; gap: 6px; }
+.card-name {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.card-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+
+.chip {
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 99px;
+  background: var(--bg-elev-2);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  text-transform: capitalize;
+}
+.chip:hover { color: var(--text); border-color: var(--text-dim); }
+.chip.is-active { border-color: var(--accent); color: var(--accent); }
+.chip-rarity { color: var(--rarity); border-color: color-mix(in srgb, var(--rarity) 50%, var(--border)); }
+
+.card-stepper { display: flex; align-items: center; justify-content: space-between; gap: 4px; }
+.card-stepper button {
+  width: 24px; height: 22px;
+  background: var(--bg-elev-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  line-height: 1;
+}
+.card-stepper button:hover { background: var(--border); }
+.card-stepper span { font-size: 12px; color: var(--text-dim); }
+
+/* ---------- responsive ---------- */
+@media (max-width: 720px) {
+  .layout { flex-direction: column; }
+  .sidebar { width: 100%; position: static; max-height: none; border-right: none; border-bottom: 1px solid var(--border); }
+  .app-header { flex-direction: column; align-items: stretch; gap: 10px; }
+  .progress { min-width: 0; }
+}

@@ -1,0 +1,3687 @@
+{
+  "ExportedAt": "2026-05-29T04:53:50.8400058-03:00",
+  "_note": "Faithful subset of a real BanjoBotAssets export — fallback fixture so the pipeline runs without a full assets.json.",
+  "NamedItems": {
+    "Schematic:SID_Assault_ArtDeco_SR_Crystal_T04": {
+      "Type": "Schematic",
+      "Name": "SID_Assault_ArtDeco_SR_Crystal_T04",
+      "DisplayName": "The Floor Flusher",
+      "SubType": "Assault",
+      "AlterationSlots": [
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_critdamage_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_headshotdamage_t01",
+              "Alteration:aid_att_magazinesize_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_critdamage_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_headshotdamage_t02",
+              "Alteration:aid_att_magazinesize_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_critdamage_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_headshotdamage_t03",
+              "Alteration:aid_att_magazinesize_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_critdamage_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_headshotdamage_t04",
+              "Alteration:aid_att_magazinesize_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_critdamage_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_headshotdamage_t05",
+              "Alteration:aid_att_magazinesize_t05"
+            ]
+          ],
+          "RequiredLevel": 5
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_critdamage_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_headshotdamage_t01",
+              "Alteration:aid_att_stability_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_critdamage_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_headshotdamage_t02",
+              "Alteration:aid_att_stability_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_critdamage_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_headshotdamage_t03",
+              "Alteration:aid_att_stability_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_critdamage_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_headshotdamage_t04",
+              "Alteration:aid_att_stability_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_critdamage_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_headshotdamage_t05",
+              "Alteration:aid_att_stability_t05"
+            ]
+          ],
+          "RequiredLevel": 10
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_ele_fire_t01",
+              "Alteration:aid_ele_nature_t01",
+              "Alteration:aid_ele_water_t01"
+            ],
+            [
+              "Alteration:aid_ele_fire_t02",
+              "Alteration:aid_ele_nature_t02",
+              "Alteration:aid_ele_water_t02"
+            ],
+            [
+              "Alteration:aid_ele_fire_t03",
+              "Alteration:aid_ele_nature_t03",
+              "Alteration:aid_ele_water_t03"
+            ],
+            [
+              "Alteration:aid_ele_fire_t04",
+              "Alteration:aid_ele_nature_t04",
+              "Alteration:aid_ele_water_t04"
+            ],
+            [
+              "Alteration:aid_ele_fire_t05",
+              "Alteration:aid_ele_nature_t05",
+              "Alteration:aid_ele_water_t05"
+            ]
+          ],
+          "RequiredLevel": 15
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_magazinesize_t01",
+              "Alteration:aid_att_reloadspeed_ranged_t01",
+              "Alteration:aid_att_stability_t01",
+              "Alteration:aid_att_firerate_ranged_t01",
+              "Alteration:aid_att_critchance_t01"
+            ],
+            [
+              "Alteration:aid_att_magazinesize_t02",
+              "Alteration:aid_att_reloadspeed_ranged_t02",
+              "Alteration:aid_att_stability_t02",
+              "Alteration:aid_att_firerate_ranged_t02",
+              "Alteration:aid_att_critchance_t02"
+            ],
+            [
+              "Alteration:aid_att_magazinesize_t03",
+              "Alteration:aid_att_reloadspeed_ranged_t03",
+              "Alteration:aid_att_stability_t03",
+              "Alteration:aid_att_firerate_ranged_t03",
+              "Alteration:aid_att_critchance_t03"
+            ],
+            [
+              "Alteration:aid_att_magazinesize_t04",
+              "Alteration:aid_att_reloadspeed_ranged_t04",
+              "Alteration:aid_att_stability_t04",
+              "Alteration:aid_att_firerate_ranged_t04",
+              "Alteration:aid_att_critchance_t04"
+            ],
+            [
+              "Alteration:aid_att_magazinesize_t05",
+              "Alteration:aid_att_reloadspeed_ranged_t05",
+              "Alteration:aid_att_stability_t05",
+              "Alteration:aid_att_firerate_ranged_t05",
+              "Alteration:aid_att_critchance_t05"
+            ]
+          ],
+          "RequiredLevel": 15
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t01",
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_headshotdamage_t01"
+            ],
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t02",
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_headshotdamage_t02"
+            ],
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t03",
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_headshotdamage_t03"
+            ],
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t04",
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_headshotdamage_t04"
+            ],
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t05",
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_headshotdamage_t05"
+            ]
+          ],
+          "RequiredLevel": 20
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_g_rangeddmgvsfire",
+              "Alteration:aid_g_rangeddmgvsice",
+              "Alteration:aid_g_rangeddmgvslightning",
+              "Alteration:aid_g_onrangedfire_stackbuff_critrate"
+            ]
+          ],
+          "RequiredLevel": 25
+        }
+      ],
+      "Category": "Ranged",
+      "CraftingCost": {
+        "Ingredient:ingredient_crystal_quartz": 13,
+        "Ingredient:ingredient_mechanical_parts_t04": 30,
+        "Ingredient:ingredient_rare_powercell": 1,
+        "Ingredient:ingredient_crystal_shadowshard": 11
+      },
+      "Description": "Assault Weapon: Art Deco.  A versatile assault rifle useful in all types of combat scenarios that is the most accurate when aiming down sights and firing in controlled bursts.",
+      "DisplayTier": "Invalid",
+      "EvoType": "Crystal",
+      "RangedWeaponStats": {
+        "AmmoCostPerFire": 1,
+        "AmmoType": "Medium Bullets",
+        "BaseCritChance": 0.1,
+        "BaseCritDamage": 0.5,
+        "BulletsPerCartridge": 1,
+        "Durability": 300,
+        "DurabilityPerUse": 0.0731746,
+        "FiringRate": 6.3,
+        "KnockbackZAngle": 0.0,
+        "LongRange": {
+          "Damage": 13.6,
+          "EnvDamage": 5.0,
+          "ImpactDamage": 36.2,
+          "KnockbackMagnitude": 0.0,
+          "Range": 4096.0
+        },
+        "MaxRange": {
+          "Damage": 1.36,
+          "EnvDamage": 0.5,
+          "ImpactDamage": 3.62,
+          "KnockbackMagnitude": 0.0,
+          "Range": 7680.0
+        },
+        "MidRange": {
+          "Damage": 47.6,
+          "EnvDamage": 17.5,
+          "ImpactDamage": 126.7,
+          "KnockbackMagnitude": 0.0,
+          "Range": 2560.0
+        },
+        "PointBlank": {
+          "Damage": 68.0,
+          "EnvDamage": 25.0,
+          "ImpactDamage": 181.0,
+          "KnockbackMagnitude": 0.0,
+          "Range": 1024.0
+        },
+        "Reload": {
+          "CartridgePerFire": 1,
+          "ClipSize": 30,
+          "InitialClips": 2,
+          "ReloadTime": 2.3,
+          "ReloadType": "ReloadWholeClip"
+        },
+        "StunTime": 0.0
+      },
+      "Rarity": "Legendary",
+      "Tier": 4,
+      "TriggerType": "Automatic",
+      "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Schematics/Ranged/Assault/ArtDeco/SID_Assault_ArtDeco_SR_Crystal_T04.uasset",
+      "ImagePaths": {
+        "SmallPreview": "ExportedImages\\T-Icon-Weapons-ArtDecoAssault.png",
+        "LargePreview": "ExportedImages\\T-Icon-Weapons-ArtDecoAssault-L.png"
+      }
+    },
+    "Schematic:SID_Assault_ArtDeco_SR_Crystal_T05": {
+      "Type": "Schematic",
+      "Name": "SID_Assault_ArtDeco_SR_Crystal_T05",
+      "DisplayName": "The Floor Flusher",
+      "SubType": "Assault",
+      "AlterationSlots": [
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_critdamage_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_headshotdamage_t01",
+              "Alteration:aid_att_magazinesize_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_critdamage_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_headshotdamage_t02",
+              "Alteration:aid_att_magazinesize_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_critdamage_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_headshotdamage_t03",
+              "Alteration:aid_att_magazinesize_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_critdamage_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_headshotdamage_t04",
+              "Alteration:aid_att_magazinesize_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_critdamage_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_headshotdamage_t05",
+              "Alteration:aid_att_magazinesize_t05"
+            ]
+          ],
+          "RequiredLevel": 5
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_critdamage_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_headshotdamage_t01",
+              "Alteration:aid_att_stability_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_critdamage_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_headshotdamage_t02",
+              "Alteration:aid_att_stability_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_critdamage_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_headshotdamage_t03",
+              "Alteration:aid_att_stability_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_critdamage_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_headshotdamage_t04",
+              "Alteration:aid_att_stability_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_critdamage_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_headshotdamage_t05",
+              "Alteration:aid_att_stability_t05"
+            ]
+          ],
+          "RequiredLevel": 10
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_ele_fire_t01",
+              "Alteration:aid_ele_nature_t01",
+              "Alteration:aid_ele_water_t01"
+            ],
+            [
+              "Alteration:aid_ele_fire_t02",
+              "Alteration:aid_ele_nature_t02",
+              "Alteration:aid_ele_water_t02"
+            ],
+            [
+              "Alteration:aid_ele_fire_t03",
+              "Alteration:aid_ele_nature_t03",
+              "Alteration:aid_ele_water_t03"
+            ],
+            [
+              "Alteration:aid_ele_fire_t04",
+              "Alteration:aid_ele_nature_t04",
+              "Alteration:aid_ele_water_t04"
+            ],
+            [
+              "Alteration:aid_ele_fire_t05",
+              "Alteration:aid_ele_nature_t05",
+              "Alteration:aid_ele_water_t05"
+            ]
+          ],
+          "RequiredLevel": 15
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_magazinesize_t01",
+              "Alteration:aid_att_reloadspeed_ranged_t01",
+              "Alteration:aid_att_stability_t01",
+              "Alteration:aid_att_firerate_ranged_t01",
+              "Alteration:aid_att_critchance_t01"
+            ],
+            [
+              "Alteration:aid_att_magazinesize_t02",
+              "Alteration:aid_att_reloadspeed_ranged_t02",
+              "Alteration:aid_att_stability_t02",
+              "Alteration:aid_att_firerate_ranged_t02",
+              "Alteration:aid_att_critchance_t02"
+            ],
+            [
+              "Alteration:aid_att_magazinesize_t03",
+              "Alteration:aid_att_reloadspeed_ranged_t03",
+              "Alteration:aid_att_stability_t03",
+              "Alteration:aid_att_firerate_ranged_t03",
+              "Alteration:aid_att_critchance_t03"
+            ],
+            [
+              "Alteration:aid_att_magazinesize_t04",
+              "Alteration:aid_att_reloadspeed_ranged_t04",
+              "Alteration:aid_att_stability_t04",
+              "Alteration:aid_att_firerate_ranged_t04",
+              "Alteration:aid_att_critchance_t04"
+            ],
+            [
+              "Alteration:aid_att_magazinesize_t05",
+              "Alteration:aid_att_reloadspeed_ranged_t05",
+              "Alteration:aid_att_stability_t05",
+              "Alteration:aid_att_firerate_ranged_t05",
+              "Alteration:aid_att_critchance_t05"
+            ]
+          ],
+          "RequiredLevel": 15
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t01",
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_headshotdamage_t01"
+            ],
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t02",
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_headshotdamage_t02"
+            ],
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t03",
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_headshotdamage_t03"
+            ],
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t04",
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_headshotdamage_t04"
+            ],
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t05",
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_headshotdamage_t05"
+            ]
+          ],
+          "RequiredLevel": 20
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_g_rangeddmgvsfire",
+              "Alteration:aid_g_rangeddmgvsice",
+              "Alteration:aid_g_rangeddmgvslightning",
+              "Alteration:aid_g_onrangedfire_stackbuff_critrate"
+            ]
+          ],
+          "RequiredLevel": 25
+        }
+      ],
+      "Category": "Ranged",
+      "CraftingCost": {
+        "Ingredient:ingredient_crystal_quartz": 13,
+        "Ingredient:ingredient_mechanical_parts_t05": 30,
+        "Ingredient:ingredient_rare_powercell": 1,
+        "Ingredient:ingredient_crystal_sunbeam": 11
+      },
+      "Description": "Assault Weapon: Art Deco.  A versatile assault rifle useful in all types of combat scenarios that is the most accurate when aiming down sights and firing in controlled bursts.",
+      "DisplayTier": "Invalid",
+      "EvoType": "Crystal",
+      "RangedWeaponStats": {
+        "AmmoCostPerFire": 1,
+        "AmmoType": "Medium Bullets",
+        "BaseCritChance": 0.1,
+        "BaseCritDamage": 0.5,
+        "BulletsPerCartridge": 1,
+        "Durability": 300,
+        "DurabilityPerUse": 0.0731746,
+        "FiringRate": 6.3,
+        "KnockbackZAngle": 0.0,
+        "LongRange": {
+          "Damage": 15.4,
+          "EnvDamage": 6.0,
+          "ImpactDamage": 40.8,
+          "KnockbackMagnitude": 0.0,
+          "Range": 4096.0
+        },
+        "MaxRange": {
+          "Damage": 1.54,
+          "EnvDamage": 0.6,
+          "ImpactDamage": 4.08,
+          "KnockbackMagnitude": 0.0,
+          "Range": 7680.0
+        },
+        "MidRange": {
+          "Damage": 53.9,
+          "EnvDamage": 21.0,
+          "ImpactDamage": 142.8,
+          "KnockbackMagnitude": 0.0,
+          "Range": 2560.0
+        },
+        "PointBlank": {
+          "Damage": 77.0,
+          "EnvDamage": 30.0,
+          "ImpactDamage": 204.0,
+          "KnockbackMagnitude": 0.0,
+          "Range": 1024.0
+        },
+        "Reload": {
+          "CartridgePerFire": 1,
+          "ClipSize": 30,
+          "InitialClips": 2,
+          "ReloadTime": 2.3,
+          "ReloadType": "ReloadWholeClip"
+        },
+        "StunTime": 0.0
+      },
+      "Rarity": "Legendary",
+      "Tier": 5,
+      "TriggerType": "Automatic",
+      "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Schematics/Ranged/Assault/ArtDeco/SID_Assault_ArtDeco_SR_Crystal_T05.uasset",
+      "ImagePaths": {
+        "SmallPreview": "ExportedImages\\T-Icon-Weapons-ArtDecoAssault.png",
+        "LargePreview": "ExportedImages\\T-Icon-Weapons-ArtDecoAssault-L.png"
+      }
+    },
+    "Schematic:SID_Shotgun_ArtDeco_Break_SR_Crystal_T04": {
+      "Type": "Schematic",
+      "Name": "SID_Shotgun_ArtDeco_Break_SR_Crystal_T04",
+      "DisplayName": "The Big Shot",
+      "SubType": "Shotgun",
+      "AlterationSlots": [
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_weaponimpact_t01",
+              "Alteration:aid_att_stability_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_weaponimpact_t02",
+              "Alteration:aid_att_stability_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_weaponimpact_t03",
+              "Alteration:aid_att_stability_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_weaponimpact_t04",
+              "Alteration:aid_att_stability_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_weaponimpact_t05",
+              "Alteration:aid_att_stability_t05"
+            ]
+          ],
+          "RequiredLevel": 5
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_critdamage_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_weaponimpact_t01",
+              "Alteration:aid_att_maxdurability_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_critdamage_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_weaponimpact_t02",
+              "Alteration:aid_att_maxdurability_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_critdamage_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_weaponimpact_t03",
+              "Alteration:aid_att_maxdurability_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_critdamage_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_weaponimpact_t04",
+              "Alteration:aid_att_maxdurability_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_critdamage_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_weaponimpact_t05",
+              "Alteration:aid_att_maxdurability_t05"
+            ]
+          ],
+          "RequiredLevel": 10
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_ele_fire_t01",
+              "Alteration:aid_ele_nature_t01",
+              "Alteration:aid_ele_water_t01"
+            ],
+            [
+              "Alteration:aid_ele_fire_t02",
+              "Alteration:aid_ele_nature_t02",
+              "Alteration:aid_ele_water_t02"
+            ],
+            [
+              "Alteration:aid_ele_fire_t03",
+              "Alteration:aid_ele_nature_t03",
+              "Alteration:aid_ele_water_t03"
+            ],
+            [
+              "Alteration:aid_ele_fire_t04",
+              "Alteration:aid_ele_nature_t04",
+              "Alteration:aid_ele_water_t04"
+            ],
+            [
+              "Alteration:aid_ele_fire_t05",
+              "Alteration:aid_ele_nature_t05",
+              "Alteration:aid_ele_water_t05"
+            ]
+          ],
+          "RequiredLevel": 15
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critdamage_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_reloadspeed_ranged_t01",
+              "Alteration:aid_att_weaponimpact_t01"
+            ],
+            [
+              "Alteration:aid_att_critdamage_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_reloadspeed_ranged_t02",
+              "Alteration:aid_att_weaponimpact_t02"
+            ],
+            [
+              "Alteration:aid_att_critdamage_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_reloadspeed_ranged_t03",
+              "Alteration:aid_att_weaponimpact_t03"
+            ],
+            [
+              "Alteration:aid_att_critdamage_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_reloadspeed_ranged_t04",
+              "Alteration:aid_att_weaponimpact_t04"
+            ],
+            [
+              "Alteration:aid_att_critdamage_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_reloadspeed_ranged_t05",
+              "Alteration:aid_att_weaponimpact_t05"
+            ]
+          ],
+          "RequiredLevel": 15
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t01",
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_damage_t01"
+            ],
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t02",
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_damage_t02"
+            ],
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t03",
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_damage_t03"
+            ],
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t04",
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_damage_t04"
+            ],
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t05",
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_damage_t05"
+            ]
+          ],
+          "RequiredLevel": 20
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_g_rangeddmgvsfire",
+              "Alteration:aid_g_rangeddmgvsice",
+              "Alteration:aid_g_rangeddmgvslightning",
+              "Alteration:aid_g_onimpactbreak_dealdamage"
+            ]
+          ],
+          "RequiredLevel": 25
+        }
+      ],
+      "Category": "Ranged",
+      "CraftingCost": {
+        "Ingredient:ingredient_planks": 7,
+        "Ingredient:ingredient_powder_t04": 30,
+        "Ingredient:ingredient_rare_powercell": 1,
+        "Ingredient:ingredient_crystal_shadowshard": 11
+      },
+      "Description": "Shotgun: Art Deco.  Heavy hitting shotgun that deals damage and knockback to multiple enemies in a short, wide cone.  Suffers from a tiny ammo capacity and long reload time.",
+      "DisplayTier": "Invalid",
+      "EvoType": "Crystal",
+      "RangedWeaponStats": {
+        "AmmoCostPerFire": 1,
+        "AmmoType": "Shells 'n' Slugs",
+        "BaseCritChance": 0.15,
+        "BaseCritDamage": 0.5,
+        "BulletsPerCartridge": 1,
+        "Durability": 300,
+        "DurabilityPerUse": 0.6666667,
+        "FiringRate": 2.25,
+        "KnockbackZAngle": 45.0,
+        "LongRange": {
+          "Damage": 67.6,
+          "EnvDamage": 21.8,
+          "ImpactDamage": 279.0,
+          "KnockbackMagnitude": 112.0,
+          "Range": 1280.0
+        },
+        "MaxRange": {
+          "Damage": 6.76,
+          "EnvDamage": 2.18,
+          "ImpactDamage": 27.9,
+          "KnockbackMagnitude": 0.0,
+          "Range": 1536.0
+        },
+        "MidRange": {
+          "Damage": 236.6,
+          "EnvDamage": 76.3,
+          "ImpactDamage": 976.5,
+          "KnockbackMagnitude": 560.0,
+          "Range": 896.0
+        },
+        "PointBlank": {
+          "Damage": 338.0,
+          "EnvDamage": 109.0,
+          "ImpactDamage": 1395.0,
+          "KnockbackMagnitude": 800.0,
+          "Range": 640.0
+        },
+        "Reload": {
+          "CartridgePerFire": 1,
+          "ClipSize": 2,
+          "InitialClips": 2,
+          "ReloadTime": 3.2,
+          "ReloadType": "ReloadIndividualBullets"
+        },
+        "StunTime": 0.0
+      },
+      "Rarity": "Legendary",
+      "Tier": 4,
+      "TriggerType": "OnPress",
+      "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Schematics/Ranged/Shotgun/ArtDeco_Break/SID_Shotgun_ArtDeco_Break_SR_Crystal_T04.uasset",
+      "ImagePaths": {
+        "SmallPreview": "ExportedImages\\T-Icon-Weapons-ArtDecoBreakShotgun.png",
+        "LargePreview": "ExportedImages\\T-Icon-Weapons-ArtDecoBreakShotgun-L.png"
+      }
+    },
+    "Schematic:SID_Shotgun_ArtDeco_Break_SR_Crystal_T05": {
+      "Type": "Schematic",
+      "Name": "SID_Shotgun_ArtDeco_Break_SR_Crystal_T05",
+      "DisplayName": "The Big Shot",
+      "SubType": "Shotgun",
+      "AlterationSlots": [
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_weaponimpact_t01",
+              "Alteration:aid_att_stability_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_weaponimpact_t02",
+              "Alteration:aid_att_stability_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_weaponimpact_t03",
+              "Alteration:aid_att_stability_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_weaponimpact_t04",
+              "Alteration:aid_att_stability_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_weaponimpact_t05",
+              "Alteration:aid_att_stability_t05"
+            ]
+          ],
+          "RequiredLevel": 5
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_critdamage_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_weaponimpact_t01",
+              "Alteration:aid_att_maxdurability_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_critdamage_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_weaponimpact_t02",
+              "Alteration:aid_att_maxdurability_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_critdamage_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_weaponimpact_t03",
+              "Alteration:aid_att_maxdurability_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_critdamage_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_weaponimpact_t04",
+              "Alteration:aid_att_maxdurability_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_critdamage_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_weaponimpact_t05",
+              "Alteration:aid_att_maxdurability_t05"
+            ]
+          ],
+          "RequiredLevel": 10
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_ele_fire_t01",
+              "Alteration:aid_ele_nature_t01",
+              "Alteration:aid_ele_water_t01"
+            ],
+            [
+              "Alteration:aid_ele_fire_t02",
+              "Alteration:aid_ele_nature_t02",
+              "Alteration:aid_ele_water_t02"
+            ],
+            [
+              "Alteration:aid_ele_fire_t03",
+              "Alteration:aid_ele_nature_t03",
+              "Alteration:aid_ele_water_t03"
+            ],
+            [
+              "Alteration:aid_ele_fire_t04",
+              "Alteration:aid_ele_nature_t04",
+              "Alteration:aid_ele_water_t04"
+            ],
+            [
+              "Alteration:aid_ele_fire_t05",
+              "Alteration:aid_ele_nature_t05",
+              "Alteration:aid_ele_water_t05"
+            ]
+          ],
+          "RequiredLevel": 15
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critdamage_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_reloadspeed_ranged_t01",
+              "Alteration:aid_att_weaponimpact_t01"
+            ],
+            [
+              "Alteration:aid_att_critdamage_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_reloadspeed_ranged_t02",
+              "Alteration:aid_att_weaponimpact_t02"
+            ],
+            [
+              "Alteration:aid_att_critdamage_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_reloadspeed_ranged_t03",
+              "Alteration:aid_att_weaponimpact_t03"
+            ],
+            [
+              "Alteration:aid_att_critdamage_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_reloadspeed_ranged_t04",
+              "Alteration:aid_att_weaponimpact_t04"
+            ],
+            [
+              "Alteration:aid_att_critdamage_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_reloadspeed_ranged_t05",
+              "Alteration:aid_att_weaponimpact_t05"
+            ]
+          ],
+          "RequiredLevel": 15
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t01",
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_damage_t01"
+            ],
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t02",
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_damage_t02"
+            ],
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t03",
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_damage_t03"
+            ],
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t04",
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_damage_t04"
+            ],
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t05",
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_damage_t05"
+            ]
+          ],
+          "RequiredLevel": 20
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_g_rangeddmgvsfire",
+              "Alteration:aid_g_rangeddmgvsice",
+              "Alteration:aid_g_rangeddmgvslightning",
+              "Alteration:aid_g_onimpactbreak_dealdamage"
+            ]
+          ],
+          "RequiredLevel": 25
+        }
+      ],
+      "Category": "Ranged",
+      "CraftingCost": {
+        "Ingredient:ingredient_planks": 7,
+        "Ingredient:ingredient_powder_t05": 30,
+        "Ingredient:ingredient_rare_powercell": 1,
+        "Ingredient:ingredient_crystal_sunbeam": 11
+      },
+      "Description": "Shotgun: Art Deco.  Heavy hitting shotgun that deals damage and knockback to multiple enemies in a short, wide cone.  Suffers from a tiny ammo capacity and long reload time.",
+      "DisplayTier": "Invalid",
+      "EvoType": "Crystal",
+      "RangedWeaponStats": {
+        "AmmoCostPerFire": 1,
+        "AmmoType": "Shells 'n' Slugs",
+        "BaseCritChance": 0.15,
+        "BaseCritDamage": 0.5,
+        "BulletsPerCartridge": 1,
+        "Durability": 300,
+        "DurabilityPerUse": 0.6666667,
+        "FiringRate": 2.25,
+        "KnockbackZAngle": 45.0,
+        "LongRange": {
+          "Damage": 76.0,
+          "EnvDamage": 26.0,
+          "ImpactDamage": 313.8,
+          "KnockbackMagnitude": 112.0,
+          "Range": 1280.0
+        },
+        "MaxRange": {
+          "Damage": 7.6,
+          "EnvDamage": 2.6,
+          "ImpactDamage": 31.38,
+          "KnockbackMagnitude": 0.0,
+          "Range": 1536.0
+        },
+        "MidRange": {
+          "Damage": 266.0,
+          "EnvDamage": 91.0,
+          "ImpactDamage": 1098.3,
+          "KnockbackMagnitude": 560.0,
+          "Range": 896.0
+        },
+        "PointBlank": {
+          "Damage": 380.0,
+          "EnvDamage": 130.0,
+          "ImpactDamage": 1569.0,
+          "KnockbackMagnitude": 800.0,
+          "Range": 640.0
+        },
+        "Reload": {
+          "CartridgePerFire": 1,
+          "ClipSize": 2,
+          "InitialClips": 2,
+          "ReloadTime": 3.2,
+          "ReloadType": "ReloadIndividualBullets"
+        },
+        "StunTime": 0.0
+      },
+      "Rarity": "Legendary",
+      "Tier": 5,
+      "TriggerType": "OnPress",
+      "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Schematics/Ranged/Shotgun/ArtDeco_Break/SID_Shotgun_ArtDeco_Break_SR_Crystal_T05.uasset",
+      "ImagePaths": {
+        "SmallPreview": "ExportedImages\\T-Icon-Weapons-ArtDecoBreakShotgun.png",
+        "LargePreview": "ExportedImages\\T-Icon-Weapons-ArtDecoBreakShotgun-L.png"
+      }
+    },
+    "Schematic:SID_Sniper_AMR_R_Crystal_T04": {
+      "Type": "Schematic",
+      "Name": "SID_Sniper_AMR_R_Crystal_T04",
+      "DisplayName": "Zapotron",
+      "SubType": "Sniper",
+      "AlterationSlots": [
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_ele_energy_intrin_t01"
+            ],
+            [
+              "Alteration:aid_ele_energy_intrin_t02"
+            ],
+            [
+              "Alteration:aid_ele_energy_intrin_t03"
+            ],
+            [
+              "Alteration:aid_ele_energy_intrin_t04"
+            ],
+            [
+              "Alteration:aid_ele_energy_intrin_t05"
+            ]
+          ],
+          "RequiredLevel": 0
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_critdamage_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_firerate_ranged_t01",
+              "Alteration:aid_att_reloadspeed_ranged_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_critdamage_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_firerate_ranged_t02",
+              "Alteration:aid_att_reloadspeed_ranged_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_critdamage_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_firerate_ranged_t03",
+              "Alteration:aid_att_reloadspeed_ranged_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_critdamage_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_firerate_ranged_t04",
+              "Alteration:aid_att_reloadspeed_ranged_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_critdamage_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_firerate_ranged_t05",
+              "Alteration:aid_att_reloadspeed_ranged_t05"
+            ]
+          ],
+          "RequiredLevel": 5
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_maxdurability_t01",
+              "Alteration:aid_att_magazinesize_t01",
+              "Alteration:aid_att_reloadspeed_ranged_t01",
+              "Alteration:aid_att_stability_t01",
+              "Alteration:aid_att_damage_t01"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_t02",
+              "Alteration:aid_att_magazinesize_t02",
+              "Alteration:aid_att_reloadspeed_ranged_t02",
+              "Alteration:aid_att_stability_t02",
+              "Alteration:aid_att_damage_t02"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_t03",
+              "Alteration:aid_att_magazinesize_t03",
+              "Alteration:aid_att_reloadspeed_ranged_t03",
+              "Alteration:aid_att_stability_t03",
+              "Alteration:aid_att_damage_t03"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_t04",
+              "Alteration:aid_att_magazinesize_t04",
+              "Alteration:aid_att_reloadspeed_ranged_t04",
+              "Alteration:aid_att_stability_t04",
+              "Alteration:aid_att_damage_t04"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_t05",
+              "Alteration:aid_att_magazinesize_t05",
+              "Alteration:aid_att_reloadspeed_ranged_t05",
+              "Alteration:aid_att_stability_t05",
+              "Alteration:aid_att_damage_t05"
+            ]
+          ],
+          "RequiredLevel": 10
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_critdamage_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_headshotdamage_t01",
+              "Alteration:aid_att_magazinesize_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_critdamage_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_headshotdamage_t02",
+              "Alteration:aid_att_magazinesize_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_critdamage_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_headshotdamage_t03",
+              "Alteration:aid_att_magazinesize_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_critdamage_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_headshotdamage_t04",
+              "Alteration:aid_att_magazinesize_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_critdamage_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_headshotdamage_t05",
+              "Alteration:aid_att_magazinesize_t05"
+            ]
+          ],
+          "RequiredLevel": 15
+        }
+      ],
+      "Category": "Ranged",
+      "CraftingCost": {
+        "Ingredient:ingredient_crystal_quartz": 8,
+        "Ingredient:ingredient_mechanical_parts_t04": 18,
+        "Ingredient:ingredient_rare_powercell": 1,
+        "Ingredient:ingredient_crystal_shadowshard": 5
+      },
+      "Description": "Sniper Rifle: High Tech. Energy rifle that can be fired normally, or can be charged up to fire a single powerful shot that does extreme damage and can pierce through multiple enemies. Deals energy damage which is fairly effective against all elemental enemies.",
+      "DisplayTier": "Invalid",
+      "EvoType": "Crystal",
+      "RangedWeaponStats": {
+        "AmmoCostPerFire": 2,
+        "AmmoType": "Energy Cell",
+        "BaseCritChance": 0.1,
+        "BaseCritDamage": 0.75,
+        "BulletsPerCartridge": 1,
+        "Charge": {
+          "AutoDischarge": false,
+          "ChargeDownTime": 0.0,
+          "FullChargeDurabilityPerUse": 0.5388889,
+          "MaxAmmoCostPerFire": 6,
+          "MaxChargeDamageMultiplier": 3.0,
+          "MaxChargeTime": 2.0,
+          "MaxChargeTimeUntilDischarge": 0.0,
+          "MinChargeDamageMultiplier": 1.0,
+          "MinChargeTime": 0.5
+        },
+        "Durability": 150,
+        "DurabilityPerUse": 0.5388889,
+        "FiringRate": 0.9,
+        "KnockbackZAngle": 0.0,
+        "LongRange": {
+          "Damage": 56.2,
+          "EnvDamage": 15.8,
+          "ImpactDamage": 113.0,
+          "KnockbackMagnitude": 0.0,
+          "Range": 10240.0
+        },
+        "MaxRange": {
+          "Damage": 5.62,
+          "EnvDamage": 1.58,
+          "ImpactDamage": 11.3,
+          "KnockbackMagnitude": 0.0,
+          "Range": 10496.0
+        },
+        "MidRange": {
+          "Damage": 196.7,
+          "EnvDamage": 55.3,
+          "ImpactDamage": 395.5,
+          "KnockbackMagnitude": 0.0,
+          "Range": 7680.0
+        },
+        "PointBlank": {
+          "Damage": 281.0,
+          "EnvDamage": 79.0,
+          "ImpactDamage": 565.0,
+          "KnockbackMagnitude": 0.0,
+          "Range": 3584.0
+        },
+        "Reload": {
+          "CartridgePerFire": 1,
+          "ClipSize": 6,
+          "InitialClips": 3,
+          "ReloadTime": 1.85,
+          "ReloadType": "ReloadWholeClip"
+        },
+        "StunTime": 0.0
+      },
+      "Rarity": "Rare",
+      "Tier": 4,
+      "TriggerType": "OnRelease",
+      "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Schematics/Ranged/Sniper/AMR/SID_Sniper_AMR_R_Crystal_T04.uasset",
+      "ImagePaths": {
+        "SmallPreview": "ExportedImages\\T-Icon-Weapons-SK-AMR.png",
+        "LargePreview": "ExportedImages\\T-Icon-Weapons-SK-AMR-L.png"
+      }
+    },
+    "Schematic:SID_Sniper_AMR_R_Ore_T01": {
+      "Type": "Schematic",
+      "Name": "SID_Sniper_AMR_R_Ore_T01",
+      "DisplayName": "Zapotron",
+      "SubType": "Sniper",
+      "AlterationSlots": [
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_ele_energy_intrin_t01"
+            ],
+            [
+              "Alteration:aid_ele_energy_intrin_t02"
+            ],
+            [
+              "Alteration:aid_ele_energy_intrin_t03"
+            ],
+            [
+              "Alteration:aid_ele_energy_intrin_t04"
+            ],
+            [
+              "Alteration:aid_ele_energy_intrin_t05"
+            ]
+          ],
+          "RequiredLevel": 0
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_critdamage_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_firerate_ranged_t01",
+              "Alteration:aid_att_reloadspeed_ranged_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_critdamage_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_firerate_ranged_t02",
+              "Alteration:aid_att_reloadspeed_ranged_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_critdamage_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_firerate_ranged_t03",
+              "Alteration:aid_att_reloadspeed_ranged_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_critdamage_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_firerate_ranged_t04",
+              "Alteration:aid_att_reloadspeed_ranged_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_critdamage_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_firerate_ranged_t05",
+              "Alteration:aid_att_reloadspeed_ranged_t05"
+            ]
+          ],
+          "RequiredLevel": 5
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_maxdurability_t01",
+              "Alteration:aid_att_magazinesize_t01",
+              "Alteration:aid_att_reloadspeed_ranged_t01",
+              "Alteration:aid_att_stability_t01",
+              "Alteration:aid_att_damage_t01"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_t02",
+              "Alteration:aid_att_magazinesize_t02",
+              "Alteration:aid_att_reloadspeed_ranged_t02",
+              "Alteration:aid_att_stability_t02",
+              "Alteration:aid_att_damage_t02"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_t03",
+              "Alteration:aid_att_magazinesize_t03",
+              "Alteration:aid_att_reloadspeed_ranged_t03",
+              "Alteration:aid_att_stability_t03",
+              "Alteration:aid_att_damage_t03"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_t04",
+              "Alteration:aid_att_magazinesize_t04",
+              "Alteration:aid_att_reloadspeed_ranged_t04",
+              "Alteration:aid_att_stability_t04",
+              "Alteration:aid_att_damage_t04"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_t05",
+              "Alteration:aid_att_magazinesize_t05",
+              "Alteration:aid_att_reloadspeed_ranged_t05",
+              "Alteration:aid_att_stability_t05",
+              "Alteration:aid_att_damage_t05"
+            ]
+          ],
+          "RequiredLevel": 10
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_critdamage_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_headshotdamage_t01",
+              "Alteration:aid_att_magazinesize_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_critdamage_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_headshotdamage_t02",
+              "Alteration:aid_att_magazinesize_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_critdamage_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_headshotdamage_t03",
+              "Alteration:aid_att_magazinesize_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_critdamage_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_headshotdamage_t04",
+              "Alteration:aid_att_magazinesize_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_critdamage_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_headshotdamage_t05",
+              "Alteration:aid_att_magazinesize_t05"
+            ]
+          ],
+          "RequiredLevel": 15
+        }
+      ],
+      "Category": "Ranged",
+      "CraftingCost": {
+        "Ingredient:ingredient_blastpowder": 10,
+        "Ingredient:ingredient_mechanical_parts_t01": 18,
+        "Ingredient:ingredient_rare_mechanism": 1,
+        "Ingredient:ingredient_ore_copper": 5
+      },
+      "Description": "Sniper Rifle: High Tech. Energy rifle that can be fired normally, or can be charged up to fire a single powerful shot that does extreme damage and can pierce through multiple enemies. Deals energy damage which is fairly effective against all elemental enemies.",
+      "DisplayTier": "Copper",
+      "EvoType": "Ore",
+      "RangedWeaponStats": {
+        "AmmoCostPerFire": 2,
+        "AmmoType": "Energy Cell",
+        "BaseCritChance": 0.1,
+        "BaseCritDamage": 0.75,
+        "BulletsPerCartridge": 1,
+        "Charge": {
+          "AutoDischarge": false,
+          "ChargeDownTime": 0.0,
+          "FullChargeDurabilityPerUse": 0.5388889,
+          "MaxAmmoCostPerFire": 6,
+          "MaxChargeDamageMultiplier": 3.0,
+          "MaxChargeTime": 2.0,
+          "MaxChargeTimeUntilDischarge": 0.0,
+          "MinChargeDamageMultiplier": 1.0,
+          "MinChargeTime": 0.5
+        },
+        "Durability": 190,
+        "DurabilityPerUse": 0.5388889,
+        "FiringRate": 1.0,
+        "KnockbackZAngle": 0.0,
+        "LongRange": {
+          "Damage": 29.4,
+          "EnvDamage": 9.2,
+          "ImpactDamage": 58.8,
+          "KnockbackMagnitude": 0.0,
+          "Range": 10240.0
+        },
+        "MaxRange": {
+          "Damage": 2.94,
+          "EnvDamage": 0.92,
+          "ImpactDamage": 5.88,
+          "KnockbackMagnitude": 0.0,
+          "Range": 10496.0
+        },
+        "MidRange": {
+          "Damage": 102.9,
+          "EnvDamage": 32.2,
+          "ImpactDamage": 205.8,
+          "KnockbackMagnitude": 0.0,
+          "Range": 7680.0
+        },
+        "PointBlank": {
+          "Damage": 147.0,
+          "EnvDamage": 46.0,
+          "ImpactDamage": 294.0,
+          "KnockbackMagnitude": 0.0,
+          "Range": 3584.0
+        },
+        "Reload": {
+          "CartridgePerFire": 1,
+          "ClipSize": 6,
+          "InitialClips": 3,
+          "ReloadTime": 1.85,
+          "ReloadType": "ReloadWholeClip"
+        },
+        "StunTime": 0.0
+      },
+      "Rarity": "Rare",
+      "Tier": 1,
+      "TriggerType": "OnRelease",
+      "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Schematics/Ranged/Sniper/AMR/SID_Sniper_AMR_R_Ore_T01.uasset",
+      "ImagePaths": {
+        "SmallPreview": "ExportedImages\\T-Icon-Weapons-SK-AMR.png",
+        "LargePreview": "ExportedImages\\T-Icon-Weapons-SK-AMR-L.png"
+      }
+    },
+    "Schematic:SID_Pistol_BoltRevolver_R_Crystal_T04": {
+      "Type": "Schematic",
+      "Name": "SID_Pistol_BoltRevolver_R_Crystal_T04",
+      "DisplayName": "Junkyard Pal",
+      "SubType": "Pistol",
+      "AlterationSlots": [
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_critdamage_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_firerate_ranged_t01",
+              "Alteration:aid_att_reloadspeed_ranged_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_critdamage_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_firerate_ranged_t02",
+              "Alteration:aid_att_reloadspeed_ranged_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_critdamage_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_firerate_ranged_t03",
+              "Alteration:aid_att_reloadspeed_ranged_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_critdamage_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_firerate_ranged_t04",
+              "Alteration:aid_att_reloadspeed_ranged_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_critdamage_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_firerate_ranged_t05",
+              "Alteration:aid_att_reloadspeed_ranged_t05"
+            ]
+          ],
+          "RequiredLevel": 5
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_maxdurability_t01",
+              "Alteration:aid_att_magazinesize_t01",
+              "Alteration:aid_att_reloadspeed_ranged_t01",
+              "Alteration:aid_att_stability_t01",
+              "Alteration:aid_att_damage_t01"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_t02",
+              "Alteration:aid_att_magazinesize_t02",
+              "Alteration:aid_att_reloadspeed_ranged_t02",
+              "Alteration:aid_att_stability_t02",
+              "Alteration:aid_att_damage_t02"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_t03",
+              "Alteration:aid_att_magazinesize_t03",
+              "Alteration:aid_att_reloadspeed_ranged_t03",
+              "Alteration:aid_att_stability_t03",
+              "Alteration:aid_att_damage_t03"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_t04",
+              "Alteration:aid_att_magazinesize_t04",
+              "Alteration:aid_att_reloadspeed_ranged_t04",
+              "Alteration:aid_att_stability_t04",
+              "Alteration:aid_att_damage_t04"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_t05",
+              "Alteration:aid_att_magazinesize_t05",
+              "Alteration:aid_att_reloadspeed_ranged_t05",
+              "Alteration:aid_att_stability_t05",
+              "Alteration:aid_att_damage_t05"
+            ]
+          ],
+          "RequiredLevel": 10
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_ele_energy_t01",
+              "Alteration:aid_ele_fire_t01",
+              "Alteration:aid_ele_nature_t01",
+              "Alteration:aid_att_damage_physical_t01",
+              "Alteration:aid_ele_water_t01"
+            ],
+            [
+              "Alteration:aid_ele_energy_t02",
+              "Alteration:aid_ele_fire_t02",
+              "Alteration:aid_ele_nature_t02",
+              "Alteration:aid_att_damage_physical_t02",
+              "Alteration:aid_ele_water_t02"
+            ],
+            [
+              "Alteration:aid_ele_energy_t03",
+              "Alteration:aid_ele_fire_t03",
+              "Alteration:aid_ele_nature_t03",
+              "Alteration:aid_att_damage_physical_t03",
+              "Alteration:aid_ele_water_t03"
+            ],
+            [
+              "Alteration:aid_ele_energy_t04",
+              "Alteration:aid_ele_fire_t04",
+              "Alteration:aid_ele_nature_t04",
+              "Alteration:aid_att_damage_physical_t04",
+              "Alteration:aid_ele_water_t04"
+            ],
+            [
+              "Alteration:aid_ele_energy_t05",
+              "Alteration:aid_ele_fire_t05",
+              "Alteration:aid_ele_nature_t05",
+              "Alteration:aid_att_damage_physical_t05",
+              "Alteration:aid_ele_water_t05"
+            ]
+          ],
+          "RequiredLevel": 15
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_critdamage_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_headshotdamage_t01",
+              "Alteration:aid_att_magazinesize_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_critdamage_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_headshotdamage_t02",
+              "Alteration:aid_att_magazinesize_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_critdamage_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_headshotdamage_t03",
+              "Alteration:aid_att_magazinesize_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_critdamage_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_headshotdamage_t04",
+              "Alteration:aid_att_magazinesize_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_critdamage_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_headshotdamage_t05",
+              "Alteration:aid_att_magazinesize_t05"
+            ]
+          ],
+          "RequiredLevel": 15
+        }
+      ],
+      "Category": "Ranged",
+      "CraftingCost": {
+        "Ingredient:ingredient_crystal_quartz": 8,
+        "Ingredient:ingredient_twine_t04": 18,
+        "Ingredient:ingredient_rare_powercell": 1,
+        "Ingredient:ingredient_crystal_shadowshard": 5
+      },
+      "Description": "Pistol: Bolt Revolver. Fires high-powered bolts that can pierce through multiple enemies. Accurate when fired slowly, and cheap to operate.",
+      "DisplayTier": "Invalid",
+      "EvoType": "Crystal",
+      "RangedWeaponStats": {
+        "AmmoCostPerFire": 1,
+        "AmmoType": "Medium Bullets",
+        "BaseCritChance": 0.15,
+        "BaseCritDamage": 0.75,
+        "BulletsPerCartridge": 1,
+        "Durability": 150,
+        "DurabilityPerUse": 0.20555556,
+        "FiringRate": 3.6,
+        "KnockbackZAngle": 0.0,
+        "LongRange": {
+          "Damage": 25.4,
+          "EnvDamage": 9.2,
+          "ImpactDamage": 85.2,
+          "KnockbackMagnitude": 0.0,
+          "Range": 3584.0
+        },
+        "MaxRange": {
+          "Damage": 2.54,
+          "EnvDamage": 0.92,
+          "ImpactDamage": 8.52,
+          "KnockbackMagnitude": 0.0,
+          "Range": 6144.0
+        },
+        "MidRange": {
+          "Damage": 88.9,
+          "EnvDamage": 32.2,
+          "ImpactDamage": 298.2,
+          "KnockbackMagnitude": 0.0,
+          "Range": 1792.0
+        },
+        "PointBlank": {
+          "Damage": 127.0,
+          "EnvDamage": 46.0,
+          "ImpactDamage": 426.0,
+          "KnockbackMagnitude": 0.0,
+          "Range": 1024.0
+        },
+        "Reload": {
+          "CartridgePerFire": 1,
+          "ClipSize": 6,
+          "InitialClips": 6,
+          "ReloadTime": 2.2,
+          "ReloadType": "ReloadWholeClip"
+        },
+        "StunTime": 0.0
+      },
+      "Rarity": "Rare",
+      "Tier": 4,
+      "TriggerType": "OnPress",
+      "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Schematics/Ranged/Pistol/BoltRevolver/SID_Pistol_BoltRevolver_R_Crystal_T04.uasset",
+      "ImagePaths": {
+        "SmallPreview": "ExportedImages\\T-Icon-Weapons-SK-BoltRevolver.png",
+        "LargePreview": "ExportedImages\\T-Icon-Weapons-SK-BoltRevolver-L.png"
+      }
+    },
+    "Schematic:SID_Pistol_BoltRevolver_R_Ore_T01": {
+      "Type": "Schematic",
+      "Name": "SID_Pistol_BoltRevolver_R_Ore_T01",
+      "DisplayName": "Junkyard Pal",
+      "SubType": "Pistol",
+      "AlterationSlots": [
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_critdamage_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_firerate_ranged_t01",
+              "Alteration:aid_att_reloadspeed_ranged_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_critdamage_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_firerate_ranged_t02",
+              "Alteration:aid_att_reloadspeed_ranged_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_critdamage_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_firerate_ranged_t03",
+              "Alteration:aid_att_reloadspeed_ranged_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_critdamage_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_firerate_ranged_t04",
+              "Alteration:aid_att_reloadspeed_ranged_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_critdamage_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_firerate_ranged_t05",
+              "Alteration:aid_att_reloadspeed_ranged_t05"
+            ]
+          ],
+          "RequiredLevel": 5
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_maxdurability_t01",
+              "Alteration:aid_att_magazinesize_t01",
+              "Alteration:aid_att_reloadspeed_ranged_t01",
+              "Alteration:aid_att_stability_t01",
+              "Alteration:aid_att_damage_t01"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_t02",
+              "Alteration:aid_att_magazinesize_t02",
+              "Alteration:aid_att_reloadspeed_ranged_t02",
+              "Alteration:aid_att_stability_t02",
+              "Alteration:aid_att_damage_t02"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_t03",
+              "Alteration:aid_att_magazinesize_t03",
+              "Alteration:aid_att_reloadspeed_ranged_t03",
+              "Alteration:aid_att_stability_t03",
+              "Alteration:aid_att_damage_t03"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_t04",
+              "Alteration:aid_att_magazinesize_t04",
+              "Alteration:aid_att_reloadspeed_ranged_t04",
+              "Alteration:aid_att_stability_t04",
+              "Alteration:aid_att_damage_t04"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_t05",
+              "Alteration:aid_att_magazinesize_t05",
+              "Alteration:aid_att_reloadspeed_ranged_t05",
+              "Alteration:aid_att_stability_t05",
+              "Alteration:aid_att_damage_t05"
+            ]
+          ],
+          "RequiredLevel": 10
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_ele_energy_t01",
+              "Alteration:aid_ele_fire_t01",
+              "Alteration:aid_ele_nature_t01",
+              "Alteration:aid_att_damage_physical_t01",
+              "Alteration:aid_ele_water_t01"
+            ],
+            [
+              "Alteration:aid_ele_energy_t02",
+              "Alteration:aid_ele_fire_t02",
+              "Alteration:aid_ele_nature_t02",
+              "Alteration:aid_att_damage_physical_t02",
+              "Alteration:aid_ele_water_t02"
+            ],
+            [
+              "Alteration:aid_ele_energy_t03",
+              "Alteration:aid_ele_fire_t03",
+              "Alteration:aid_ele_nature_t03",
+              "Alteration:aid_att_damage_physical_t03",
+              "Alteration:aid_ele_water_t03"
+            ],
+            [
+              "Alteration:aid_ele_energy_t04",
+              "Alteration:aid_ele_fire_t04",
+              "Alteration:aid_ele_nature_t04",
+              "Alteration:aid_att_damage_physical_t04",
+              "Alteration:aid_ele_water_t04"
+            ],
+            [
+              "Alteration:aid_ele_energy_t05",
+              "Alteration:aid_ele_fire_t05",
+              "Alteration:aid_ele_nature_t05",
+              "Alteration:aid_att_damage_physical_t05",
+              "Alteration:aid_ele_water_t05"
+            ]
+          ],
+          "RequiredLevel": 15
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_critdamage_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_headshotdamage_t01",
+              "Alteration:aid_att_magazinesize_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_critdamage_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_headshotdamage_t02",
+              "Alteration:aid_att_magazinesize_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_critdamage_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_headshotdamage_t03",
+              "Alteration:aid_att_magazinesize_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_critdamage_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_headshotdamage_t04",
+              "Alteration:aid_att_magazinesize_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_critdamage_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_headshotdamage_t05",
+              "Alteration:aid_att_magazinesize_t05"
+            ]
+          ],
+          "RequiredLevel": 15
+        }
+      ],
+      "Category": "Ranged",
+      "CraftingCost": {
+        "Ingredient:ingredient_blastpowder": 10,
+        "Ingredient:ingredient_twine_t01": 18,
+        "Ingredient:ingredient_rare_mechanism": 1,
+        "Ingredient:ingredient_ore_copper": 5
+      },
+      "Description": "Pistol: Bolt Revolver. Fires high-powered bolts that can pierce through multiple enemies. Accurate when fired slowly, and cheap to operate.",
+      "DisplayTier": "Copper",
+      "EvoType": "Ore",
+      "RangedWeaponStats": {
+        "AmmoCostPerFire": 1,
+        "AmmoType": "Medium Bullets",
+        "BaseCritChance": 0.15,
+        "BaseCritDamage": 0.75,
+        "BulletsPerCartridge": 1,
+        "Durability": 190,
+        "DurabilityPerUse": 0.20555556,
+        "FiringRate": 4.0,
+        "KnockbackZAngle": 0.0,
+        "LongRange": {
+          "Damage": 13.2,
+          "EnvDamage": 5.4,
+          "ImpactDamage": 44.4,
+          "KnockbackMagnitude": 0.0,
+          "Range": 3584.0
+        },
+        "MaxRange": {
+          "Damage": 1.32,
+          "EnvDamage": 0.54,
+          "ImpactDamage": 4.44,
+          "KnockbackMagnitude": 0.0,
+          "Range": 6144.0
+        },
+        "MidRange": {
+          "Damage": 46.2,
+          "EnvDamage": 18.9,
+          "ImpactDamage": 155.4,
+          "KnockbackMagnitude": 0.0,
+          "Range": 1792.0
+        },
+        "PointBlank": {
+          "Damage": 66.0,
+          "EnvDamage": 27.0,
+          "ImpactDamage": 222.0,
+          "KnockbackMagnitude": 0.0,
+          "Range": 1024.0
+        },
+        "Reload": {
+          "CartridgePerFire": 1,
+          "ClipSize": 6,
+          "InitialClips": 6,
+          "ReloadTime": 2.2,
+          "ReloadType": "ReloadWholeClip"
+        },
+        "StunTime": 0.0
+      },
+      "Rarity": "Rare",
+      "Tier": 1,
+      "TriggerType": "OnPress",
+      "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Schematics/Ranged/Pistol/BoltRevolver/SID_Pistol_BoltRevolver_R_Ore_T01.uasset",
+      "ImagePaths": {
+        "SmallPreview": "ExportedImages\\T-Icon-Weapons-SK-BoltRevolver.png",
+        "LargePreview": "ExportedImages\\T-Icon-Weapons-SK-BoltRevolver-L.png"
+      }
+    },
+    "Schematic:SID_Edged_IceSword_SR_Crystal_T04": {
+      "Type": "Schematic",
+      "Name": "SID_Edged_IceSword_SR_Crystal_T04",
+      "DisplayName": "Slicicle",
+      "SubType": "Sword",
+      "AlterationSlots": [
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_ele_water_intrin_t01"
+            ],
+            [
+              "Alteration:aid_ele_water_intrin_t02"
+            ],
+            [
+              "Alteration:aid_ele_water_intrin_t03"
+            ],
+            [
+              "Alteration:aid_ele_water_intrin_t04"
+            ],
+            [
+              "Alteration:aid_ele_water_intrin_t05"
+            ]
+          ],
+          "RequiredLevel": 5
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_damageresistance_t01",
+              "Alteration:aid_att_maxdurability_t01",
+              "Alteration:aid_att_lifeleech_t01",
+              "Alteration:aid_att_movementspeed_t01",
+              "Alteration:aid_att_heavyattackstaminacost_t01",
+              "Alteration:aid_att_damage_t01"
+            ],
+            [
+              "Alteration:aid_att_damageresistance_t02",
+              "Alteration:aid_att_maxdurability_t02",
+              "Alteration:aid_att_lifeleech_t02",
+              "Alteration:aid_att_movementspeed_t02",
+              "Alteration:aid_att_heavyattackstaminacost_t02",
+              "Alteration:aid_att_damage_t02"
+            ],
+            [
+              "Alteration:aid_att_damageresistance_t03",
+              "Alteration:aid_att_maxdurability_t03",
+              "Alteration:aid_att_lifeleech_t03",
+              "Alteration:aid_att_movementspeed_t03",
+              "Alteration:aid_att_heavyattackstaminacost_t03",
+              "Alteration:aid_att_damage_t03"
+            ],
+            [
+              "Alteration:aid_att_damageresistance_t04",
+              "Alteration:aid_att_maxdurability_t04",
+              "Alteration:aid_att_lifeleech_t04",
+              "Alteration:aid_att_movementspeed_t04",
+              "Alteration:aid_att_heavyattackstaminacost_t04",
+              "Alteration:aid_att_damage_t04"
+            ],
+            [
+              "Alteration:aid_att_damageresistance_t05",
+              "Alteration:aid_att_maxdurability_t05",
+              "Alteration:aid_att_lifeleech_t05",
+              "Alteration:aid_att_movementspeed_t05",
+              "Alteration:aid_att_heavyattackstaminacost_t05",
+              "Alteration:aid_att_damage_t05"
+            ]
+          ],
+          "RequiredLevel": 5
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_critdamage_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_heavyattackstaminacost_t01",
+              "Alteration:aid_att_firerate_melee_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_critdamage_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_heavyattackstaminacost_t02",
+              "Alteration:aid_att_firerate_melee_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_critdamage_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_heavyattackstaminacost_t03",
+              "Alteration:aid_att_firerate_melee_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_critdamage_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_heavyattackstaminacost_t04",
+              "Alteration:aid_att_firerate_melee_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_critdamage_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_heavyattackstaminacost_t05",
+              "Alteration:aid_att_firerate_melee_t05"
+            ]
+          ],
+          "RequiredLevel": 10
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_critdamage_t01",
+              "Alteration:aid_att_damageresistance_t01",
+              "Alteration:aid_att_movementspeed_t01",
+              "Alteration:aid_att_heavyattackstaminacost_t01"
+            ],
+            [
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_critdamage_t02",
+              "Alteration:aid_att_damageresistance_t02",
+              "Alteration:aid_att_movementspeed_t02",
+              "Alteration:aid_att_heavyattackstaminacost_t02"
+            ],
+            [
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_critdamage_t03",
+              "Alteration:aid_att_damageresistance_t03",
+              "Alteration:aid_att_movementspeed_t03",
+              "Alteration:aid_att_heavyattackstaminacost_t03"
+            ],
+            [
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_critdamage_t04",
+              "Alteration:aid_att_damageresistance_t04",
+              "Alteration:aid_att_movementspeed_t04",
+              "Alteration:aid_att_heavyattackstaminacost_t04"
+            ],
+            [
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_critdamage_t05",
+              "Alteration:aid_att_damageresistance_t05",
+              "Alteration:aid_att_movementspeed_t05",
+              "Alteration:aid_att_heavyattackstaminacost_t05"
+            ]
+          ],
+          "RequiredLevel": 15
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_weaponimpact_t01",
+              "Alteration:aid_att_damageresistance_t01",
+              "Alteration:aid_conditional_stunned_dmgbonus_t01"
+            ],
+            [
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_weaponimpact_t02",
+              "Alteration:aid_att_damageresistance_t02",
+              "Alteration:aid_conditional_stunned_dmgbonus_t02"
+            ],
+            [
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_weaponimpact_t03",
+              "Alteration:aid_att_damageresistance_t03",
+              "Alteration:aid_conditional_stunned_dmgbonus_t03"
+            ],
+            [
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_weaponimpact_t04",
+              "Alteration:aid_att_damageresistance_t04",
+              "Alteration:aid_conditional_stunned_dmgbonus_t04"
+            ],
+            [
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_weaponimpact_t05",
+              "Alteration:aid_att_damageresistance_t05",
+              "Alteration:aid_conditional_stunned_dmgbonus_t05"
+            ]
+          ],
+          "RequiredLevel": 20
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_g_weapon_ondmg_applysnare_v2",
+              "Alteration:aid_g_oncrit_cold_snare",
+              "Alteration:aid_g_onmeleehitstreak_aoe_freeze"
+            ]
+          ],
+          "RequiredLevel": 25
+        }
+      ],
+      "Category": "Melee",
+      "CraftingCost": {
+        "Ingredient:ingredient_ore_alloy": 8,
+        "Ingredient:ingredient_mechanical_parts_t04": 36,
+        "Ingredient:ingredient_rare_powercell": 1,
+        "Ingredient:ingredient_crystal_shadowshard": 11
+      },
+      "Description": "Sword: Medium - A very cool looking scimitar.",
+      "DisplayTier": "Invalid",
+      "EvoType": "Crystal",
+      "MeleeWeaponStats": {
+        "BaseCritChance": 0.2,
+        "BaseCritDamage": 0.5,
+        "Damage": 128.0,
+        "Durability": 300,
+        "DurabilityPerUse": 0.25252524,
+        "EnvDamage": 19.0,
+        "ImpactDamage": 156.0,
+        "KnockbackMagnitude": 0.0,
+        "KnockbackZAngle": 45.0,
+        "RangeVsEnemies": 296.0,
+        "StunTime": 0.0,
+        "SwingTime": 0.46666667
+      },
+      "Rarity": "Legendary",
+      "Tier": 4,
+      "TriggerType": "Automatic",
+      "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Schematics/Melee/Edged/Sword_Ice/SID_Edged_IceSword_SR_Crystal_T04.uasset",
+      "ImagePaths": {
+        "SmallPreview": "ExportedImages\\icon_slicicle.png"
+      }
+    },
+    "Schematic:SID_Edged_IceSword_SR_Crystal_T05": {
+      "Type": "Schematic",
+      "Name": "SID_Edged_IceSword_SR_Crystal_T05",
+      "DisplayName": "Slicicle",
+      "SubType": "Sword",
+      "AlterationSlots": [
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_ele_water_intrin_t01"
+            ],
+            [
+              "Alteration:aid_ele_water_intrin_t02"
+            ],
+            [
+              "Alteration:aid_ele_water_intrin_t03"
+            ],
+            [
+              "Alteration:aid_ele_water_intrin_t04"
+            ],
+            [
+              "Alteration:aid_ele_water_intrin_t05"
+            ]
+          ],
+          "RequiredLevel": 5
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_damageresistance_t01",
+              "Alteration:aid_att_maxdurability_t01",
+              "Alteration:aid_att_lifeleech_t01",
+              "Alteration:aid_att_movementspeed_t01",
+              "Alteration:aid_att_heavyattackstaminacost_t01",
+              "Alteration:aid_att_damage_t01"
+            ],
+            [
+              "Alteration:aid_att_damageresistance_t02",
+              "Alteration:aid_att_maxdurability_t02",
+              "Alteration:aid_att_lifeleech_t02",
+              "Alteration:aid_att_movementspeed_t02",
+              "Alteration:aid_att_heavyattackstaminacost_t02",
+              "Alteration:aid_att_damage_t02"
+            ],
+            [
+              "Alteration:aid_att_damageresistance_t03",
+              "Alteration:aid_att_maxdurability_t03",
+              "Alteration:aid_att_lifeleech_t03",
+              "Alteration:aid_att_movementspeed_t03",
+              "Alteration:aid_att_heavyattackstaminacost_t03",
+              "Alteration:aid_att_damage_t03"
+            ],
+            [
+              "Alteration:aid_att_damageresistance_t04",
+              "Alteration:aid_att_maxdurability_t04",
+              "Alteration:aid_att_lifeleech_t04",
+              "Alteration:aid_att_movementspeed_t04",
+              "Alteration:aid_att_heavyattackstaminacost_t04",
+              "Alteration:aid_att_damage_t04"
+            ],
+            [
+              "Alteration:aid_att_damageresistance_t05",
+              "Alteration:aid_att_maxdurability_t05",
+              "Alteration:aid_att_lifeleech_t05",
+              "Alteration:aid_att_movementspeed_t05",
+              "Alteration:aid_att_heavyattackstaminacost_t05",
+              "Alteration:aid_att_damage_t05"
+            ]
+          ],
+          "RequiredLevel": 5
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_critdamage_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_heavyattackstaminacost_t01",
+              "Alteration:aid_att_firerate_melee_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_critdamage_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_heavyattackstaminacost_t02",
+              "Alteration:aid_att_firerate_melee_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_critdamage_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_heavyattackstaminacost_t03",
+              "Alteration:aid_att_firerate_melee_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_critdamage_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_heavyattackstaminacost_t04",
+              "Alteration:aid_att_firerate_melee_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_critdamage_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_heavyattackstaminacost_t05",
+              "Alteration:aid_att_firerate_melee_t05"
+            ]
+          ],
+          "RequiredLevel": 10
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_critdamage_t01",
+              "Alteration:aid_att_damageresistance_t01",
+              "Alteration:aid_att_movementspeed_t01",
+              "Alteration:aid_att_heavyattackstaminacost_t01"
+            ],
+            [
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_critdamage_t02",
+              "Alteration:aid_att_damageresistance_t02",
+              "Alteration:aid_att_movementspeed_t02",
+              "Alteration:aid_att_heavyattackstaminacost_t02"
+            ],
+            [
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_critdamage_t03",
+              "Alteration:aid_att_damageresistance_t03",
+              "Alteration:aid_att_movementspeed_t03",
+              "Alteration:aid_att_heavyattackstaminacost_t03"
+            ],
+            [
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_critdamage_t04",
+              "Alteration:aid_att_damageresistance_t04",
+              "Alteration:aid_att_movementspeed_t04",
+              "Alteration:aid_att_heavyattackstaminacost_t04"
+            ],
+            [
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_critdamage_t05",
+              "Alteration:aid_att_damageresistance_t05",
+              "Alteration:aid_att_movementspeed_t05",
+              "Alteration:aid_att_heavyattackstaminacost_t05"
+            ]
+          ],
+          "RequiredLevel": 15
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_weaponimpact_t01",
+              "Alteration:aid_att_damageresistance_t01",
+              "Alteration:aid_conditional_stunned_dmgbonus_t01"
+            ],
+            [
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_weaponimpact_t02",
+              "Alteration:aid_att_damageresistance_t02",
+              "Alteration:aid_conditional_stunned_dmgbonus_t02"
+            ],
+            [
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_weaponimpact_t03",
+              "Alteration:aid_att_damageresistance_t03",
+              "Alteration:aid_conditional_stunned_dmgbonus_t03"
+            ],
+            [
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_weaponimpact_t04",
+              "Alteration:aid_att_damageresistance_t04",
+              "Alteration:aid_conditional_stunned_dmgbonus_t04"
+            ],
+            [
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_weaponimpact_t05",
+              "Alteration:aid_att_damageresistance_t05",
+              "Alteration:aid_conditional_stunned_dmgbonus_t05"
+            ]
+          ],
+          "RequiredLevel": 20
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_g_weapon_ondmg_applysnare_v2",
+              "Alteration:aid_g_oncrit_cold_snare",
+              "Alteration:aid_g_onmeleehitstreak_aoe_freeze"
+            ]
+          ],
+          "RequiredLevel": 25
+        }
+      ],
+      "Category": "Melee",
+      "CraftingCost": {
+        "Ingredient:ingredient_ore_alloy": 8,
+        "Ingredient:ingredient_mechanical_parts_t05": 36,
+        "Ingredient:ingredient_rare_powercell": 1,
+        "Ingredient:ingredient_crystal_sunbeam": 11
+      },
+      "Description": "Sword: Medium - A very cool looking scimitar.",
+      "DisplayTier": "Invalid",
+      "EvoType": "Crystal",
+      "MeleeWeaponStats": {
+        "BaseCritChance": 0.2,
+        "BaseCritDamage": 0.5,
+        "Damage": 144.0,
+        "Durability": 300,
+        "DurabilityPerUse": 0.25252524,
+        "EnvDamage": 22.0,
+        "ImpactDamage": 175.0,
+        "KnockbackMagnitude": 0.0,
+        "KnockbackZAngle": 45.0,
+        "RangeVsEnemies": 296.0,
+        "StunTime": 0.0,
+        "SwingTime": 0.46666667
+      },
+      "Rarity": "Legendary",
+      "Tier": 5,
+      "TriggerType": "Automatic",
+      "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Schematics/Melee/Edged/Sword_Ice/SID_Edged_IceSword_SR_Crystal_T05.uasset",
+      "ImagePaths": {
+        "SmallPreview": "ExportedImages\\icon_slicicle.png"
+      }
+    },
+    "Schematic:SID_Edged_Airplane_Axe_SR_Crystal_T04": {
+      "Type": "Schematic",
+      "Name": "SID_Edged_Airplane_Axe_SR_Crystal_T04",
+      "DisplayName": "Supersonic Slasher",
+      "SubType": "Axe",
+      "AlterationSlots": [
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_critdamage_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_heavyattackstaminacost_t01",
+              "Alteration:aid_att_weaponimpact_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_critdamage_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_heavyattackstaminacost_t02",
+              "Alteration:aid_att_weaponimpact_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_critdamage_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_heavyattackstaminacost_t03",
+              "Alteration:aid_att_weaponimpact_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_critdamage_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_heavyattackstaminacost_t04",
+              "Alteration:aid_att_weaponimpact_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_critdamage_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_heavyattackstaminacost_t05",
+              "Alteration:aid_att_weaponimpact_t05"
+            ]
+          ],
+          "RequiredLevel": 5
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_weaponimpact_t01",
+              "Alteration:aid_att_heavyattackstaminacost_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_weaponimpact_t02",
+              "Alteration:aid_att_heavyattackstaminacost_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_weaponimpact_t03",
+              "Alteration:aid_att_heavyattackstaminacost_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_weaponimpact_t04",
+              "Alteration:aid_att_heavyattackstaminacost_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_weaponimpact_t05",
+              "Alteration:aid_att_heavyattackstaminacost_t05"
+            ]
+          ],
+          "RequiredLevel": 10
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_ele_energy_t01",
+              "Alteration:aid_ele_fire_t01",
+              "Alteration:aid_ele_nature_t01",
+              "Alteration:aid_att_damage_physical_t01",
+              "Alteration:aid_ele_water_t01"
+            ],
+            [
+              "Alteration:aid_ele_energy_t02",
+              "Alteration:aid_ele_fire_t02",
+              "Alteration:aid_ele_nature_t02",
+              "Alteration:aid_att_damage_physical_t02",
+              "Alteration:aid_ele_water_t02"
+            ],
+            [
+              "Alteration:aid_ele_energy_t03",
+              "Alteration:aid_ele_fire_t03",
+              "Alteration:aid_ele_nature_t03",
+              "Alteration:aid_att_damage_physical_t03",
+              "Alteration:aid_ele_water_t03"
+            ],
+            [
+              "Alteration:aid_ele_energy_t04",
+              "Alteration:aid_ele_fire_t04",
+              "Alteration:aid_ele_nature_t04",
+              "Alteration:aid_att_damage_physical_t04",
+              "Alteration:aid_ele_water_t04"
+            ],
+            [
+              "Alteration:aid_ele_energy_t05",
+              "Alteration:aid_ele_fire_t05",
+              "Alteration:aid_ele_nature_t05",
+              "Alteration:aid_att_damage_physical_t05",
+              "Alteration:aid_ele_water_t05"
+            ]
+          ],
+          "RequiredLevel": 15
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critdamage_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_weaponimpact_t01",
+              "Alteration:aid_att_lifeleech_t01"
+            ],
+            [
+              "Alteration:aid_att_critdamage_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_weaponimpact_t02",
+              "Alteration:aid_att_lifeleech_t02"
+            ],
+            [
+              "Alteration:aid_att_critdamage_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_weaponimpact_t03",
+              "Alteration:aid_att_lifeleech_t03"
+            ],
+            [
+              "Alteration:aid_att_critdamage_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_weaponimpact_t04",
+              "Alteration:aid_att_lifeleech_t04"
+            ],
+            [
+              "Alteration:aid_att_critdamage_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_weaponimpact_t05",
+              "Alteration:aid_att_lifeleech_t05"
+            ]
+          ],
+          "RequiredLevel": 15
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t01",
+              "Alteration:aid_conditional_afflicted_dmgbonus_t01",
+              "Alteration:aid_conditional_slowed_dmgbonus_t01",
+              "Alteration:aid_conditional_stunned_dmgbonus_t01"
+            ],
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t02",
+              "Alteration:aid_conditional_afflicted_dmgbonus_t02",
+              "Alteration:aid_conditional_slowed_dmgbonus_t02",
+              "Alteration:aid_conditional_stunned_dmgbonus_t02"
+            ],
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t03",
+              "Alteration:aid_conditional_afflicted_dmgbonus_t03",
+              "Alteration:aid_conditional_slowed_dmgbonus_t03",
+              "Alteration:aid_conditional_stunned_dmgbonus_t03"
+            ],
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t04",
+              "Alteration:aid_conditional_afflicted_dmgbonus_t04",
+              "Alteration:aid_conditional_slowed_dmgbonus_t04",
+              "Alteration:aid_conditional_stunned_dmgbonus_t04"
+            ],
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t05",
+              "Alteration:aid_conditional_afflicted_dmgbonus_t05",
+              "Alteration:aid_conditional_slowed_dmgbonus_t05",
+              "Alteration:aid_conditional_stunned_dmgbonus_t05"
+            ]
+          ],
+          "RequiredLevel": 20
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_g_onmeleekill_regenshields",
+              "Alteration:aid_g_affliction_v2",
+              "Alteration:aid_g_onmeleehit_stackbuff_critrate",
+              "Alteration:aid_g_melee_explodeoncrit_v3"
+            ]
+          ],
+          "RequiredLevel": 25
+        }
+      ],
+      "Category": "Melee",
+      "CraftingCost": {
+        "Ingredient:ingredient_ore_alloy": 8,
+        "Ingredient:ingredient_mechanical_parts_t04": 36,
+        "Ingredient:ingredient_rare_powercell": 1,
+        "Ingredient:ingredient_crystal_shadowshard": 11
+      },
+      "Description": "Axe: Light - Holiday Fun. A light axe with a good balance of damage and impact. Jet-Fueled Blast: Slashes twice and finishes with a thrust that damages and knocks back enemies.",
+      "DisplayTier": "Invalid",
+      "EvoType": "Crystal",
+      "MeleeWeaponStats": {
+        "BaseCritChance": 0.2,
+        "BaseCritDamage": 0.75,
+        "Damage": 172.0,
+        "Durability": 300,
+        "DurabilityPerUse": 0.42989418,
+        "EnvDamage": 29.0,
+        "ImpactDamage": 543.0,
+        "KnockbackMagnitude": 0.0,
+        "KnockbackZAngle": 45.0,
+        "RangeVsEnemies": 296.0,
+        "StunTime": 0.0,
+        "SwingTime": 0.7222222
+      },
+      "Rarity": "Legendary",
+      "Tier": 4,
+      "TriggerType": "Automatic",
+      "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Schematics/Melee/Edged/Airplane_Axe/SID_Edged_Airplane_Axe_SR_Crystal_T04.uasset",
+      "ImagePaths": {
+        "SmallPreview": "ExportedImages\\T-Icon-Weapons-FighterJetAxe.png",
+        "LargePreview": "ExportedImages\\T-Icon-Weapons-FighterJetAxe-L.png"
+      }
+    },
+    "Schematic:SID_Edged_Airplane_Axe_SR_Crystal_T05": {
+      "Type": "Schematic",
+      "Name": "SID_Edged_Airplane_Axe_SR_Crystal_T05",
+      "DisplayName": "Supersonic Slasher",
+      "SubType": "Axe",
+      "AlterationSlots": [
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_critdamage_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_heavyattackstaminacost_t01",
+              "Alteration:aid_att_weaponimpact_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_critdamage_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_heavyattackstaminacost_t02",
+              "Alteration:aid_att_weaponimpact_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_critdamage_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_heavyattackstaminacost_t03",
+              "Alteration:aid_att_weaponimpact_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_critdamage_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_heavyattackstaminacost_t04",
+              "Alteration:aid_att_weaponimpact_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_critdamage_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_heavyattackstaminacost_t05",
+              "Alteration:aid_att_weaponimpact_t05"
+            ]
+          ],
+          "RequiredLevel": 5
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_weaponimpact_t01",
+              "Alteration:aid_att_heavyattackstaminacost_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_weaponimpact_t02",
+              "Alteration:aid_att_heavyattackstaminacost_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_weaponimpact_t03",
+              "Alteration:aid_att_heavyattackstaminacost_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_weaponimpact_t04",
+              "Alteration:aid_att_heavyattackstaminacost_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_weaponimpact_t05",
+              "Alteration:aid_att_heavyattackstaminacost_t05"
+            ]
+          ],
+          "RequiredLevel": 10
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_ele_energy_t01",
+              "Alteration:aid_ele_fire_t01",
+              "Alteration:aid_ele_nature_t01",
+              "Alteration:aid_att_damage_physical_t01",
+              "Alteration:aid_ele_water_t01"
+            ],
+            [
+              "Alteration:aid_ele_energy_t02",
+              "Alteration:aid_ele_fire_t02",
+              "Alteration:aid_ele_nature_t02",
+              "Alteration:aid_att_damage_physical_t02",
+              "Alteration:aid_ele_water_t02"
+            ],
+            [
+              "Alteration:aid_ele_energy_t03",
+              "Alteration:aid_ele_fire_t03",
+              "Alteration:aid_ele_nature_t03",
+              "Alteration:aid_att_damage_physical_t03",
+              "Alteration:aid_ele_water_t03"
+            ],
+            [
+              "Alteration:aid_ele_energy_t04",
+              "Alteration:aid_ele_fire_t04",
+              "Alteration:aid_ele_nature_t04",
+              "Alteration:aid_att_damage_physical_t04",
+              "Alteration:aid_ele_water_t04"
+            ],
+            [
+              "Alteration:aid_ele_energy_t05",
+              "Alteration:aid_ele_fire_t05",
+              "Alteration:aid_ele_nature_t05",
+              "Alteration:aid_att_damage_physical_t05",
+              "Alteration:aid_ele_water_t05"
+            ]
+          ],
+          "RequiredLevel": 15
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critdamage_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_weaponimpact_t01",
+              "Alteration:aid_att_lifeleech_t01"
+            ],
+            [
+              "Alteration:aid_att_critdamage_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_weaponimpact_t02",
+              "Alteration:aid_att_lifeleech_t02"
+            ],
+            [
+              "Alteration:aid_att_critdamage_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_weaponimpact_t03",
+              "Alteration:aid_att_lifeleech_t03"
+            ],
+            [
+              "Alteration:aid_att_critdamage_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_weaponimpact_t04",
+              "Alteration:aid_att_lifeleech_t04"
+            ],
+            [
+              "Alteration:aid_att_critdamage_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_weaponimpact_t05",
+              "Alteration:aid_att_lifeleech_t05"
+            ]
+          ],
+          "RequiredLevel": 15
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t01",
+              "Alteration:aid_conditional_afflicted_dmgbonus_t01",
+              "Alteration:aid_conditional_slowed_dmgbonus_t01",
+              "Alteration:aid_conditional_stunned_dmgbonus_t01"
+            ],
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t02",
+              "Alteration:aid_conditional_afflicted_dmgbonus_t02",
+              "Alteration:aid_conditional_slowed_dmgbonus_t02",
+              "Alteration:aid_conditional_stunned_dmgbonus_t02"
+            ],
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t03",
+              "Alteration:aid_conditional_afflicted_dmgbonus_t03",
+              "Alteration:aid_conditional_slowed_dmgbonus_t03",
+              "Alteration:aid_conditional_stunned_dmgbonus_t03"
+            ],
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t04",
+              "Alteration:aid_conditional_afflicted_dmgbonus_t04",
+              "Alteration:aid_conditional_slowed_dmgbonus_t04",
+              "Alteration:aid_conditional_stunned_dmgbonus_t04"
+            ],
+            [
+              "Alteration:aid_conditional_boss_dmgbonus_t05",
+              "Alteration:aid_conditional_afflicted_dmgbonus_t05",
+              "Alteration:aid_conditional_slowed_dmgbonus_t05",
+              "Alteration:aid_conditional_stunned_dmgbonus_t05"
+            ]
+          ],
+          "RequiredLevel": 20
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_g_onmeleekill_regenshields",
+              "Alteration:aid_g_affliction_v2",
+              "Alteration:aid_g_onmeleehit_stackbuff_critrate",
+              "Alteration:aid_g_melee_explodeoncrit_v3"
+            ]
+          ],
+          "RequiredLevel": 25
+        }
+      ],
+      "Category": "Melee",
+      "CraftingCost": {
+        "Ingredient:ingredient_ore_alloy": 8,
+        "Ingredient:ingredient_mechanical_parts_t05": 36,
+        "Ingredient:ingredient_rare_powercell": 1,
+        "Ingredient:ingredient_crystal_sunbeam": 11
+      },
+      "Description": "Axe: Light - Holiday Fun. A light axe with a good balance of damage and impact. Jet-Fueled Blast: Slashes twice and finishes with a thrust that damages and knocks back enemies.",
+      "DisplayTier": "Invalid",
+      "EvoType": "Crystal",
+      "MeleeWeaponStats": {
+        "BaseCritChance": 0.2,
+        "BaseCritDamage": 0.75,
+        "Damage": 193.0,
+        "Durability": 300,
+        "DurabilityPerUse": 0.42989418,
+        "EnvDamage": 35.0,
+        "ImpactDamage": 610.0,
+        "KnockbackMagnitude": 0.0,
+        "KnockbackZAngle": 45.0,
+        "RangeVsEnemies": 296.0,
+        "StunTime": 0.0,
+        "SwingTime": 0.7222222
+      },
+      "Rarity": "Legendary",
+      "Tier": 5,
+      "TriggerType": "Automatic",
+      "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Schematics/Melee/Edged/Airplane_Axe/SID_Edged_Airplane_Axe_SR_Crystal_T05.uasset",
+      "ImagePaths": {
+        "SmallPreview": "ExportedImages\\T-Icon-Weapons-FighterJetAxe.png",
+        "LargePreview": "ExportedImages\\T-Icon-Weapons-FighterJetAxe-L.png"
+      }
+    },
+    "Schematic:SID_Floor_Campfire_R_T01": {
+      "Type": "Schematic",
+      "Name": "SID_Floor_Campfire_R_T01",
+      "DisplayName": "Cozy Campfire",
+      "SubType": "Floor",
+      "AlterationSlots": [
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_maxdurability_trap_t01",
+              "Alteration:aid_att_healing_t01"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t02",
+              "Alteration:aid_att_healing_t02"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t03",
+              "Alteration:aid_att_healing_t03"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t04",
+              "Alteration:aid_att_healing_t04"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t05",
+              "Alteration:aid_att_healing_t05"
+            ]
+          ],
+          "RequiredLevel": 5
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_maxdurability_trap_t01",
+              "Alteration:aid_att_reloadspeed_trap_t01",
+              "Alteration:aid_att_healing_t01"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t02",
+              "Alteration:aid_att_reloadspeed_trap_t02",
+              "Alteration:aid_att_healing_t02"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t03",
+              "Alteration:aid_att_reloadspeed_trap_t03",
+              "Alteration:aid_att_healing_t03"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t04",
+              "Alteration:aid_att_reloadspeed_trap_t04",
+              "Alteration:aid_att_healing_t04"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t05",
+              "Alteration:aid_att_reloadspeed_trap_t05",
+              "Alteration:aid_att_healing_t05"
+            ]
+          ],
+          "RequiredLevel": 10
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_maxdurability_trap_t01",
+              "Alteration:aid_att_healing_t01"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t02",
+              "Alteration:aid_att_healing_t02"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t03",
+              "Alteration:aid_att_healing_t03"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t04",
+              "Alteration:aid_att_healing_t04"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t05",
+              "Alteration:aid_att_healing_t05"
+            ]
+          ],
+          "RequiredLevel": 15
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_maxdurability_trap_t01",
+              "Alteration:aid_att_reloadspeed_trap_t01",
+              "Alteration:aid_att_healing_t01"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t02",
+              "Alteration:aid_att_reloadspeed_trap_t02",
+              "Alteration:aid_att_healing_t02"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t03",
+              "Alteration:aid_att_reloadspeed_trap_t03",
+              "Alteration:aid_att_healing_t03"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t04",
+              "Alteration:aid_att_reloadspeed_trap_t04",
+              "Alteration:aid_att_healing_t04"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t05",
+              "Alteration:aid_att_reloadspeed_trap_t05",
+              "Alteration:aid_att_healing_t05"
+            ]
+          ],
+          "RequiredLevel": 15
+        }
+      ],
+      "Category": "Trap",
+      "CraftingCost": {
+        "Ingredient:ingredient_planks": 9,
+        "Ingredient:ingredient_flowers": 2,
+        "Ingredient:ingredient_twine_t01": 2
+      },
+      "Description": "Heals allies in a 3x3 tile grid around the Campfire.",
+      "DisplayTier": "",
+      "EvoType": "",
+      "Rarity": "Rare",
+      "Tier": 1,
+      "TrapStats": {
+        "ArmTime": 0.0,
+        "BaseCritChance": 0.0,
+        "BaseCritDamage": 0.0,
+        "Damage": 38.0,
+        "Durability": 50,
+        "FireDelay": 1.0,
+        "ImpactDamage": 0.0,
+        "KnockbackMagnitude": 0.0,
+        "KnockbackZAngle": 0.0,
+        "ReloadTime": 1.0,
+        "StunTime": 0.0
+      },
+      "TriggerType": "",
+      "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Schematics/Traps/Floor/SID_Floor_Campfire_R_T01.uasset",
+      "ImagePaths": {
+        "SmallPreview": "ExportedImages\\T-Icon-BR-SM-Athena-Campfire.png",
+        "LargePreview": "ExportedImages\\T-Icon-BR-SM-Athena-Campfire-L.png"
+      }
+    },
+    "Schematic:SID_Floor_Campfire_R_T02": {
+      "Type": "Schematic",
+      "Name": "SID_Floor_Campfire_R_T02",
+      "DisplayName": "Cozy Campfire",
+      "SubType": "Floor",
+      "AlterationSlots": [
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_maxdurability_trap_t01",
+              "Alteration:aid_att_healing_t01"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t02",
+              "Alteration:aid_att_healing_t02"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t03",
+              "Alteration:aid_att_healing_t03"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t04",
+              "Alteration:aid_att_healing_t04"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t05",
+              "Alteration:aid_att_healing_t05"
+            ]
+          ],
+          "RequiredLevel": 5
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_maxdurability_trap_t01",
+              "Alteration:aid_att_reloadspeed_trap_t01",
+              "Alteration:aid_att_healing_t01"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t02",
+              "Alteration:aid_att_reloadspeed_trap_t02",
+              "Alteration:aid_att_healing_t02"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t03",
+              "Alteration:aid_att_reloadspeed_trap_t03",
+              "Alteration:aid_att_healing_t03"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t04",
+              "Alteration:aid_att_reloadspeed_trap_t04",
+              "Alteration:aid_att_healing_t04"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t05",
+              "Alteration:aid_att_reloadspeed_trap_t05",
+              "Alteration:aid_att_healing_t05"
+            ]
+          ],
+          "RequiredLevel": 10
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_maxdurability_trap_t01",
+              "Alteration:aid_att_healing_t01"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t02",
+              "Alteration:aid_att_healing_t02"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t03",
+              "Alteration:aid_att_healing_t03"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t04",
+              "Alteration:aid_att_healing_t04"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t05",
+              "Alteration:aid_att_healing_t05"
+            ]
+          ],
+          "RequiredLevel": 15
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_maxdurability_trap_t01",
+              "Alteration:aid_att_reloadspeed_trap_t01",
+              "Alteration:aid_att_healing_t01"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t02",
+              "Alteration:aid_att_reloadspeed_trap_t02",
+              "Alteration:aid_att_healing_t02"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t03",
+              "Alteration:aid_att_reloadspeed_trap_t03",
+              "Alteration:aid_att_healing_t03"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t04",
+              "Alteration:aid_att_reloadspeed_trap_t04",
+              "Alteration:aid_att_healing_t04"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t05",
+              "Alteration:aid_att_reloadspeed_trap_t05",
+              "Alteration:aid_att_healing_t05"
+            ]
+          ],
+          "RequiredLevel": 15
+        }
+      ],
+      "Category": "Trap",
+      "CraftingCost": {
+        "Ingredient:ingredient_planks": 9,
+        "Ingredient:ingredient_flowers": 2,
+        "Ingredient:ingredient_twine_t02": 2
+      },
+      "Description": "Heals allies in a 3x3 tile grid around the Campfire.",
+      "DisplayTier": "",
+      "EvoType": "",
+      "Rarity": "Rare",
+      "Tier": 2,
+      "TrapStats": {
+        "ArmTime": 0.0,
+        "BaseCritChance": 0.0,
+        "BaseCritDamage": 0.0,
+        "Damage": 45.0,
+        "Durability": 50,
+        "FireDelay": 1.0,
+        "ImpactDamage": 0.0,
+        "KnockbackMagnitude": 0.0,
+        "KnockbackZAngle": 0.0,
+        "ReloadTime": 1.0,
+        "StunTime": 0.0
+      },
+      "TriggerType": "",
+      "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Schematics/Traps/Floor/SID_Floor_Campfire_R_T02.uasset",
+      "ImagePaths": {
+        "SmallPreview": "ExportedImages\\T-Icon-BR-SM-Athena-Campfire.png",
+        "LargePreview": "ExportedImages\\T-Icon-BR-SM-Athena-Campfire-L.png"
+      }
+    },
+    "Schematic:SID_Wall_Cannons_R_T01": {
+      "Type": "Schematic",
+      "Name": "SID_Wall_Cannons_R_T01",
+      "DisplayName": "Broadside",
+      "SubType": "Wall",
+      "AlterationSlots": [
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_damage_physical_t01"
+            ],
+            [
+              "Alteration:aid_att_damage_physical_t02"
+            ],
+            [
+              "Alteration:aid_att_damage_physical_t03"
+            ],
+            [
+              "Alteration:aid_att_damage_physical_t04"
+            ],
+            [
+              "Alteration:aid_att_damage_physical_t05"
+            ]
+          ],
+          "RequiredLevel": 0
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_maxdurability_trap_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_maxdurability_trap_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_maxdurability_trap_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_maxdurability_trap_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_maxdurability_trap_t05"
+            ]
+          ],
+          "RequiredLevel": 5
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_maxdurability_trap_t01",
+              "Alteration:aid_att_critdamage_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_reloadspeed_trap_t01"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t02",
+              "Alteration:aid_att_critdamage_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_reloadspeed_trap_t02"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t03",
+              "Alteration:aid_att_critdamage_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_reloadspeed_trap_t03"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t04",
+              "Alteration:aid_att_critdamage_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_reloadspeed_trap_t04"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t05",
+              "Alteration:aid_att_critdamage_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_reloadspeed_trap_t05"
+            ]
+          ],
+          "RequiredLevel": 10
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_maxdurability_trap_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_maxdurability_trap_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_maxdurability_trap_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_maxdurability_trap_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_maxdurability_trap_t05"
+            ]
+          ],
+          "RequiredLevel": 15
+        }
+      ],
+      "Category": "Trap",
+      "CraftingCost": {
+        "Ingredient:ingredient_planks": 7,
+        "Ingredient:ingredient_mechanical_parts_t01": 2,
+        "Ingredient:ingredient_powder_t01": 2
+      },
+      "Description": "Fires a sequence of five bouncing cannonballs that pierce through enemies.",
+      "DisplayTier": "",
+      "EvoType": "",
+      "Rarity": "Rare",
+      "Tier": 1,
+      "TrapStats": {
+        "ArmTime": 1.0,
+        "BaseCritChance": 0.1,
+        "BaseCritDamage": 0.5,
+        "Damage": 48.0,
+        "Durability": 30,
+        "FireDelay": 0.75,
+        "ImpactDamage": 225.0,
+        "KnockbackMagnitude": 800.0,
+        "KnockbackZAngle": 15.0,
+        "ReloadTime": 12.0,
+        "StunTime": 0.0
+      },
+      "TriggerType": "",
+      "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Schematics/Traps/Wall/SID_Wall_Cannons_R_T01.uasset",
+      "ImagePaths": {
+        "SmallPreview": "ExportedImages\\T-Items2-Trap-Cannon-Wall.png",
+        "LargePreview": "ExportedImages\\T-Items2-Trap-Cannon-Wall-L.png"
+      }
+    },
+    "Schematic:SID_Wall_Cannons_R_T02": {
+      "Type": "Schematic",
+      "Name": "SID_Wall_Cannons_R_T02",
+      "DisplayName": "Broadside",
+      "SubType": "Wall",
+      "AlterationSlots": [
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_damage_physical_t01"
+            ],
+            [
+              "Alteration:aid_att_damage_physical_t02"
+            ],
+            [
+              "Alteration:aid_att_damage_physical_t03"
+            ],
+            [
+              "Alteration:aid_att_damage_physical_t04"
+            ],
+            [
+              "Alteration:aid_att_damage_physical_t05"
+            ]
+          ],
+          "RequiredLevel": 0
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_maxdurability_trap_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_maxdurability_trap_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_maxdurability_trap_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_maxdurability_trap_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_maxdurability_trap_t05"
+            ]
+          ],
+          "RequiredLevel": 5
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_maxdurability_trap_t01",
+              "Alteration:aid_att_critdamage_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_reloadspeed_trap_t01"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t02",
+              "Alteration:aid_att_critdamage_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_reloadspeed_trap_t02"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t03",
+              "Alteration:aid_att_critdamage_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_reloadspeed_trap_t03"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t04",
+              "Alteration:aid_att_critdamage_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_reloadspeed_trap_t04"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t05",
+              "Alteration:aid_att_critdamage_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_reloadspeed_trap_t05"
+            ]
+          ],
+          "RequiredLevel": 10
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_maxdurability_trap_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_maxdurability_trap_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_maxdurability_trap_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_maxdurability_trap_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_maxdurability_trap_t05"
+            ]
+          ],
+          "RequiredLevel": 15
+        }
+      ],
+      "Category": "Trap",
+      "CraftingCost": {
+        "Ingredient:ingredient_planks": 7,
+        "Ingredient:ingredient_mechanical_parts_t02": 2,
+        "Ingredient:ingredient_powder_t02": 2
+      },
+      "Description": "Fires a sequence of five bouncing cannonballs that pierce through enemies.",
+      "DisplayTier": "",
+      "EvoType": "",
+      "Rarity": "Rare",
+      "Tier": 2,
+      "TrapStats": {
+        "ArmTime": 1.0,
+        "BaseCritChance": 0.1,
+        "BaseCritDamage": 0.5,
+        "Damage": 57.0,
+        "Durability": 30,
+        "FireDelay": 0.75,
+        "ImpactDamage": 270.0,
+        "KnockbackMagnitude": 800.0,
+        "KnockbackZAngle": 15.0,
+        "ReloadTime": 12.0,
+        "StunTime": 0.0
+      },
+      "TriggerType": "",
+      "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Schematics/Traps/Wall/SID_Wall_Cannons_R_T02.uasset",
+      "ImagePaths": {
+        "SmallPreview": "ExportedImages\\T-Items2-Trap-Cannon-Wall.png",
+        "LargePreview": "ExportedImages\\T-Items2-Trap-Cannon-Wall-L.png"
+      }
+    },
+    "Schematic:SID_Ceiling_Electric_AOE_R_T01": {
+      "Type": "Schematic",
+      "Name": "SID_Ceiling_Electric_AOE_R_T01",
+      "DisplayName": "Ceiling Electric Field",
+      "SubType": "Ceiling",
+      "AlterationSlots": [
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_ele_energy_intrin_t01",
+              "Alteration:aid_ele_nature_intrin_t01"
+            ],
+            [
+              "Alteration:aid_ele_energy_intrin_t02",
+              "Alteration:aid_ele_nature_intrin_t02"
+            ],
+            [
+              "Alteration:aid_ele_energy_intrin_t03",
+              "Alteration:aid_ele_nature_intrin_t03"
+            ],
+            [
+              "Alteration:aid_ele_energy_intrin_t04",
+              "Alteration:aid_ele_nature_intrin_t04"
+            ],
+            [
+              "Alteration:aid_ele_energy_intrin_t05",
+              "Alteration:aid_ele_nature_intrin_t05"
+            ]
+          ],
+          "RequiredLevel": 0
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_maxdurability_trap_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_maxdurability_trap_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_maxdurability_trap_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_maxdurability_trap_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_maxdurability_trap_t05"
+            ]
+          ],
+          "RequiredLevel": 5
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_maxdurability_trap_t01",
+              "Alteration:aid_att_critdamage_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_reloadspeed_trap_t01"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t02",
+              "Alteration:aid_att_critdamage_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_reloadspeed_trap_t02"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t03",
+              "Alteration:aid_att_critdamage_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_reloadspeed_trap_t03"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t04",
+              "Alteration:aid_att_critdamage_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_reloadspeed_trap_t04"
+            ],
+            [
+              "Alteration:aid_att_maxdurability_trap_t05",
+              "Alteration:aid_att_critdamage_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_reloadspeed_trap_t05"
+            ]
+          ],
+          "RequiredLevel": 10
+        },
+        {
+          "Alterations": [
+            [
+              "Alteration:aid_att_critchance_t01",
+              "Alteration:aid_att_damage_t01",
+              "Alteration:aid_att_maxdurability_trap_t01"
+            ],
+            [
+              "Alteration:aid_att_critchance_t02",
+              "Alteration:aid_att_damage_t02",
+              "Alteration:aid_att_maxdurability_trap_t02"
+            ],
+            [
+              "Alteration:aid_att_critchance_t03",
+              "Alteration:aid_att_damage_t03",
+              "Alteration:aid_att_maxdurability_trap_t03"
+            ],
+            [
+              "Alteration:aid_att_critchance_t04",
+              "Alteration:aid_att_damage_t04",
+              "Alteration:aid_att_maxdurability_trap_t04"
+            ],
+            [
+              "Alteration:aid_att_critchance_t05",
+              "Alteration:aid_att_damage_t05",
+              "Alteration:aid_att_maxdurability_trap_t05"
+            ]
+          ],
+          "RequiredLevel": 15
+        }
+      ],
+      "Category": "Trap",
+      "CraftingCost": {
+        "Ingredient:ingredient_nuts_bolts": 8,
+        "Ingredient:ingredient_ore_alloy": 3,
+        "Ingredient:ingredient_batteries": 2,
+        "Ingredient:ingredient_powder_t01": 2
+      },
+      "Description": "Targets enemies in a 3x3 tile range around trap.",
+      "DisplayTier": "",
+      "EvoType": "",
+      "Rarity": "Rare",
+      "Tier": 1,
+      "TrapStats": {
+        "ArmTime": 1.0,
+        "BaseCritChance": 0.05,
+        "BaseCritDamage": 0.5,
+        "Damage": 71.0,
+        "Durability": 30,
+        "FireDelay": 0.75,
+        "ImpactDamage": 0.0,
+        "KnockbackMagnitude": 0.0,
+        "KnockbackZAngle": 90.0,
+        "ReloadTime": 6.0,
+        "StunTime": 0.0
+      },
+      "TriggerType": "",
+      "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Schematics/Traps/Ceiling/SID_Ceiling_Electric_AOE_R_T01.uasset",
+      "ImagePaths": {
+        "SmallPreview": "ExportedImages\\T-Icon-Weapons-electric-ceiling-Trap.png"
+      }
+    },
+    "Hero:HID_Commando_007HW_RS01_SR_T01": {
+      "Type": "Hero",
+      "Name": "HID_Commando_007HW_RS01_SR_T01",
+      "DisplayName": "Brainiac Jonesy",
+      "SubType": "Soldier",
+      "CommanderPerk": "Practiced In Combat +",
+      "CommanderPerkDescription": "Increases War Cry Duration by 9 seconds.",
+      "CommanderPerkName": "Kit_Perk_H_PracticedInCombat_T02",
+      "Description": "Victory takes braaaains.",
+      "HeroAbilities": [
+        "Ability:Kit_Commando_WarCry",
+        "Ability:Kit_Commando_FragGrenade",
+        "Ability:Kit_Commando_GoinCommando"
+      ],
+      "HeroPerk": "Practiced In Combat",
+      "HeroPerkDescription": "Increases War Cry Duration by 3 seconds.",
+      "HeroPerkName": "Kit_Perk_H_PracticedInCombat_T01",
+      "HeroPerkRequirement": {
+        "CommanderTag": [
+          "Granted.Ability.Commando.WarCry"
+        ],
+        "Description": "Requires commander with War Cry ability."
+      },
+      "Rarity": "Legendary",
+      "Tier": 1,
+      "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Heroes/Commando/ItemDefinition/HID_Commando_007HW_RS01_SR_T01.uasset",
+      "ImagePaths": {
+        "SmallPreview": "ExportedImages\\T-Soldier-HID-254-Athena-Commando-M-Zombie.png",
+        "LargePreview": "ExportedImages\\T-Soldier-HID-254-Athena-Commando-M-Zombie-L.png"
+      }
+    }
+  }
+}

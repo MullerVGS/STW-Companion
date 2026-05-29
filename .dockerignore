@@ -1,0 +1,14 @@
+# deps & build output (regenerated inside the image)
+**/node_modules
+**/dist
+web/public/data
+web/public/icons
+
+# vcs & misc
+.git
+.gitignore
+*.log
+.DS_Store
+*.tsbuildinfo
+
+# keep data/raw/ (assets.json + ExportedImages) so the build uses real data
