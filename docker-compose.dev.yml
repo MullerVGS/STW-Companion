@@ -1,0 +1,27 @@
+# Development stack: Vite dev server with hot reload, all in Docker.
+#   npm run docker:dev      → build + start (foreground, logs visible)
+#   open http://localhost:5173
+#
+# The repo is bind-mounted into the container so edits hot-reload (HMR). The
+# three anonymous volumes keep the image's installed node_modules from being
+# shadowed by the bind mount. Generated data/icons are written back to the host
+# (they're git-ignored). Raw assets in data/raw are read from the host mount.
+services:
+  web-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    image: stw-collection-book-dev:latest
+    container_name: stw-collection-book-dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/web/node_modules
+      - /app/data/node_modules
+    environment:
+      # flip to 1 if HMR misses file changes (e.g. on a /mnt/c bind mount)
+      - CHOKIDAR_USEPOLLING=${CHOKIDAR_USEPOLLING:-}
+    restart: unless-stopped

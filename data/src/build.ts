@@ -4,9 +4,9 @@
  *   data/raw/assets.json        (real extraction; preferred when present)
  *   data/raw/sample.assets.json (committed fixture; fallback)
  *        |
- *        v  importSchematics + buildFacets + icon copy
- *   web/public/data/schematics.json   web/public/data/facets.json   web/public/data/meta.json
- *   web/public/icons/*.png            (only icons that actually exist on disk)
+ *        v  import {heroes, abilities, survivors, defenders, schematics}
+ *           + buildAllFacets + buildBook + icon copy
+ *   web/public/data/*.json   web/public/icons/*.png   (only icons present on disk)
  *
  * Run with: `npm run data:build` (from repo root) or `npm run build` (in /data).
  */
@@ -15,9 +15,13 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { buildFacets } from "./facets.js";
+import { buildAllFacets } from "./facets.js";
+import { buildBook } from "./book.js";
+import { buildLookups } from "./lookups.js";
 import { importSchematics } from "./import-banjo.js";
-import type { DatasetMeta, ImageSet, Schematic } from "./schema.js";
+import { importAbilities, importHeroes } from "./import-heroes.js";
+import { importDefenders, importSurvivors } from "./import-personnel.js";
+import type { DatasetMeta, ImageSet, Perk, Rarity } from "./schema.js";
 import type { RawAssets } from "./banjo-types.js";
 import { slug } from "./util.js";
 
@@ -32,9 +36,7 @@ function resolveSource(): { file: string; kind: DatasetMeta["source"] } {
   if (fs.existsSync(real)) return { file: real, kind: "assets.json" };
   const sample = path.join(rawDir, "sample.assets.json");
   if (fs.existsSync(sample)) return { file: sample, kind: "sample.assets.json" };
-  throw new Error(
-    `No input found. Expected ${real} (real extraction) or ${sample} (fixture).`,
-  );
+  throw new Error(`No input found. Expected ${real} (real extraction) or ${sample} (fixture).`);
 }
 
 /** Copy referenced icons into web/public/icons; rewrite image fields to URLs.
@@ -44,8 +46,10 @@ function makeIconCopier() {
   const usedNames = new Set<string>();
   let copied = 0;
 
-  function copy(value: string): string | undefined {
-    const srcAbs = path.resolve(rawDir, value.replace(/\\/g, "/")); // export uses Windows separators
+  function one(value: string | undefined): string | undefined {
+    if (typeof value !== "string") return undefined;
+    if (value.startsWith("/")) return value;
+    const srcAbs = path.resolve(rawDir, value.replace(/\\/g, "/"));
     const cached = bySource.get(srcAbs);
     if (cached !== undefined) return cached;
     if (!fs.existsSync(srcAbs) || !fs.statSync(srcAbs).isFile()) return undefined;
@@ -67,21 +71,23 @@ function makeIconCopier() {
   function rewrite(images: ImageSet): ImageSet {
     const out: ImageSet = {};
     for (const key of ["icon", "small", "large"] as const) {
-      const v = images[key];
-      if (typeof v !== "string") continue;
-      const url = v.startsWith("/") ? v : copy(v);
+      const url = one(images[key]);
       if (url) out[key] = url;
     }
     return out;
   }
 
-  return { rewrite, get copied() { return copied; } };
+  return { rewrite, one, get copied() { return copied; } };
 }
 
-function tally(schematics: Schematic[], key: "category" | "rarity"): Record<string, number> {
-  const out: Record<string, number> = {};
-  for (const s of schematics) out[s[key]] = (out[s[key]] ?? 0) + 1;
-  return out;
+function rewritePerkImages(perk: Perk | undefined, rewrite: (images: ImageSet) => ImageSet): void {
+  if (!perk?.images) return;
+  const images = rewrite(perk.images);
+  if (Object.keys(images).length > 0) {
+    perk.images = images;
+  } else {
+    delete perk.images;
+  }
 }
 
 function writeJson(file: string, data: unknown, pretty = false): void {
@@ -89,45 +95,77 @@ function writeJson(file: string, data: unknown, pretty = false): void {
   fs.writeFileSync(file, JSON.stringify(data, null, pretty ? 2 : 0));
 }
 
+function tallyRarity(...lists: { rarity: Rarity }[][]): Record<string, number> {
+  const out: Record<string, number> = {};
+  for (const list of lists) for (const r of list) out[r.rarity] = (out[r.rarity] ?? 0) + 1;
+  return out;
+}
+
 function main(): void {
   const { file, kind } = resolveSource();
   console.log(`[data] source: ${path.relative(dataRoot, file)} (${kind})`);
 
   const raw = JSON.parse(fs.readFileSync(file, "utf8")) as RawAssets;
-  const schematics = importSchematics(raw);
+  const look = buildLookups(raw);
+
+  const { heroes, referencedAbilities } = importHeroes(raw);
+  const abilities = importAbilities(raw, referencedAbilities);
+  const survivors = importSurvivors(raw);
+  const defenders = importDefenders(raw);
+  const schematics = importSchematics(raw, look);
 
   // fresh output dirs so stale icons/data don't linger
   fs.rmSync(outDir, { recursive: true, force: true });
   fs.rmSync(iconsDir, { recursive: true, force: true });
 
   const icons = makeIconCopier();
-  for (const s of schematics) s.images = icons.rewrite(s.images);
+  for (const h of heroes) {
+    h.images = icons.rewrite(h.images);
+    rewritePerkImages(h.heroPerk, icons.rewrite);
+    rewritePerkImages(h.commanderPerk, icons.rewrite);
+    for (const p of h.classPerks) rewritePerkImages(p, icons.rewrite);
+  }
+  for (const a of abilities) a.images = icons.rewrite(a.images);
+  for (const s of survivors) s.images = icons.rewrite(s.images);
+  for (const d of defenders) d.images = icons.rewrite(d.images);
+  for (const s of schematics) {
+    s.images = icons.rewrite(s.images);
+    if (s.craftingCost) for (const c of s.craftingCost) c.icon = icons.one(c.icon);
+  }
 
-  const facets = buildFacets(schematics);
+  const facets = buildAllFacets({ heroes, survivors, defenders, schematics });
+  const book = buildBook({ heroes, survivors, defenders, schematics });
+
+  const abilityMap: Record<string, (typeof abilities)[number]> = {};
+  for (const a of abilities) abilityMap[a.id] = a;
 
   const meta: DatasetMeta = {
     generatedAt: new Date().toISOString(),
     source: kind,
     counts: {
+      heroes: heroes.length,
+      abilities: abilities.length,
+      survivors: survivors.length,
+      defenders: defenders.length,
       schematics: schematics.length,
-      byCategory: tally(schematics, "category"),
-      byRarity: tally(schematics, "rarity"),
+      byRarity: tallyRarity(heroes, survivors, defenders, schematics),
     },
-    facetGroups: facets.length,
     iconsCopied: icons.copied,
   };
 
+  writeJson(path.join(outDir, "heroes.json"), heroes);
+  writeJson(path.join(outDir, "abilities.json"), abilityMap);
+  writeJson(path.join(outDir, "survivors.json"), survivors);
+  writeJson(path.join(outDir, "defenders.json"), defenders);
   writeJson(path.join(outDir, "schematics.json"), schematics);
   writeJson(path.join(outDir, "facets.json"), facets);
+  writeJson(path.join(outDir, "book.json"), book);
   writeJson(path.join(outDir, "meta.json"), meta, true);
 
   console.log(
-    `[data] wrote ${schematics.length} schematics, ${facets.length} facet groups, ${icons.copied} icons -> ${path.relative(process.cwd(), outDir)}`,
+    `[data] heroes=${heroes.length} abilities=${abilities.length} survivors=${survivors.length} defenders=${defenders.length} schematics=${schematics.length} icons=${icons.copied}`,
   );
-  console.log(`[data] by category:`, meta.counts.byCategory);
-  if (icons.copied === 0 && kind === "sample.assets.json") {
-    console.log(`[data] note: fixture has no real icons — UI will show rarity-colored placeholders.`);
-  }
+  console.log(`[data] sections: ${book.map((s) => `${s.label}(${s.subcategories.length})`).join(", ")}`);
 }
 
 main();

@@ -15,9 +15,12 @@
     "build": "npm run data:build && npm run web:build",
     "typecheck": "npm run typecheck --workspace data && npm run typecheck --workspace web",
     "verify": "npm run typecheck && npm run build",
-    "docker:up": "docker compose up -d --build",
-    "docker:down": "docker compose down",
-    "docker:logs": "docker compose logs -f"
+    "docker:dev": "docker compose -p stw-dev -f docker-compose.dev.yml up --build",
+    "docker:dev:down": "docker compose -p stw-dev -f docker-compose.dev.yml down",
+    "docker:dev:logs": "docker compose -p stw-dev -f docker-compose.dev.yml logs -f",
+    "docker:up": "docker compose -p stw up -d --build",
+    "docker:down": "docker compose -p stw down",
+    "docker:logs": "docker compose -p stw logs -f"
   },
   "engines": {
     "node": ">=20"

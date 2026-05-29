@@ -4,10 +4,14 @@ Guidance for AI agents (and humans) working in this repo. Read this first — it
 encodes the architecture, commands, and hard-won gotchas so you don't have to
 re-derive them.
 
-> **What this is:** a personal tracker for the **Fortnite: Save the World
-> Collection Book**. Game item data is extracted once from the game files,
-> normalized into versioned JSON, linked by shared attributes, and served as a
-> static React site where you toggle what you've collected.
+> **What this is:** an interactive **wiki + tracker** for the **Fortnite: Save
+> the World Collection Book**, covering all sections — Heroes (by set),
+> Personnel (Defenders / Survivors / Lead Survivors / Mythic Leads), and
+> Ranged / Melee / Trap schematics. Game data is extracted once from the game
+> files, normalized into versioned JSON, linked by shared attributes (facets),
+> and served as a static React site with an inspect view (perks, abilities,
+> stats, crafting) and click-to-filter; the only dynamic state is the user's
+> collection in `localStorage`.
 
 ---
 
@@ -37,12 +41,19 @@ re-derive them.
 | --- | --- | --- |
 | Install | `npm install` | npm workspaces; one install at the root |
 | Build dataset | `npm run data:build` | `data/raw/assets.json` → `web/public/data/*` + copies referenced icons |
-| Dev server | `npm run web:dev` | Vite at **http://localhost:5173** |
+| **Dev in Docker (hot reload)** | `npm run docker:dev` | Vite HMR in a container at **http://localhost:5173** (bind-mounted source) |
+| Dev (host, no Docker) | `npm run web:dev` | Vite at **http://localhost:5173** (host Node) |
 | Build everything | `npm run build` | `data:build` then `web:build` (static output in `web/dist`) |
 | Typecheck | `npm run typecheck` | both workspaces, `tsc --noEmit` |
 | **Verify (do this before finishing)** | `npm run verify` | typecheck + build |
-| Docker up | `npm run docker:up` | builds image + serves at **http://localhost:8088** |
-| Docker logs / down | `npm run docker:logs` / `npm run docker:down` | |
+| **Prod in Docker** | `npm run docker:up` | builds nginx image + serves at **http://localhost:8088** |
+| Docker logs / down | `npm run docker:logs` / `npm run docker:down` (prod); `:dev` variants for dev | |
+
+Both stacks run in Docker and **coexist** (separate compose project names:
+`stw` for prod, `stw-dev` for dev) — prod on 8088, dev on 5173. Dev mounts the
+repo and rebuilds the dataset on container start, so source edits hot-reload and
+data refreshes on restart; prod bakes data into the image at build time (rebuild
+with `docker:up`). Dockerfile targets: `dev` (Vite) and `runner` (nginx, default).
 
 There is **no test suite yet** and **no linter** beyond `tsc`. "Green" = clean
 typecheck + successful build.
@@ -57,12 +68,19 @@ the only dynamic state is the user's collection, kept in `localStorage`.
 ```
  data/raw/assets.json            (real BanjoBotAssets export — git-ignored)
    └─ or sample.assets.json      (committed fixture fallback)
-        │  data/src/build.ts  →  importSchematics() + buildFacets() + icon copy
+ data/raw/ExportedImages/*.png   (full image export, git-ignored — see Data refresh)
+        │  data/src/build.ts  →  import{Heroes,Abilities,Survivors,Defenders,Schematics}
+        │                        + buildAllFacets() + buildBook() + icon copy
         ▼
- web/public/data/schematics.json   normalized records
- web/public/data/facets.json       clickable attribute indices (facet → item ids)
- web/public/data/meta.json         counts / provenance
- web/public/icons/*.png            only the icons actually referenced
+ web/public/data/heroes.json      normalized heroes (set, perks, abilityIds, location)
+ web/public/data/abilities.json   id → ability lookup (referenced by heroes)
+ web/public/data/survivors.json   personnel: survivors / leads / mythic leads
+ web/public/data/defenders.json   defenders
+ web/public/data/schematics.json  weapons/traps (stats, dps, crafting, perk pool)
+ web/public/data/facets.json      per-dataset clickable attribute indices
+ web/public/data/book.json        section → subcategory taxonomy (drives the left rail)
+ web/public/data/meta.json        counts / provenance
+ web/public/icons/*.png           only the icons actually referenced & present on disk
         │  vite build (copies public/ into dist/)
         ▼
  web/dist  ──►  nginx (Docker)  ──►  browser  ──►  localStorage (collection state)
@@ -78,23 +96,30 @@ updates.
 
 ```
 data/src/
-  schema.ts        ★ canonical domain model (Schematic, Rarity, ...). SOURCE OF TRUTH.
+  schema.ts        ★ canonical domain model (Hero, Survivor, Defender, Schematic, ...). SOURCE OF TRUTH.
   banjo-types.ts     types for the raw export — PascalCase, defensive/optional
-  import-banjo.ts  ★ raw assets.json → normalized Schematic[] (dedupe lives here)
-  facets.ts          builds clickable facet indices; FACET_DEFS = which fields are facets
-  build.ts         ★ orchestrator: read raw → import → facets → copy icons → write JSON
-  util.ts            slug / tagId / titleCase / compact (shared by importer + facets)
+  hero-sets.ts     ★ derive Collection Book set + location from template/image tokens (curated map)
+  book.ts            builds the section → subcategory taxonomy (book.json)
+  lookups.ts         id → ingredient / alteration indexes (crafting + perk-pool resolution)
+  import-heroes.ts ★ heroes (dedupe) + the abilities they reference
+  import-personnel.ts survivors (survivor/lead/mythic-lead) + defenders
+  import-banjo.ts  ★ schematics: dedupe + crafting/perk-pool/dps enrichment
+  facets.ts          per-dataset facet builders (HERO_DEFS / SURVIVOR_DEFS / ...)
+  build.ts         ★ orchestrator: read raw → import all → facets → book → copy icons → write JSON
+  util.ts            slug / tagId / titleCase / compact (shared across the pipeline)
 data/raw/
   assets.json        real export (git-ignored)
+  ExportedImages/    full image export (git-ignored; needed for hero/ability/etc. art)
   sample.assets.json committed fixture (real subset; keeps the pipeline runnable)
 
 web/src/
   types.ts         ★ public data contract — mirror of schema.ts
-  App.tsx            layout + filtering logic (facets: OR within a facet, AND across)
+  App.tsx            section/subcategory state, filtering (facets: OR within, AND across), inspect
   store/collection.ts  localStorage state via useSyncExternalStore (+ export/import)
-  lib/data.ts        fetches web/public/data/*.json
+  lib/data.ts        fetches web/public/data/*.json into one Dataset
+  lib/view.ts        record helpers: kind, subtitle, slug/tagId, weapon stat rows
   lib/rarity.ts      rarity → color palette
-  components/        FacetSidebar, Toolbar, SchematicGrid, SchematicCard
+  components/        BookSidebar, FilterBar, ItemGrid, ItemCard, InspectModal
 web/nginx.conf       static serving config (gzip + cache headers)
 
 Dockerfile           multi-stage: node builder (runs pipeline + web build) → nginx
@@ -105,12 +130,27 @@ docs/extraction.md   how to (re)extract game data
 
 ## 🧩 Data model & conventions
 
-- A **`Schematic`** = one (weapon/trap identity, rarity). Many in-game tier/material
-  variants collapse into this — see dedupe below.
+- **Four datasets, one dedupe philosophy.** `Hero`, `Survivor`, `Defender`,
+  `Schematic` each collapse the game's many tier/rarity variants into one record
+  per identity (keep highest `Tier`). Keys: heroes `slug(name)|rarity|class`,
+  schematics/defenders `slug(name)|rarity`, survivors `slug(name)|rarity|squad`.
+- **Heroes carry their Collection Book set + location.** The export has neither,
+  so `hero-sets.ts` derives the set from template/image tokens (e.g.
+  `HID_Commando_027_PirateSoldier` / `...-M-Pirate01` → `pirate`) and a curated
+  `SET_DEFS`/`ALIASES` map gives the friendly label + Llama-shop location text.
+  Unrecognized tokens still group on their own; tokenless heroes fall to `other`.
+  **Extend the map** to improve coverage — that's the intended way to add sets.
+- **Some data isn't in the export (handle honestly, surface a note):** hero
+  *class* perks (only Hero + Commander perks exist), in-game *leveled* stats
+  (we ship base/level-1 values + a computed base DPS for ranged), and survivor
+  portraits (generic art). The inspect view labels these explicitly.
+- **Cross-references are resolved at build time.** Schematic `CraftingCost` →
+  ingredient names+icons and `AlterationSlots` → perk-pool text via `lookups.ts`
+  (lowercased ids — the export mixes casing); hero `HeroAbilities` → `abilities.json`.
 - **Attributes are linkable via "facets".** Each facet value has a stable tag id
-  `"<facet>:<slug(value)>"` (e.g. `rarity:legendary`). `Schematic.tags` lists the
-  tag ids it belongs to; `facets.json` maps each tag back to the matching item ids.
-  This is what powers click-to-filter and cross-linking.
+  `"<facet>:<slug(value)>"` (e.g. `rarity:legendary`, `set:pirate`, `ability:...`).
+  A record's `tags` list its facet ids; the web filters client-side (OR within a
+  facet, AND across) and the inspect view exposes click-to-filter chips (comps).
 - **One icon per item.** "Not collected" is the same icon rendered with a CSS
   grayscale/dim filter (`.card.is-missing` in `web/src/index.css`) — don't add a
   second "greyed-out" asset.
@@ -171,8 +211,10 @@ Full guide: [`docs/extraction.md`](docs/extraction.md). Short version:
 
 1. Run **BanjoBotAssets** (`dotnet run` from the `BanjoBotAssets.Console` project)
    against the game files → produces `assets.json` + `ExportedImages/`.
-2. Copy `assets.json` → `data/raw/assets.json`, and the schematic-referenced
-   images into `data/raw/ExportedImages/`.
+2. Copy `assets.json` → `data/raw/assets.json`, and the **full** `ExportedImages/`
+   into `data/raw/ExportedImages/` (heroes, abilities, ingredients, defenders all
+   need art — not just schematics). From WSL:
+   `cp -ru "/mnt/c/.../BanjoBotAssets.Console/ExportedImages/." data/raw/ExportedImages/`
 3. `npm run data:build` (then `npm run docker:up` to rebuild the image).
 
 On the current dev machine the export lands under

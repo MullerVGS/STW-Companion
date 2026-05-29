@@ -1,4 +1,14 @@
-import type { Dataset, FacetGroup, DatasetMeta, Schematic } from "../types";
+import type {
+  Ability,
+  BookSection,
+  Dataset,
+  DatasetMeta,
+  Defender,
+  FacetsByDataset,
+  Hero,
+  Schematic,
+  Survivor,
+} from "../types";
 
 const base = import.meta.env.BASE_URL; // ends with "/"
 
@@ -13,10 +23,16 @@ async function getJson<T>(file: string): Promise<T> {
 }
 
 export async function loadDataset(): Promise<Dataset> {
-  const [schematics, facets, meta] = await Promise.all([
-    getJson<Schematic[]>("schematics.json"),
-    getJson<FacetGroup[]>("facets.json"),
-    getJson<DatasetMeta>("meta.json"),
-  ]);
-  return { schematics, facets, meta };
+  const [heroes, abilities, survivors, defenders, schematics, facets, book, meta] =
+    await Promise.all([
+      getJson<Hero[]>("heroes.json"),
+      getJson<Record<string, Ability>>("abilities.json"),
+      getJson<Survivor[]>("survivors.json"),
+      getJson<Defender[]>("defenders.json"),
+      getJson<Schematic[]>("schematics.json"),
+      getJson<FacetsByDataset>("facets.json"),
+      getJson<BookSection[]>("book.json"),
+      getJson<DatasetMeta>("meta.json"),
+    ]);
+  return { heroes, abilities, survivors, defenders, schematics, facets, book, meta };
 }
