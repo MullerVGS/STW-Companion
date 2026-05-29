@@ -24,3 +24,4 @@ web/public/icons/
 
 # ...but always keep the committed sample fixture so the pipeline runs out-of-the-box
 !data/raw/sample.assets.json
+docs/

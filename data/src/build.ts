@@ -90,6 +90,21 @@ function rewritePerkImages(perk: Perk | undefined, rewrite: (images: ImageSet) =
   }
 }
 
+function rewriteBadgeImages(
+  badges: { leader?: string; personality?: string; squad?: string } | undefined,
+  copy: (value: string | undefined) => string | undefined,
+): void {
+  if (!badges) return;
+  for (const key of ["leader", "personality", "squad"] as const) {
+    const url = copy(badges[key]);
+    if (url) {
+      badges[key] = url;
+    } else {
+      delete badges[key];
+    }
+  }
+}
+
 function writeJson(file: string, data: unknown, pretty = false): void {
   fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(file, JSON.stringify(data, null, pretty ? 2 : 0));
@@ -126,7 +141,10 @@ function main(): void {
     for (const p of h.classPerks) rewritePerkImages(p, icons.rewrite);
   }
   for (const a of abilities) a.images = icons.rewrite(a.images);
-  for (const s of survivors) s.images = icons.rewrite(s.images);
+  for (const s of survivors) {
+    s.images = icons.rewrite(s.images);
+    rewriteBadgeImages(s.badgeImages, icons.one);
+  }
   for (const d of defenders) d.images = icons.rewrite(d.images);
   for (const s of schematics) {
     s.images = icons.rewrite(s.images);

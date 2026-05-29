@@ -1,7 +1,7 @@
 import { memo, useState, type CSSProperties } from "react";
 
 import { increment, toggle, useCount } from "../store/collection";
-import type { AnyItem } from "../types";
+import type { AnyItem, Survivor } from "../types";
 import { rarityColor } from "../lib/rarity";
 import { subtitle, type ItemKind } from "../lib/view";
 
@@ -9,6 +9,31 @@ interface Props {
   kind: ItemKind;
   item: AnyItem;
   onInspect: (item: AnyItem) => void;
+}
+
+function SurvivorBadges({ item }: { item: Survivor }) {
+  const badges = item.badgeImages;
+  if (!badges?.leader && !badges?.personality && !badges?.squad) return null;
+
+  return (
+    <div className="card-badges" aria-hidden>
+      {badges?.leader && (
+        <span className="card-badge" title="Lead Survivor">
+          <img src={badges.leader} alt="" loading="lazy" />
+        </span>
+      )}
+      {badges?.personality && (
+        <span className="card-badge" title={item.personality}>
+          <img src={badges.personality} alt="" loading="lazy" />
+        </span>
+      )}
+      {badges?.squad && (
+        <span className="card-badge" title={item.squad}>
+          <img src={badges.squad} alt="" loading="lazy" />
+        </span>
+      )}
+    </div>
+  );
 }
 
 function ItemCardImpl({ kind, item, onInspect }: Props) {
@@ -30,12 +55,13 @@ function ItemCardImpl({ kind, item, onInspect }: Props) {
         title={`Inspect ${item.name}`}
       >
         {showIcon ? (
-          <img src={item.images.icon} alt="" loading="lazy" onError={() => setImgBroken(true)} />
+          <img className="card-art" src={item.images.icon} alt="" loading="lazy" onError={() => setImgBroken(true)} />
         ) : (
           <span className="card-placeholder" aria-hidden>
             {item.name.slice(0, 2).toUpperCase()}
           </span>
         )}
+        {kind === "survivor" && <SurvivorBadges item={item as Survivor} />}
         {count > 1 && <span className="card-qty">×{count}</span>}
       </button>
 

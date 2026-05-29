@@ -22,6 +22,92 @@ function pickImages(it: RawNamedItem): ImageSet {
   const p = it.ImagePaths ?? {};
   return compact({ icon: p.SmallPreview ?? p.Icon, large: p.LargePreview }) as ImageSet;
 }
+
+const MYTHIC_LEAD_GENDER: Record<string, "Male" | "Female"> = {
+  birdie: "Female",
+  countess: "Female",
+  dragon: "Male",
+  eagle: "Female",
+  fixer: "Male",
+  flak: "Female",
+  frequency: "Male",
+  jumpy: "Male",
+  maths: "Female",
+  noctor: "Male",
+  princess: "Female",
+  rad: "Female",
+  raider: "Female",
+  ramsie: "Male",
+  samurai: "Male",
+  sobs: "Male",
+  spacebound: "Male",
+  square: "Male",
+  tiger: "Female",
+  treky: "Female",
+  yoglattes: "Female",
+  zapps: "Female",
+};
+
+const LEAD_PORTRAIT_SUBTYPE: Record<string, string> = {
+  Marksman: "Soldier",
+  "Martial Artist": "MartialArtist",
+};
+
+function mythicLeadImages(item: RawNamedItem, squad: string | undefined, rarity: Rarity): ImageSet | undefined {
+  if (rarity !== "mythic" || !squad) return undefined;
+  const name = item.Name ?? "";
+  if (name.includes("_kingsly_")) {
+    return { icon: "ExportedImages\\T-SR-MartyKingsly.png", large: "ExportedImages\\T-SR-MartyKingsly-L.png" };
+  }
+  if (name.includes("_malcolm_")) {
+    return { icon: "ExportedImages\\T-SR-Malcolm.png", large: "ExportedImages\\T-SR-Malcolm-L.png" };
+  }
+
+  const token = name.match(/_SR_([^_]+)_T\d+$/)?.[1];
+  const gender = token ? MYTHIC_LEAD_GENDER[token] : undefined;
+  if (!gender) return undefined;
+
+  const portraitType = LEAD_PORTRAIT_SUBTYPE[squad] ?? squad.replace(/\s+/g, "");
+  return {
+    icon: `ExportedImages\\T-Icon-Leaders-Portrait-${portraitType}-${gender}.png`,
+    large: `ExportedImages\\T-Icon-Leaders-Portrait-${portraitType}-${gender}-L.png`,
+  };
+}
+
+const SQUAD_BADGE: Record<string, string> = {
+  Doctor: "ExportedImages\\T-Icon-ST-Surv-EMTSquad-128.png",
+  Engineer: "ExportedImages\\T-Icon-ST-Surv-EngineeringSquad-128.png",
+  Explorer: "ExportedImages\\T-Icon-ST-Surv-ScoutingPartySquad-128.png",
+  Gadgeteer: "ExportedImages\\T-Icon-ST-Surv-Gadgeteers-128.png",
+  Inventor: "ExportedImages\\T-Icon-ST-Surv-ThinkTankSquad-128.png",
+  Marksman: "ExportedImages\\T-Icon-ST-Surv-FireTeamAlphaSquad-128.png",
+  "Martial Artist": "ExportedImages\\T-Icon-ST-Surv-CloseAssaultSquad-128.png",
+  Trainer: "ExportedImages\\T-Icon-ST-Surv-TrainingTeamSquad-128.png",
+};
+
+const PERSONALITY_BADGE: Record<string, string> = {
+  Adventurous: "ExternalImages\\Icon_Adventurer.png",
+  Analytical: "ExternalImages\\Icon_Analytical.png",
+  Competitive: "ExternalImages\\Icon_Competitive.png",
+  Cooperative: "ExternalImages\\Icon_Cooperative.png",
+  Curious: "ExternalImages\\Icon_Curious.png",
+  Dependable: "ExternalImages\\Icon_Dependable.png",
+  Dreamer: "ExternalImages\\Icon_Dreamer.png",
+  Pragmatic: "ExternalImages\\Icon_Pragmatic.png",
+};
+
+function survivorBadgeImages(
+  kind: PersonnelKind,
+  squad: string | undefined,
+  personality: string | undefined,
+): Survivor["badgeImages"] | undefined {
+  const badges = compact({
+    leader: kind === "lead" || kind === "mythic-lead" ? "ExportedImages\\T-Icon-Leader-128.png" : undefined,
+    personality: personality ? PERSONALITY_BADGE[personality] : undefined,
+    squad: squad ? SQUAD_BADGE[squad] : undefined,
+  }) as Survivor["badgeImages"];
+  return badges && Object.keys(badges).length > 0 ? badges : undefined;
+}
 function cleanPersonality(raw?: string): string | undefined {
   const t = raw?.trim();
   if (!t) return undefined;
@@ -81,7 +167,8 @@ export function importSurvivors(raw: RawAssets): Survivor[] {
       rarity,
       description: item.Description?.trim() || undefined,
       tier: g.tier || undefined,
-      images: pickImages(item),
+      images: mythicLeadImages(item, squad, rarity) ?? pickImages(item),
+      badgeImages: survivorBadgeImages(kind, squad, personality),
       tags: [...new Set(tags)],
       sources: ["banjo"],
     });

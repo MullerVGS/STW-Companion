@@ -193,7 +193,7 @@ button {
   display: grid;
   place-items: center;
 }
-.card-tile img { width: 100%; height: 100%; object-fit: contain; }
+.card-art { width: 100%; height: 100%; object-fit: contain; }
 
 .card-placeholder {
   font-size: 28px;
@@ -203,8 +203,9 @@ button {
 }
 
 /* the "not collected" look: same icon, desaturated + dimmed */
-.card.is-missing .card-tile img,
-.card.is-missing .card-placeholder {
+.card.is-missing .card-art,
+.card.is-missing .card-placeholder,
+.card.is-missing .card-badges {
   filter: grayscale(1) brightness(0.5);
   opacity: 0.55;
 }
@@ -230,6 +231,34 @@ button {
   border-radius: 99px;
   font-size: 11px;
   font-weight: 600;
+}
+.card-badges {
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 3px;
+  background: rgba(4, 8, 18, 0.58);
+  border-radius: 4px;
+}
+.card-badge {
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+}
+.card-badge img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.75));
 }
 
 .card-meta { padding: 8px; display: flex; flex-direction: column; gap: 6px; }

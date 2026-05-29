@@ -104,6 +104,11 @@ export interface Survivor {
   description?: string;
   tier?: number;
   images: ImageSet;
+  badgeImages?: {
+    leader?: string;
+    personality?: string;
+    squad?: string;
+  };
   tags: string[];
   sources: string[];
 }
