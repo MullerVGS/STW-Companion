@@ -1,8 +1,11 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 import type { FacetGroup } from "../types";
 
 export type OwnedFilter = "all" | "owned" | "missing";
+
+/** Facets with more values than this collapse behind a "+N more" toggle. */
+const COLLAPSE_LIMIT = 14;
 
 interface Props {
   query: string;
@@ -28,6 +31,7 @@ const FILTERS: { key: OwnedFilter; label: string }[] = [
 
 export function FilterBar(props: Props) {
   const fileRef = useRef<HTMLInputElement>(null);
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const { facets, selectedTags, onToggleFacet } = props;
 
   return (
@@ -81,27 +85,55 @@ export function FilterBar(props: Props) {
 
       {facets.length > 0 && (
         <div className="facet-rows">
-          {facets.map((group) => (
-            <div key={group.facet} className="facet-row">
-              <span className="facet-row-label">{group.label}</span>
-              <div className="facet-chips">
-                {group.values.map((v) => (
-                  <button
-                    key={v.id}
-                    type="button"
-                    className={`facet-chip${selectedTags.has(v.id) ? " is-active" : ""}${
-                      group.facet === "rarity" ? ` rarity-${v.value}` : ""
-                    }`}
-                    onClick={() => onToggleFacet(v.id)}
-                    aria-pressed={selectedTags.has(v.id)}
-                  >
-                    {v.label}
-                    <span className="facet-chip-count">{v.count}</span>
-                  </button>
-                ))}
+          {facets.map((group) => {
+            const isOpen = expanded[group.facet];
+            const overflow = group.values.length - COLLAPSE_LIMIT;
+            // when collapsed, keep the head plus any selected values past it visible
+            const forcedSelected =
+              overflow > 0
+                ? group.values.slice(COLLAPSE_LIMIT).filter((v) => selectedTags.has(v.id)).length
+                : 0;
+            const hidden = overflow - forcedSelected; // values actually hidden while collapsed
+            const shown =
+              isOpen || overflow <= 0
+                ? group.values
+                : [
+                    ...group.values.slice(0, COLLAPSE_LIMIT),
+                    ...group.values.slice(COLLAPSE_LIMIT).filter((v) => selectedTags.has(v.id)),
+                  ];
+            return (
+              <div key={group.facet} className="facet-row">
+                <span className="facet-row-label">{group.label}</span>
+                <div className="facet-chips">
+                  {shown.map((v) => (
+                    <button
+                      key={v.id}
+                      type="button"
+                      className={`facet-chip${selectedTags.has(v.id) ? " is-active" : ""}${
+                        group.facet === "rarity" ? ` rarity-${v.value}` : ""
+                      }`}
+                      onClick={() => onToggleFacet(v.id)}
+                      aria-pressed={selectedTags.has(v.id)}
+                      title={v.label}
+                    >
+                      {v.icon && <img className="facet-chip-icon" src={v.icon} alt="" loading="lazy" />}
+                      <span className="facet-chip-label">{v.label}</span>
+                      <span className="facet-chip-count">{v.count}</span>
+                    </button>
+                  ))}
+                  {overflow > 0 && (isOpen || hidden > 0) && (
+                    <button
+                      type="button"
+                      className="facet-chip facet-more"
+                      onClick={() => setExpanded((p) => ({ ...p, [group.facet]: !isOpen }))}
+                    >
+                      {isOpen ? "− less" : `+${hidden} more`}
+                    </button>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
           {selectedTags.size > 0 && (
             <button type="button" className="link facet-clear" onClick={props.onClearFacets}>
               Clear filters ({selectedTags.size})

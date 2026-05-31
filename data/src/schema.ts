@@ -55,11 +55,33 @@ export interface CraftIngredient {
   icon?: string;
 }
 
-/** A weapon perk (alteration) slot: the human-readable options it can roll. */
+/**
+ * A weapon/trap alteration (perk) family — one identity across its tiers.
+ * Lives in the shared perks registry (`perks.json`) and is referenced by id, so
+ * a perk can be clicked anywhere and used to cross-link every schematic that
+ * rolls it (regardless of slot). Mirrors how abilities are a shared lookup.
+ */
+export interface PerkEntity {
+  /** stable family id: template id minus `AID_` prefix and `_Tnn` suffix, slugged (e.g. "att-critchance") */
+  id: string;
+  /** representative (max-tier) display text, e.g. "+30 Critical Rating" */
+  name: string;
+  /** searchable text (max-tier text; the full sentence for special perks) */
+  description?: string;
+  /** grouping key for iconography, e.g. "critchance", "fire", "durability" */
+  statType?: string;
+  /** which schematic categories can roll this perk */
+  scope: SchematicCategory[];
+  /** display text per tier, low→high (for the inspect view + search) */
+  tiers: string[];
+  images?: ImageSet;
+}
+
+/** One alteration slot on a schematic: the perk families it can roll (max tier). */
 export interface PerkSlot {
   requiredLevel?: number;
-  /** display strings of the top-tier alteration in each option group */
-  options: string[];
+  /** ids into the perks registry (`perks.json`) */
+  perkIds: string[];
 }
 
 export interface Schematic {
@@ -226,7 +248,49 @@ export interface DatasetMeta {
     survivors: number;
     defenders: number;
     schematics: number;
+    perks: number;
+    search: number;
     byRarity: Record<string, number>;
   };
   iconsCopied: number;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Global search index — one flat, prebuilt list of everything searchable
+// (items + every linkable entity), so the web ships a ready-to-filter haystack.
+// Descriptions are included so e.g. searching "containers" surfaces the perk
+// "Goin' Coconuts". Clicking a result either opens an item or applies a filter.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export type SearchKind =
+  | "hero"
+  | "survivor"
+  | "defender"
+  | "schematic"
+  | "weaponPerk"
+  | "trapPerk"
+  | "heroPerk"
+  | "commanderPerk"
+  | "classPerk"
+  | "ability"
+  | "set"
+  | "class"
+  | "personality"
+  | "squad";
+
+/** What clicking a search result does. */
+export type SearchAction =
+  | { k: "item"; dataset: DatasetName; id: string }
+  | { k: "filter"; section: string; sub: string; tag?: string };
+
+export interface SearchEntry {
+  id: string;
+  kind: SearchKind;
+  label: string;
+  /** secondary line, e.g. "Standard Perk", "Sniper Rifle · Medium Bullets" */
+  sub?: string;
+  icon?: string;
+  /** lowercased haystack: label + sub + descriptions + aliases */
+  t: string;
+  a: SearchAction;
 }

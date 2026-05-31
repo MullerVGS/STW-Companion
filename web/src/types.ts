@@ -29,9 +29,20 @@ export interface CraftIngredient {
   qty: number;
   icon?: string;
 }
+/** A weapon/trap alteration family — shared, linkable entity (perks.json). */
+export interface PerkEntity {
+  id: string;
+  name: string;
+  description?: string;
+  statType?: string;
+  scope: SchematicCategory[];
+  tiers: string[];
+  images?: ImageSet;
+}
 export interface PerkSlot {
   requiredLevel?: number;
-  options: string[];
+  /** ids into the perks registry */
+  perkIds: string[];
 }
 export interface Schematic {
   id: string;
@@ -130,8 +141,9 @@ export interface FacetValue {
   facet: string;
   value: string;
   label: string;
+  /** resolved icon URL for the value, when the entity behind it has one */
+  icon?: string;
   count: number;
-  itemIds: string[];
 }
 export interface FacetGroup {
   facet: string;
@@ -162,6 +174,38 @@ export interface BookSection {
   subcategories: BookSubcategory[];
 }
 
+// ── Global search index ─────────────────────────────────────────────────────
+export type SearchKind =
+  | "hero"
+  | "survivor"
+  | "defender"
+  | "schematic"
+  | "weaponPerk"
+  | "trapPerk"
+  | "heroPerk"
+  | "commanderPerk"
+  | "classPerk"
+  | "ability"
+  | "set"
+  | "class"
+  | "personality"
+  | "squad";
+
+export type SearchAction =
+  | { k: "item"; dataset: DatasetName; id: string }
+  | { k: "filter"; section: string; sub: string; tag?: string };
+
+export interface SearchEntry {
+  id: string;
+  kind: SearchKind;
+  label: string;
+  sub?: string;
+  icon?: string;
+  /** lowercased haystack */
+  t: string;
+  a: SearchAction;
+}
+
 export interface DatasetMeta {
   generatedAt: string;
   source: string;
@@ -171,6 +215,8 @@ export interface DatasetMeta {
     survivors: number;
     defenders: number;
     schematics: number;
+    perks: number;
+    search: number;
     byRarity: Record<string, number>;
   };
   iconsCopied: number;
@@ -182,6 +228,10 @@ export interface Dataset {
   survivors: Survivor[];
   defenders: Defender[];
   schematics: Schematic[];
+  /** shared perk registry referenced by Schematic.perkSlots[].perkIds */
+  perks: Record<string, PerkEntity>;
+  /** prebuilt global search index over items + every linkable entity */
+  search: SearchEntry[];
   facets: FacetsByDataset;
   book: BookSection[];
   meta: DatasetMeta;

@@ -63,6 +63,8 @@ export function buildBook(d: Datasets): BookSection[] {
 
   const countKind = (k: string) => d.survivors.filter((s) => s.kind === k).length;
   const personnelAll: BookSubcategory[] = [
+    // spans every survivor kind so squad/personality cross-links have a landing view
+    { key: "all-survivors", label: "All Survivors", dataset: "survivors", count: d.survivors.length },
     { key: "defenders", label: "Defenders", dataset: "defenders", count: d.defenders.length },
     { key: "survivors", label: "Survivors", dataset: "survivors", match: [{ field: "kind", value: "survivor" }], count: countKind("survivor") },
     { key: "mythic-survivors", label: "Mythic Survivors", dataset: "survivors", match: [{ field: "kind", value: "mythic-survivor" }], count: countKind("mythic-survivor") },

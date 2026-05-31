@@ -1,13 +1,15 @@
 import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 
 import { toggle, useCount } from "../store/collection";
-import type { Ability, Defender, Hero, Schematic, Survivor } from "../types";
+import type { Ability, Defender, Hero, PerkEntity, Schematic, Survivor } from "../types";
 import { rarityColor } from "../lib/rarity";
 import { tagId, weaponStatRows, type Selected } from "../lib/view";
 
 interface Props {
   selected: Selected;
   abilities: Record<string, Ability>;
+  /** shared perk registry, to resolve a schematic's perkSlots[].perkIds */
+  perks: Record<string, PerkEntity>;
   onClose: () => void;
   /** jump to a section/subcategory with a facet applied (cross-link / comps) */
   onCrossLink: (sectionKey: string, subKey: string, tagId: string) => void;
@@ -22,7 +24,7 @@ const KIND_LABEL: Record<string, string> = {
   schematic: "Schematic",
 };
 
-export function InspectModal({ selected, abilities, onClose, onCrossLink }: Props) {
+export function InspectModal({ selected, abilities, perks, onClose, onCrossLink }: Props) {
   const { kind, item } = selected;
   const count = useCount(item.id);
   const color = rarityColor(item.rarity);
@@ -72,8 +74,10 @@ export function InspectModal({ selected, abilities, onClose, onCrossLink }: Prop
 
           <div className="modal-main">
             {kind === "hero" && <HeroBody hero={item as Hero} abilities={abilities} onCrossLink={onCrossLink} />}
-            {kind === "schematic" && <SchematicBody s={item as Schematic} onCrossLink={onCrossLink} />}
-            {(kind === "survivor" || kind === "defender") && <PersonnelBody item={item as Survivor | Defender} kind={kind} />}
+            {kind === "schematic" && <SchematicBody s={item as Schematic} perks={perks} onCrossLink={onCrossLink} />}
+            {(kind === "survivor" || kind === "defender") && (
+              <PersonnelBody item={item as Survivor | Defender} kind={kind} onCrossLink={onCrossLink} />
+            )}
           </div>
         </div>
       </div>
@@ -84,9 +88,10 @@ export function InspectModal({ selected, abilities, onClose, onCrossLink }: Prop
 function Chips({ children }: { children: ReactNode }) {
   return <div className="modal-chips">{children}</div>;
 }
-function LinkChip({ label, onClick }: { label: string; onClick: () => void }) {
+function LinkChip({ label, icon, onClick }: { label: string; icon?: string; onClick: () => void }) {
   return (
     <button type="button" className="link-chip" onClick={onClick}>
+      {icon && <img className="link-chip-icon" src={icon} alt="" />}
       {label}
     </button>
   );
@@ -220,17 +225,28 @@ function HeroBody({
   );
 }
 
-function SchematicBody({ s, onCrossLink }: { s: Schematic; onCrossLink: Props["onCrossLink"] }) {
+function SchematicBody({
+  s,
+  perks,
+  onCrossLink,
+}: {
+  s: Schematic;
+  perks: Record<string, PerkEntity>;
+  onCrossLink: Props["onCrossLink"];
+}) {
   const [tab, setTab] = useState<"perks" | "crafting">("crafting");
   const rows = weaponStatRows(s);
+  // category ("trap") and section key ("traps") differ — map before cross-linking
+  const sectionKey = s.category === "trap" ? "traps" : s.category;
+  const perkFacet = `${s.category}Perk`; // rangedPerk / meleePerk / trapPerk
 
   return (
     <>
       <Chips>
-        {s.subType && <LinkChip label={s.subType} onClick={() => onCrossLink(s.category, "all", tagId("subType", s.subType!))} />}
-        {s.ammoType && <LinkChip label={s.ammoType} onClick={() => onCrossLink(s.category, "all", tagId("ammoType", s.ammoType!))} />}
-        {s.triggerType && <LinkChip label={s.triggerType} onClick={() => onCrossLink(s.category, "all", tagId("triggerType", s.triggerType!))} />}
-        {s.evoType && <LinkChip label={s.evoType} onClick={() => onCrossLink(s.category, "all", tagId("evoType", s.evoType!))} />}
+        {s.subType && <LinkChip label={s.subType} onClick={() => onCrossLink(sectionKey, "all", tagId("subType", s.subType!))} />}
+        {s.ammoType && <LinkChip label={s.ammoType} onClick={() => onCrossLink(sectionKey, "all", tagId("ammoType", s.ammoType!))} />}
+        {s.triggerType && <LinkChip label={s.triggerType} onClick={() => onCrossLink(sectionKey, "all", tagId("triggerType", s.triggerType!))} />}
+        {s.evoType && <LinkChip label={s.evoType} onClick={() => onCrossLink(sectionKey, "all", tagId("evoType", s.evoType!))} />}
       </Chips>
       {s.description && <p className="modal-flavor">{s.description}</p>}
 
@@ -273,15 +289,29 @@ function SchematicBody({ s, onCrossLink }: { s: Schematic; onCrossLink: Props["o
         <div className="perk-list">
           {s.perkSlots?.length ? (
             s.perkSlots.map((slot, i) => (
-              <div className="perk" key={i}>
+              <div className="perk perk-slot" key={i}>
                 <div className="perk-head">
                   Perk Slot {i + 1}
                   {slot.requiredLevel ? ` · Lv ${slot.requiredLevel}` : ""}
                 </div>
                 <ul className="perk-options">
-                  {slot.options.map((o, j) => (
-                    <li key={j}>{o}</li>
-                  ))}
+                  {slot.perkIds.map((id) => {
+                    const p = perks[id];
+                    if (!p) return null;
+                    return (
+                      <li key={id}>
+                        <button
+                          type="button"
+                          className="perk-option"
+                          title={`Find ${s.category === "trap" ? "traps" : "weapons"} that can roll this perk`}
+                          onClick={() => onCrossLink(sectionKey, "all", tagId(perkFacet, id))}
+                        >
+                          <PerkIcon perk={p} />
+                          <span>{p.name}</span>
+                        </button>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             ))
@@ -294,27 +324,38 @@ function SchematicBody({ s, onCrossLink }: { s: Schematic; onCrossLink: Props["o
   );
 }
 
-function PersonnelBody({ item, kind }: { item: Survivor | Defender; kind: "survivor" | "defender" }) {
-  const rows: { label: string; value: string }[] = [];
+function PersonnelBody({
+  item,
+  kind,
+  onCrossLink,
+}: {
+  item: Survivor | Defender;
+  kind: "survivor" | "defender";
+  onCrossLink: Props["onCrossLink"];
+}) {
+  // squad / personality / weapon become icon+text chips that cross-link, so the
+  // attributes are both visible (with their game badge) and linkable.
+  const chips: { label: string; icon?: string; section: string; sub: string; tag: string }[] = [];
   if (kind === "survivor") {
     const s = item as Survivor;
-    if (s.squad) rows.push({ label: "Squad", value: s.squad });
-    if (s.personality) rows.push({ label: "Personality", value: s.personality });
+    if (s.squad)
+      chips.push({ label: s.squad, icon: s.badgeImages?.squad, section: "personnel", sub: "all-survivors", tag: tagId("squad", s.squad) });
+    if (s.personality)
+      chips.push({ label: s.personality, icon: s.badgeImages?.personality, section: "personnel", sub: "all-survivors", tag: tagId("personality", s.personality) });
   } else {
     const d = item as Defender;
-    if (d.weaponType) rows.push({ label: "Weapon", value: d.weaponType });
+    if (d.weaponType)
+      chips.push({ label: d.weaponType, section: "personnel", sub: "defenders", tag: tagId("weaponType", d.weaponType) });
   }
+
   return (
     <>
-      {rows.length > 0 && (
-        <div className="stat-grid">
-          {rows.map((r) => (
-            <div className="stat" key={r.label}>
-              <span className="stat-label">{r.label}</span>
-              <span className="stat-value">{r.value}</span>
-            </div>
+      {chips.length > 0 && (
+        <Chips>
+          {chips.map((c) => (
+            <LinkChip key={c.tag} label={c.label} icon={c.icon} onClick={() => onCrossLink(c.section, c.sub, c.tag)} />
           ))}
-        </div>
+        </Chips>
       )}
       {item.description && <p className="modal-flavor">{item.description}</p>}
       <p className="note">📍 Found inside Llamas in the Llama Shop.</p>

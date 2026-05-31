@@ -70,17 +70,19 @@ the only dynamic state is the user's collection, kept in `localStorage`.
    └─ or sample.assets.json      (committed fixture fallback)
  data/raw/ExportedImages/*.png   (full image export, git-ignored — see Data refresh)
         │  data/src/build.ts  →  import{Heroes,Abilities,Survivors,Defenders,Schematics}
-        │                        + buildAllFacets() + buildBook() + icon copy
+        │                        + buildAllFacets() + buildSearchIndex() + buildBook() + WebP icon copy
         ▼
  web/public/data/heroes.json      normalized heroes (set, perks, abilityIds, location)
  web/public/data/abilities.json   id → ability lookup (referenced by heroes)
  web/public/data/survivors.json   personnel: survivors / leads / mythic leads
  web/public/data/defenders.json   defenders
- web/public/data/schematics.json  weapons/traps (stats, dps, crafting, perk pool)
- web/public/data/facets.json      per-dataset clickable attribute indices
+ web/public/data/schematics.json  weapons/traps (stats, dps, crafting, perkSlots → perk ids)
+ web/public/data/perks.json       id → weapon/trap perk (alteration) registry, referenced by schematics
+ web/public/data/search-index.json prebuilt global search: items + every linkable entity (incl. perk text)
+ web/public/data/facets.json      per-dataset clickable attribute indices (values carry an icon)
  web/public/data/book.json        section → subcategory taxonomy (drives the left rail)
  web/public/data/meta.json        counts / provenance
- web/public/icons/*.png           only the icons actually referenced & present on disk
+ web/public/icons/*.webp          only the icons referenced & present on disk, converted to WebP (sharp)
         │  vite build (copies public/ into dist/)
         ▼
  web/dist  ──►  nginx (Docker)  ──►  browser  ──►  localStorage (collection state)
@@ -103,9 +105,10 @@ data/src/
   lookups.ts         id → ingredient / alteration indexes (crafting + perk-pool resolution)
   import-heroes.ts ★ heroes (dedupe) + the abilities they reference
   import-personnel.ts survivors (survivor/lead/mythic-lead) + defenders
-  import-banjo.ts  ★ schematics: dedupe + crafting/perk-pool/dps enrichment
-  facets.ts          per-dataset facet builders (HERO_DEFS / SURVIVOR_DEFS / ...)
-  build.ts         ★ orchestrator: read raw → import all → facets → book → copy icons → write JSON
+  import-banjo.ts  ★ schematics: dedupe + crafting/dps + perk registry (alterations → linkable perk entities)
+  facets.ts          per-dataset facet builders (HERO_DEFS / SURVIVOR_DEFS / schematicDefs(perks)); values carry an icon
+  search.ts        ★ buildSearchIndex(): flat search-index.json over items + entities (folds in perk descriptions)
+  build.ts         ★ orchestrator: read raw → import all → facets → search → book → WebP icons (sharp) → write JSON
   util.ts            slug / tagId / titleCase / compact (shared across the pipeline)
 data/raw/
   assets.json        real export (git-ignored)
@@ -116,10 +119,11 @@ web/src/
   types.ts         ★ public data contract — mirror of schema.ts
   App.tsx            section/subcategory state, filtering (facets: OR within, AND across), inspect
   store/collection.ts  localStorage state via useSyncExternalStore (+ export/import)
-  lib/data.ts        fetches web/public/data/*.json into one Dataset
+  lib/data.ts        fetches web/public/data/*.json into one Dataset (incl. perks + search)
   lib/view.ts        record helpers: kind, subtitle, slug/tagId, weapon stat rows
+  lib/search.ts      client-side tokenized+ranked filter over the prebuilt search index
   lib/rarity.ts      rarity → color palette
-  components/        BookSidebar, FilterBar, ItemGrid, ItemCard, InspectModal
+  components/        BookSidebar, FilterBar, ItemGrid, ItemCard, InspectModal, SearchBar (global lazy dropdown)
 web/nginx.conf       static serving config (gzip + cache headers)
 
 Dockerfile           multi-stage: node builder (runs pipeline + web build) → nginx
@@ -145,12 +149,34 @@ docs/extraction.md   how to (re)extract game data
   (we ship base/level-1 values + a computed base DPS for ranged), and survivor
   portraits (generic art). The inspect view labels these explicitly.
 - **Cross-references are resolved at build time.** Schematic `CraftingCost` →
-  ingredient names+icons and `AlterationSlots` → perk-pool text via `lookups.ts`
-  (lowercased ids — the export mixes casing); hero `HeroAbilities` → `abilities.json`.
+  ingredient names+icons via `lookups.ts` (lowercased ids — the export mixes
+  casing); hero `HeroAbilities` → `abilities.json`; schematic `AlterationSlots`
+  → the shared **perk registry** (see below).
+- **Weapon/trap perks are first-class linkable entities.** An alteration template
+  id (`AID_Att_CritChance_T05`) collapses to a perk *family* (`att-critchance`,
+  i.e. drop the `AID_` prefix and `_Tnn` suffix) — that family is the stable key
+  two schematics "share a perk" on. `import-banjo.ts` builds `perks.json` (family
+  → max-tier text, full tier ladder, scope, icon when one exists), `Schematic.perkSlots`
+  holds `perkIds` into it, and each schematic tags every rollable family as
+  `weaponPerk:<fam>` (ranged/melee) or `trapPerk:<fam>` (trap) — **kept in two
+  separate facets** because they're different pools. Most stat perks have no icon
+  in the export (only elemental ones do); curate `data/assets/perk-icons/` to add art.
 - **Attributes are linkable via "facets".** Each facet value has a stable tag id
-  `"<facet>:<slug(value)>"` (e.g. `rarity:legendary`, `set:pirate`, `ability:...`).
-  A record's `tags` list its facet ids; the web filters client-side (OR within a
-  facet, AND across) and the inspect view exposes click-to-filter chips (comps).
+  `"<facet>:<slug(value)>"` (e.g. `rarity:legendary`, `set:pirate`, `ability:...`)
+  and an optional `icon`. A record's `tags` list its facet ids; the web filters
+  client-side (OR within a facet, AND across) and the inspect view exposes
+  click-to-filter chips (comps).
+- **Global search is prebuilt.** `search.ts` emits `search-index.json`: one flat
+  list of every item **and** every linkable entity (perks, abilities, sets,
+  classes, personalities, squads), each with an icon, a lowercased haystack that
+  folds in descriptions (so "containers" finds the perk "Goin' Coconuts"), and an
+  action (open an item, or apply a facet filter). The `SearchBar` lazy-renders the
+  dropdown. Entity entries are derived from facets so ids/labels/icons stay in sync.
+- **Icons ship as WebP.** `build.ts`'s icon copier assigns deterministic
+  `/icons/<name>.webp` URLs synchronously, then converts the referenced PNGs with
+  `sharp` in a batched async `flush()` (~75% smaller than the raw export). `sharp`
+  is a runtime **dependency** of the `data` workspace so the Docker `npm ci` build
+  installs it.
 - **One icon per item.** "Not collected" is the same icon rendered with a CSS
   grayscale/dim filter (`.card.is-missing` in `web/src/index.css`) — don't add a
   second "greyed-out" asset.

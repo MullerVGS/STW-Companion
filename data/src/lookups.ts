@@ -15,16 +15,25 @@ export interface IngredientInfo {
   icon?: string;
 }
 
+export interface AlterationInfo {
+  /** perk effect text (the export stores it as DisplayName) */
+  text: string;
+  /** raw image path when present (only ~45 alterations carry one — elements/specials) */
+  icon?: string;
+}
+
 export interface Lookups {
   ingredient(id: string): IngredientInfo | undefined;
   /** alteration display text (the export stores the perk text as DisplayName) */
   alteration(id: string): string | undefined;
+  /** alteration text + icon, keyed by (lowercased) template id */
+  alterationInfo(id: string): AlterationInfo | undefined;
 }
 
 export function buildLookups(raw: RawAssets): Lookups {
   const items = raw.NamedItems ?? {};
   const ingredients = new Map<string, IngredientInfo>();
-  const alterations = new Map<string, string>();
+  const alterations = new Map<string, AlterationInfo>();
 
   for (const [id, it] of Object.entries(items) as [string, RawNamedItem][]) {
     const key = id.toLowerCase();
@@ -35,12 +44,16 @@ export function buildLookups(raw: RawAssets): Lookups {
       });
     } else if (it.Type === "Alteration") {
       const text = it.DisplayName?.trim();
-      if (text) alterations.set(key, text);
+      if (text) {
+        const p = it.ImagePaths ?? {};
+        alterations.set(key, { text, icon: p.SmallPreview ?? p.Icon ?? p.LargePreview });
+      }
     }
   }
 
   return {
     ingredient: (id) => ingredients.get(id.toLowerCase()),
-    alteration: (id) => alterations.get(id.toLowerCase()),
+    alteration: (id) => alterations.get(id.toLowerCase())?.text,
+    alterationInfo: (id) => alterations.get(id.toLowerCase()),
   };
 }

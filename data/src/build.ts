@@ -15,7 +15,10 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import sharp from "sharp";
+
 import { buildAllFacets } from "./facets.js";
+import { buildSearchIndex } from "./search.js";
 import { buildBook } from "./book.js";
 import { buildLookups } from "./lookups.js";
 import { importSchematics } from "./import-banjo.js";
@@ -39,12 +42,14 @@ function resolveSource(): { file: string; kind: DatasetMeta["source"] } {
   throw new Error(`No input found. Expected ${real} (real extraction) or ${sample} (fixture).`);
 }
 
-/** Copy referenced icons into web/public/icons; rewrite image fields to URLs.
+/** Resolve referenced icons → `/icons/<name>.webp` URLs (assigned synchronously,
+ *  so facets/search can embed them), converting the real files to WebP in a
+ *  batched async flush() — this shrinks the shipped art ~75% vs. the raw PNGs.
  *  Missing files are dropped so the UI falls back to a rarity-colored tile. */
 function makeIconCopier() {
   const bySource = new Map<string, string>();
   const usedNames = new Set<string>();
-  let copied = 0;
+  const jobs: { src: string; dest: string }[] = [];
 
   function one(value: string | undefined): string | undefined {
     if (typeof value !== "string") return undefined;
@@ -54,17 +59,14 @@ function makeIconCopier() {
     if (cached !== undefined) return cached;
     if (!fs.existsSync(srcAbs) || !fs.statSync(srcAbs).isFile()) return undefined;
 
-    const ext = path.extname(srcAbs) || ".png";
-    const stem = slug(path.basename(srcAbs, ext));
-    let name = `${stem}${ext}`;
-    for (let i = 1; usedNames.has(name); i++) name = `${stem}-${i}${ext}`;
+    const stem = slug(path.basename(srcAbs, path.extname(srcAbs)));
+    let name = `${stem}.webp`;
+    for (let i = 1; usedNames.has(name); i++) name = `${stem}-${i}.webp`;
     usedNames.add(name);
 
-    fs.mkdirSync(iconsDir, { recursive: true });
-    fs.copyFileSync(srcAbs, path.join(iconsDir, name));
     const url = `/icons/${name}`;
+    jobs.push({ src: srcAbs, dest: path.join(iconsDir, name) });
     bySource.set(srcAbs, url);
-    copied++;
     return url;
   }
 
@@ -77,7 +79,36 @@ function makeIconCopier() {
     return out;
   }
 
-  return { rewrite, one, get copied() { return copied; } };
+  /** Convert every queued icon to WebP (parallel, bounded). Returns files written. */
+  async function flush(): Promise<number> {
+    fs.mkdirSync(iconsDir, { recursive: true });
+    let copied = 0;
+    let fallbacks = 0;
+    let cursor = 0;
+    const worker = async (): Promise<void> => {
+      for (;;) {
+        const job = jobs[cursor++];
+        if (!job) return;
+        try {
+          await sharp(job.src).webp({ quality: 80 }).toFile(job.dest);
+        } catch {
+          // URL/extension are already baked as .webp; raw bytes are a last-resort
+          // fallback (browsers content-sniff). Surface it so it isn't silent.
+          fs.copyFileSync(job.src, job.dest);
+          fallbacks++;
+        }
+        copied++;
+      }
+    };
+    const lanes = Math.min(24, jobs.length) || 1;
+    await Promise.all(Array.from({ length: lanes }, worker));
+    if (fallbacks > 0) {
+      console.warn(`[data] WARN: ${fallbacks} icon(s) failed WebP conversion — copied raw bytes into a .webp name`);
+    }
+    return copied;
+  }
+
+  return { rewrite, one, flush };
 }
 
 function rewritePerkImages(perk: Perk | undefined, rewrite: (images: ImageSet) => ImageSet): void {
@@ -116,7 +147,7 @@ function tallyRarity(...lists: { rarity: Rarity }[][]): Record<string, number> {
   return out;
 }
 
-function main(): void {
+async function main(): Promise<void> {
   const { file, kind } = resolveSource();
   console.log(`[data] source: ${path.relative(dataRoot, file)} (${kind})`);
 
@@ -127,7 +158,7 @@ function main(): void {
   const abilities = importAbilities(raw, referencedAbilities);
   const survivors = importSurvivors(raw);
   const defenders = importDefenders(raw);
-  const schematics = importSchematics(raw, look);
+  const { schematics, perks } = importSchematics(raw, look);
 
   // fresh output dirs so stale icons/data don't linger
   fs.rmSync(outDir, { recursive: true, force: true });
@@ -150,9 +181,21 @@ function main(): void {
     s.images = icons.rewrite(s.images);
     if (s.craftingCost) for (const c of s.craftingCost) c.icon = icons.one(c.icon);
   }
+  // perk registry icons must be rewritten BEFORE facets so perk facet chips
+  // (which carry the icon) reference the copied URL, not the raw export path.
+  for (const p of Object.values(perks)) {
+    if (!p.images) continue;
+    const imgs = icons.rewrite(p.images);
+    if (Object.keys(imgs).length > 0) p.images = imgs;
+    else delete p.images;
+  }
 
-  const facets = buildAllFacets({ heroes, survivors, defenders, schematics });
+  const facets = buildAllFacets({ heroes, survivors, defenders, schematics, perks });
+  const search = buildSearchIndex({ heroes, survivors, defenders, schematics, perks, abilities, facets });
   const book = buildBook({ heroes, survivors, defenders, schematics });
+
+  // URLs were assigned above; now actually write the WebP files.
+  const iconsCopied = await icons.flush();
 
   const abilityMap: Record<string, (typeof abilities)[number]> = {};
   for (const a of abilities) abilityMap[a.id] = a;
@@ -166,9 +209,11 @@ function main(): void {
       survivors: survivors.length,
       defenders: defenders.length,
       schematics: schematics.length,
+      perks: Object.keys(perks).length,
+      search: search.length,
       byRarity: tallyRarity(heroes, survivors, defenders, schematics),
     },
-    iconsCopied: icons.copied,
+    iconsCopied,
   };
 
   writeJson(path.join(outDir, "heroes.json"), heroes);
@@ -176,14 +221,19 @@ function main(): void {
   writeJson(path.join(outDir, "survivors.json"), survivors);
   writeJson(path.join(outDir, "defenders.json"), defenders);
   writeJson(path.join(outDir, "schematics.json"), schematics);
+  writeJson(path.join(outDir, "perks.json"), perks);
+  writeJson(path.join(outDir, "search-index.json"), search);
   writeJson(path.join(outDir, "facets.json"), facets);
   writeJson(path.join(outDir, "book.json"), book);
   writeJson(path.join(outDir, "meta.json"), meta, true);
 
   console.log(
-    `[data] heroes=${heroes.length} abilities=${abilities.length} survivors=${survivors.length} defenders=${defenders.length} schematics=${schematics.length} icons=${icons.copied}`,
+    `[data] heroes=${heroes.length} abilities=${abilities.length} survivors=${survivors.length} defenders=${defenders.length} schematics=${schematics.length} perks=${Object.keys(perks).length} search=${search.length} icons=${iconsCopied}`,
   );
   console.log(`[data] sections: ${book.map((s) => `${s.label}(${s.subcategories.length})`).join(", ")}`);
 }
 
-main();
+main().catch((e: unknown) => {
+  console.error(e);
+  process.exit(1);
+});

@@ -13,6 +13,7 @@ import type { RawAssets, RawNamedItem, RawAlterationSlot } from "./banjo-types.j
 import type {
   CraftIngredient,
   ImageSet,
+  PerkEntity,
   PerkSlot,
   Rarity,
   Schematic,
@@ -102,20 +103,106 @@ function buildCrafting(item: RawNamedItem, look: Lookups): CraftIngredient[] | u
   return out.length ? out : undefined;
 }
 
-/** Resolve the alteration (perk) pool: top tier of each slot, as display text. */
-function buildPerkSlots(slots: RawAlterationSlot[] | undefined, look: Lookups): PerkSlot[] | undefined {
+// ─────────────────────────────────────────────────────────────────────────────
+// Perks (alterations) → shared, linkable registry
+//
+// An alteration template id like "Alteration:AID_Att_CritChance_T05" collapses
+// to the perk *family* "att-critchance" (drop the AID_ prefix and _Tnn suffix).
+// Two schematics "share a perk" when they can roll the same family — that is the
+// stable key the UI cross-links on, regardless of which slot it sits in.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Derive a stable perk family id from an alteration template id. */
+function perkFamily(rawId: string): string {
+  const s = rawId
+    .replace(/^alteration:/i, "")
+    .replace(/^aid[_:]/i, "")
+    .replace(/_t\d+$/i, "");
+  return slug(s);
+}
+
+/** Icon-grouping key: drop the leading group token (att/ele/g/conditional/set). */
+function perkStatType(family: string): string {
+  const m = family.match(/^(?:att|ele|g|conditional|set)-(.+)$/);
+  return m?.[1] ?? family;
+}
+
+interface PerkAccEntry {
+  id: string;
+  statType: string;
+  scope: Set<SchematicCategory>;
+  tiers: Map<number, string>;
+  icon?: string;
+}
+type PerkAcc = Map<string, PerkAccEntry>;
+
+/**
+ * Resolve a schematic's alteration slots into PerkSlot[] (top-tier rollable
+ * families per slot) while feeding the shared perk registry from EVERY tier so
+ * the registry carries each perk's full tier ladder and icon (when one exists).
+ */
+function collectPerks(
+  slots: RawAlterationSlot[] | undefined,
+  category: SchematicCategory,
+  look: Lookups,
+  acc: PerkAcc,
+): PerkSlot[] | undefined {
   if (!slots?.length) return undefined;
   const out: PerkSlot[] = [];
   for (const slot of slots) {
     const tiers = slot.Alterations;
     if (!tiers?.length) continue;
+
+    tiers.forEach((row, tierIdx) => {
+      for (const rawId of row) {
+        const info = look.alterationInfo(rawId);
+        if (!info?.text) continue;
+        const fam = perkFamily(rawId);
+        let e = acc.get(fam);
+        if (!e) {
+          e = { id: fam, statType: perkStatType(fam), scope: new Set(), tiers: new Map() };
+          acc.set(fam, e);
+        }
+        e.scope.add(category);
+        const tierNum = Number(rawId.match(/_t(\d+)$/i)?.[1] ?? tierIdx + 1);
+        if (!e.tiers.has(tierNum)) e.tiers.set(tierNum, info.text);
+        if (!e.icon && info.icon) e.icon = info.icon;
+      }
+    });
+
+    // top-tier row = the perk families this slot can actually roll at max tier
     const top = tiers[tiers.length - 1] ?? [];
-    const options = top
-      .map((id) => look.alteration(id))
-      .filter((t): t is string => Boolean(t));
-    if (options.length) out.push({ requiredLevel: slot.RequiredLevel, options: [...new Set(options)] });
+    const perkIds = [...new Set(top.map(perkFamily))].filter((f) => acc.has(f));
+    if (perkIds.length) out.push({ requiredLevel: slot.RequiredLevel, perkIds });
   }
   return out.length ? out : undefined;
+}
+
+/** Curated stat-perk art lives here (relative to data/raw, resolved by the icon
+ *  copier). Drop `<statType>.png` to give a stat perk an icon; missing files are
+ *  silently skipped, so this is a safe incremental drop-in. */
+const CURATED_PERK_ICONS = "../assets/perk-icons";
+
+/** Materialize the accumulated families into the public perk registry. */
+function buildPerkRegistry(acc: PerkAcc): Record<string, PerkEntity> {
+  const perks: Record<string, PerkEntity> = {};
+  for (const e of acc.values()) {
+    const tierNums = [...e.tiers.keys()].sort((a, b) => a - b);
+    const tiers = tierNums.map((n) => e.tiers.get(n)!);
+    const top = tiers[tiers.length - 1] ?? e.id;
+    // elemental perks carry real export art; everything else points at the
+    // curated dir (the copier drops it if the file isn't there yet).
+    perks[e.id] = {
+      id: e.id,
+      name: top,
+      description: top,
+      statType: e.statType,
+      scope: [...e.scope].sort(),
+      tiers,
+      images: { icon: e.icon ?? `${CURATED_PERK_ICONS}/${e.statType}.png` },
+    };
+  }
+  return perks;
 }
 
 function buildTags(
@@ -136,8 +223,15 @@ interface Group {
   images: ImageSet;
 }
 
-export function importSchematics(raw: RawAssets, look: Lookups): Schematic[] {
+export interface SchematicImport {
+  schematics: Schematic[];
+  /** shared perk registry (perks.json) referenced by Schematic.perkSlots[].perkIds */
+  perks: Record<string, PerkEntity>;
+}
+
+export function importSchematics(raw: RawAssets, look: Lookups): SchematicImport {
   const groups = new Map<string, Group>();
+  const perkAcc: PerkAcc = new Map();
 
   for (const [templateId, item] of Object.entries(raw.NamedItems ?? {})) {
     if (item.Type !== "Schematic") continue;
@@ -175,6 +269,21 @@ export function importSchematics(raw: RawAssets, look: Lookups): Schematic[] {
 
     const base = { rarity, category, subType, ammoType, triggerType, evoType };
 
+    const perkSlots = collectPerks(item.AlterationSlots, category, look, perkAcc);
+
+    // tag every rollable perk family so a perk click can find every schematic
+    // that shares it. Perks are kept in per-category facets (rangedPerk /
+    // meleePerk / trapPerk) because the book splits those into separate sections
+    // — a single "weapon perk" pool would surface melee-only perks in the ranged
+    // section (and vice-versa) as dead, zero-result chips.
+    const tags = buildTags(base);
+    if (perkSlots) {
+      const facet = `${category}Perk`;
+      const fams = new Set<string>();
+      for (const sl of perkSlots) for (const id of sl.perkIds) fams.add(id);
+      for (const f of fams) tags.push(tagId(facet, f));
+    }
+
     schematics.push({
       id: `${slug(name)}-${rarity}`,
       templateId: g.templateId,
@@ -186,12 +295,12 @@ export function importSchematics(raw: RawAssets, look: Lookups): Schematic[] {
       images: g.images,
       stats: buildStats(item, category),
       craftingCost: buildCrafting(item, look),
-      perkSlots: buildPerkSlots(item.AlterationSlots, look),
-      tags: buildTags(base),
+      perkSlots,
+      tags: [...new Set(tags)],
       sources: ["banjo"],
     });
   }
 
   schematics.sort((a, b) => a.name.localeCompare(b.name) || a.rarity.localeCompare(b.rarity));
-  return schematics;
+  return { schematics, perks: buildPerkRegistry(perkAcc) };
 }

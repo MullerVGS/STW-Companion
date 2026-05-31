@@ -4,6 +4,7 @@ import { BookSidebar } from "./components/BookSidebar";
 import { FilterBar, type OwnedFilter } from "./components/FilterBar";
 import { ItemGrid } from "./components/ItemGrid";
 import { InspectModal } from "./components/InspectModal";
+import { SearchBar } from "./components/SearchBar";
 import { loadDataset } from "./lib/data";
 import { clearAll, exportJson, importJson, useCollectionState } from "./store/collection";
 import { KIND_OF, matches, recordsOf, searchText, type Selected } from "./lib/view";
@@ -65,8 +66,18 @@ export default function App() {
   const facets = useMemo(() => {
     if (!dataset || !sub) return [];
     const constrained = new Set((sub.match ?? []).map((m) => m.field));
-    return dataset.facets[sub.dataset].filter((g) => !constrained.has(g.facet));
-  }, [dataset, sub]);
+    // perk facets are per-category; show only the one matching the active section
+    const perkFacetForSection: Record<string, string> = {
+      ranged: "rangedPerk",
+      melee: "meleePerk",
+      traps: "trapPerk",
+    };
+    return dataset.facets[sub.dataset].filter((g) => {
+      if (constrained.has(g.facet)) return false;
+      if (g.facet.endsWith("Perk")) return perkFacetForSection[activeSection] === g.facet;
+      return true;
+    });
+  }, [dataset, sub, activeSection]);
 
   const selectedByFacet = useMemo(() => {
     const m = new Map<string, Set<string>>();
@@ -144,6 +155,18 @@ export default function App() {
       return next;
     });
 
+  // open a record straight from a global-search hit (modal overlays current view)
+  const openItem = (datasetName: DatasetName, id: string) => {
+    if (!dataset) return;
+    const rec = recordsOf(dataset, datasetName).find((r) => r.id === id);
+    if (rec) setSelected({ kind: KIND_OF[datasetName], item: rec });
+  };
+  // navigate from a global-search entity hit: apply a facet tag, or just jump
+  const searchFilter = (sectionKey: string, subKey: string, tag?: string) => {
+    if (tag) crossLink(sectionKey, subKey, tag);
+    else selectSub(sectionKey, subKey);
+  };
+
   const handleExport = () => {
     const blob = new Blob([exportJson()], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -187,6 +210,7 @@ export default function App() {
           <h1>STW Collection Book</h1>
           <span className="subtitle">Wiki + Tracker</span>
         </div>
+        <SearchBar index={dataset.search} onPickItem={openItem} onFilter={searchFilter} />
         <div className="progress">
           <div className="progress-bar">
             <div className="progress-fill" style={{ width: `${pct}%` }} />
@@ -238,6 +262,7 @@ export default function App() {
         <InspectModal
           selected={selected}
           abilities={dataset.abilities}
+          perks={dataset.perks}
           onClose={() => setSelected(null)}
           onCrossLink={crossLink}
         />

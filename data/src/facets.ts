@@ -5,7 +5,14 @@
  * defenders, schematics) and the web app shows the ones relevant to the section.
  */
 
-import { RARITY_ORDER, type Defender, type Hero, type Schematic, type Survivor } from "./schema.js";
+import {
+  RARITY_ORDER,
+  type Defender,
+  type Hero,
+  type PerkEntity,
+  type Schematic,
+  type Survivor,
+} from "./schema.js";
 import { tagId, titleCase } from "./util.js";
 
 export interface FacetValue {
@@ -13,8 +20,9 @@ export interface FacetValue {
   facet: string;
   value: string;
   label: string;
+  /** resolved icon URL for the value, when the entity behind it has one */
+  icon?: string;
   count: number;
-  itemIds: string[];
 }
 
 export interface FacetGroup {
@@ -32,6 +40,8 @@ interface FacetDef<T> {
   get: (r: T) => string | string[] | undefined;
   /** display label for a value (defaults to titleCase) */
   labelOf?: (r: T, value: string) => string;
+  /** resolved icon URL for a value (for icon-bearing chips / search results) */
+  iconOf?: (r: T, value: string) => string | undefined;
 }
 
 const RARITY_RANK = new Map(RARITY_ORDER.map((r, i) => [r, i]));
@@ -61,13 +71,13 @@ function build<T extends Indexed>(records: T[], defs: FacetDef<T>[]): FacetGroup
             facet: def.facet,
             value,
             label: def.labelOf ? def.labelOf(r, value) : titleCase(value),
+            icon: def.iconOf ? def.iconOf(r, value) : undefined,
             count: 0,
-            itemIds: [],
           };
           byValue.set(id, fv);
         }
+        if (!fv.icon && def.iconOf) fv.icon = def.iconOf(r, value);
         fv.count++;
-        fv.itemIds.push(r.id);
       }
     }
     if (byValue.size === 0) continue;
@@ -79,28 +89,56 @@ function build<T extends Indexed>(records: T[], defs: FacetDef<T>[]): FacetGroup
 const HERO_DEFS: FacetDef<Hero>[] = [
   { facet: "set", label: "Collection Set", get: (h) => h.set, labelOf: (h) => h.setLabel },
   { facet: "class", label: "Class", get: (h) => h.class },
-  { facet: "heroPerk", label: "Standard Perk", get: (h) => h.heroPerk?.name, labelOf: (_h, v) => v },
-  { facet: "commanderPerk", label: "Commander Perk", get: (h) => h.commanderPerk?.name, labelOf: (_h, v) => v },
-  { facet: "classPerk", label: "Class Perk", get: (h) => h.classPerks.map((p) => p.name), labelOf: (_h, v) => v },
+  { facet: "heroPerk", label: "Standard Perk", get: (h) => h.heroPerk?.name, labelOf: (_h, v) => v, iconOf: (h) => h.heroPerk?.images?.icon },
+  { facet: "commanderPerk", label: "Commander Perk", get: (h) => h.commanderPerk?.name, labelOf: (_h, v) => v, iconOf: (h) => h.commanderPerk?.images?.icon },
+  { facet: "classPerk", label: "Class Perk", get: (h) => h.classPerks.map((p) => p.name), labelOf: (_h, v) => v, iconOf: (h, v) => h.classPerks.find((p) => p.name === v)?.images?.icon },
   { facet: "rarity", label: "Rarity", get: (h) => h.rarity },
 ];
 const SURVIVOR_DEFS: FacetDef<Survivor>[] = [
   { facet: "kind", label: "Type", get: (s) => s.kind, labelOf: (_s, v) => KIND_LABEL[v] ?? titleCase(v) },
-  { facet: "squad", label: "Squad", get: (s) => s.squad },
-  { facet: "personality", label: "Personality", get: (s) => s.personality },
+  { facet: "squad", label: "Squad", get: (s) => s.squad, iconOf: (s) => s.badgeImages?.squad },
+  { facet: "personality", label: "Personality", get: (s) => s.personality, iconOf: (s) => s.badgeImages?.personality },
   { facet: "rarity", label: "Rarity", get: (s) => s.rarity },
 ];
 const DEFENDER_DEFS: FacetDef<Defender>[] = [
   { facet: "weaponType", label: "Weapon", get: (d) => d.weaponType },
   { facet: "rarity", label: "Rarity", get: (d) => d.rarity },
 ];
-const SCHEMATIC_DEFS: FacetDef<Schematic>[] = [
-  { facet: "subType", label: "Weapon / Trap Type", get: (s) => s.subType },
-  { facet: "rarity", label: "Rarity", get: (s) => s.rarity },
-  { facet: "ammoType", label: "Ammo", get: (s) => s.ammoType },
-  { facet: "triggerType", label: "Fire Mode", get: (s) => s.triggerType },
-  { facet: "evoType", label: "Material", get: (s) => s.evoType },
-];
+/** unique perk families a schematic can roll, across all of its slots */
+const perkFamiliesOf = (s: Schematic): string[] => {
+  const out = new Set<string>();
+  for (const sl of s.perkSlots ?? []) for (const id of sl.perkIds) out.add(id);
+  return [...out];
+};
+
+/**
+ * Schematic facets need the perk registry to label/icon the perk facets, so
+ * they're built as a function. Weapon perks (ranged/melee) and trap perks are
+ * kept in separate facets — they're conceptually different pools.
+ */
+function schematicDefs(perks: Record<string, PerkEntity>): FacetDef<Schematic>[] {
+  const perkLabel = (fam: string) => perks[fam]?.name ?? titleCase(fam);
+  const perkIcon = (fam: string) => perks[fam]?.images?.icon;
+  // one perk facet per category so each section (Ranged / Melee / Traps) shows
+  // only the perks its own records can roll, with correct per-section counts.
+  const perkFacet = (facet: string, label: string, category: string): FacetDef<Schematic> => ({
+    facet,
+    label,
+    get: (s) => (s.category === category ? perkFamiliesOf(s) : undefined),
+    labelOf: (_s, v) => perkLabel(v),
+    iconOf: (_s, v) => perkIcon(v),
+  });
+  return [
+    { facet: "subType", label: "Weapon / Trap Type", get: (s) => s.subType },
+    { facet: "rarity", label: "Rarity", get: (s) => s.rarity },
+    { facet: "ammoType", label: "Ammo", get: (s) => s.ammoType },
+    { facet: "triggerType", label: "Fire Mode", get: (s) => s.triggerType },
+    { facet: "evoType", label: "Material", get: (s) => s.evoType },
+    perkFacet("rangedPerk", "Weapon Perk", "ranged"),
+    perkFacet("meleePerk", "Weapon Perk", "melee"),
+    perkFacet("trapPerk", "Trap Perk", "trap"),
+  ];
+}
 
 const KIND_LABEL: Record<string, string> = {
   survivor: "Survivor",
@@ -121,11 +159,12 @@ export function buildAllFacets(d: {
   survivors: Survivor[];
   defenders: Defender[];
   schematics: Schematic[];
+  perks: Record<string, PerkEntity>;
 }): FacetsByDataset {
   return {
     heroes: build(d.heroes, HERO_DEFS),
     survivors: build(d.survivors, SURVIVOR_DEFS),
     defenders: build(d.defenders, DEFENDER_DEFS),
-    schematics: build(d.schematics, SCHEMATIC_DEFS),
+    schematics: build(d.schematics, schematicDefs(d.perks)),
   };
 }
