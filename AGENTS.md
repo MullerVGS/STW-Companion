@@ -4,14 +4,20 @@ Guidance for AI agents (and humans) working in this repo. Read this first — it
 encodes the architecture, commands, and hard-won gotchas so you don't have to
 re-derive them.
 
-> **What this is:** an interactive **wiki + tracker** for the **Fortnite: Save
-> the World Collection Book**, covering all sections — Heroes (by set),
-> Personnel (Defenders / Survivors / Lead Survivors / Mythic Leads), and
-> Ranged / Melee / Trap schematics. Game data is extracted once from the game
-> files, normalized into versioned JSON, linked by shared attributes (facets),
-> and served as a static React site with an inspect view (perks, abilities,
-> stats, crafting) and click-to-filter; the only dynamic state is the user's
-> collection in `localStorage`.
+> **What this is:** **STW Companion** — a companion app for **Fortnite: Save the
+> World**. Two surfaces today, toggled in the header:
+>
+> 1. **Collection Book** — an interactive wiki + tracker covering all sections:
+>    Heroes (by set), Personnel (Defenders / Survivors / Lead Survivors / Mythic
+>    Leads), and Ranged / Melee / Trap schematics. Inspect view (perks,
+>    abilities, stats, crafting) + click-to-filter (facets) + global search.
+> 2. **Hero Loadout** — a team planner (commander + 5 support + team perk + 2
+>    gadgets) with an aggregated team summary and a "find in Collection Book"
+>    jump. Loadouts persist in `localStorage`.
+>
+> Game data is extracted once from the game files, normalized into versioned
+> JSON, and served as a static React site. The only dynamic state is the user's
+> collection and loadouts in `localStorage`.
 
 ---
 
@@ -69,7 +75,7 @@ the only dynamic state is the user's collection, kept in `localStorage`.
  data/raw/assets.json            (real BanjoBotAssets export — git-ignored)
    └─ or sample.assets.json      (committed fixture fallback)
  data/raw/ExportedImages/*.png   (full image export, git-ignored — see Data refresh)
-        │  data/src/build.ts  →  import{Heroes,Abilities,Survivors,Defenders,Schematics}
+        │  data/src/build.ts  →  import{Heroes,Abilities,Survivors,Defenders,Schematics,TeamPerks,Gadgets}
         │                        + buildAllFacets() + buildSearchIndex() + buildBook() + WebP icon copy
         ▼
  web/public/data/heroes.json      normalized heroes (set, perks, abilityIds, location)
@@ -78,6 +84,9 @@ the only dynamic state is the user's collection, kept in `localStorage`.
  web/public/data/defenders.json   defenders
  web/public/data/schematics.json  weapons/traps (stats, dps, crafting, perkSlots → perk ids)
  web/public/data/perks.json       id → weapon/trap perk (alteration) registry, referenced by schematics
+ web/public/data/team-perks.json  Hero Loadout team perks (name, description, icon)
+ web/public/data/gadgets.json     Hero Loadout gadgets (curated equippable set; name, description, icon)
+ web/public/data/class-icons.json hero-class glyph urls (drives the loadout class filter)
  web/public/data/search-index.json prebuilt global search: items + every linkable entity (incl. perk text)
  web/public/data/facets.json      per-dataset clickable attribute indices (values carry an icon)
  web/public/data/book.json        section → subcategory taxonomy (drives the left rail)
@@ -85,7 +94,7 @@ the only dynamic state is the user's collection, kept in `localStorage`.
  web/public/icons/*.webp          only the icons referenced & present on disk, converted to WebP (sharp)
         │  vite build (copies public/ into dist/)
         ▼
- web/dist  ──►  nginx (Docker)  ──►  browser  ──►  localStorage (collection state)
+ web/dist  ──►  nginx (Docker)  ──►  browser  ──►  localStorage (collection + loadouts)
 ```
 
 **Why static:** STW item data is static between game patches, so we extract once
@@ -106,6 +115,7 @@ data/src/
   import-heroes.ts ★ heroes (dedupe) + the abilities they reference
   import-personnel.ts survivors (survivor/lead/mythic-lead) + defenders
   import-banjo.ts  ★ schematics: dedupe + crafting/dps + perk registry (alterations → linkable perk entities)
+  import-loadout.ts  Hero Loadout entities: team perks + curated equippable gadgets (class glyph icons wired in build.ts)
   facets.ts          per-dataset facet builders (HERO_DEFS / SURVIVOR_DEFS / schematicDefs(perks)); values carry an icon
   search.ts        ★ buildSearchIndex(): flat search-index.json over items + entities (folds in perk descriptions)
   build.ts         ★ orchestrator: read raw → import all → facets → search → book → WebP icons (sharp) → write JSON
@@ -117,13 +127,14 @@ data/raw/
 
 web/src/
   types.ts         ★ public data contract — mirror of schema.ts
-  App.tsx            section/subcategory state, filtering (facets: OR within, AND across), inspect
-  store/collection.ts  localStorage state via useSyncExternalStore (+ export/import)
-  lib/data.ts        fetches web/public/data/*.json into one Dataset (incl. perks + search)
-  lib/view.ts        record helpers: kind, subtitle, slug/tagId, weapon stat rows
+  App.tsx            mode toggle (Collection Book ⇄ Hero Loadout) + section/subcategory state, filtering (facets: OR within, AND across), inspect, find-in-book
+  store/collection.ts  owned-items localStorage state via useSyncExternalStore (+ export/import)
+  store/loadouts.ts  Hero Loadout state: named loadouts (commander/support/teamPerk/gadgets) in localStorage
+  lib/data.ts        fetches web/public/data/*.json into one Dataset (incl. perks + team perks + gadgets + search)
+  lib/view.ts        record helpers: kind, subtitle, slug/tagId, weapon stat rows, locateTarget (find-in-book)
   lib/search.ts      client-side tokenized+ranked filter over the prebuilt search index
   lib/rarity.ts      rarity → color palette
-  components/        BookSidebar, FilterBar, ItemGrid, ItemCard, InspectModal, SearchBar (global lazy dropdown)
+  components/        Collection Book: BookSidebar, FilterBar, ItemGrid, ItemCard, InspectModal, SearchBar; Hero Loadout: LoadoutScreen, SlotPicker; shared: Rich, icons
 web/nginx.conf       static serving config (gzip + cache headers)
 
 Dockerfile           multi-stage: node builder (runs pipeline + web build) → nginx

@@ -284,7 +284,7 @@ export default function App() {
     return (
       <div className="cb-loading">
         <div>
-          <div className="lg">COLLECTION BOOK</div>
+          <div className="lg">STW COMPANION</div>
           <div className="ls" style={{ color: "#ff7b72" }}>
             {error}
           </div>
@@ -296,7 +296,7 @@ export default function App() {
     return (
       <div className="cb-loading">
         <div>
-          <div className="lg">COLLECTION BOOK</div>
+          <div className="lg">STW COMPANION</div>
           <div className="ls">Loading data…</div>
         </div>
       </div>

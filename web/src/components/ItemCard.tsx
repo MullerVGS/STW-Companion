@@ -1,8 +1,8 @@
 import { memo, useEffect, useRef, useState, type CSSProperties } from "react";
 
 import { toggle, useCount } from "../store/collection";
-import type { AnyItem, Survivor } from "../types";
-import { RARITY_LEVEL, STARS, rarityColor } from "../lib/rarity";
+import type { AnyItem, Hero, HeroClass, Survivor } from "../types";
+import { rarityColor } from "../lib/rarity";
 import type { ItemKind } from "../lib/view";
 
 interface Props {
@@ -11,32 +11,20 @@ interface Props {
   onInspect: (item: AnyItem) => void;
   /** when true, scroll into view and play the locate flash (find-in-book) */
   highlight?: boolean;
+  classIcons: Partial<Record<HeroClass, string>>;
 }
 
-function Stars({ rarity, n }: { rarity: string; n: number }) {
-  const filled = STARS[rarity] ?? 1;
-  return (
-    <div className="stars" aria-hidden>
-      {Array.from({ length: n }).map((_, i) => (
-        <i key={i} className={i < filled ? "" : "off"}>
-          ★
-        </i>
-      ))}
-    </div>
-  );
-}
-
-function ItemCardImpl({ kind, item, onInspect, highlight = false }: Props) {
+function ItemCardImpl({ kind, item, onInspect, highlight = false, classIcons }: Props) {
   const count = useCount(item.id);
   const owned = count > 0;
   const [broken, setBroken] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const color = rarityColor(item.rarity);
-  const lv = RARITY_LEVEL[item.rarity] ?? 1;
   const img = item.images.icon && !broken ? item.images.icon : null;
   const isSurv = kind === "survivor" || kind === "defender";
   const badges = (item as Survivor).badgeImages;
   const hasBadges = badges && (badges.leader || badges.personality || badges.squad);
+  const classIcon = kind === "hero" ? classIcons[(item as Hero).class] : undefined;
 
   // find-in-book: when this card becomes the locate target, center it in view
   useEffect(() => {
@@ -57,8 +45,8 @@ function ItemCardImpl({ kind, item, onInspect, highlight = false }: Props) {
         ) : (
           <span className="ph">{item.name.slice(0, 2).toUpperCase()}</span>
         )}
-        <span className="lv">{lv}</span>
-        {count > 1 && <span className="qty">×{count}</span>}
+        <span className="cb-card-sheen" aria-hidden />
+        {classIcon && <img className="class-glyph" src={classIcon} alt="" loading="lazy" />}
         {hasBadges && (
           <span className="glyphs" aria-hidden>
             {badges?.leader && <img src={badges.leader} alt="" loading="lazy" />}
@@ -79,11 +67,12 @@ function ItemCardImpl({ kind, item, onInspect, highlight = false }: Props) {
           {owned ? "✓" : "+"}
         </button>
       </div>
-      <div className="foot">
-        <Stars rarity={item.rarity} n={5} />
-        <div className="xp">
-          <i style={{ width: owned ? "100%" : "0%" }} />
-        </div>
+      <div className="foot" aria-hidden>
+        <span />
+        <span />
+        <span />
+        <span />
+        <span />
       </div>
     </div>
   );

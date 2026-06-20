@@ -79,7 +79,7 @@ export function ownedCount(): number {
 
 export function exportJson(): string {
   return JSON.stringify(
-    { app: "stw-collection-book", version: 1, savedAt: new Date().toISOString(), items: state },
+    { app: "stw-companion", version: 1, savedAt: new Date().toISOString(), items: state },
     null,
     2,
   );

@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { ItemCard } from "./ItemCard";
 import { useCollectionState } from "../store/collection";
 import { RARITY_RANK } from "../lib/rarity";
-import type { AnyItem } from "../types";
+import type { AnyItem, HeroClass } from "../types";
 import type { ItemKind } from "../lib/view";
 
 interface Props {
@@ -12,10 +12,11 @@ interface Props {
   onInspect: (item: AnyItem) => void;
   /** id of the card to highlight + scroll to (find-in-book) */
   highlightId?: string | null;
+  classIcons: Partial<Record<HeroClass, string>>;
 }
 
 /** Groups items by name into "set" panels (rarity/tier variants of one identity). */
-export function ItemGrid({ kind, items, onInspect, highlightId }: Props) {
+export function ItemGrid({ kind, items, onInspect, highlightId, classIcons }: Props) {
   const collection = useCollectionState();
 
   const groups = useMemo(() => {
@@ -62,6 +63,7 @@ export function ItemGrid({ kind, items, onInspect, highlightId }: Props) {
                   item={it}
                   onInspect={onInspect}
                   highlight={it.id === highlightId}
+                  classIcons={classIcons}
                 />
               ))}
             </div>

@@ -90,15 +90,21 @@ export function FilterBar({
   total,
   onReset,
 }: Props) {
+  const [open, setOpen] = useState(false);
+  const activeFilters = selected.size;
+
   return (
     <div className="cb-filter">
       <div className="cb-filter-row">
-        <input
-          className="cb-localsearch"
-          value={query}
-          placeholder="Filter this page…"
-          onChange={(e) => onQuery(e.target.value)}
-        />
+        <label className="cb-localsearch-wrap">
+          <span aria-hidden>⌕</span>
+          <input
+            className="cb-localsearch"
+            value={query}
+            placeholder="Filter this page…"
+            onChange={(e) => onQuery(e.target.value)}
+          />
+        </label>
         <div className="cb-seg" role="group" aria-label="Collection filter">
           {FILTERS.map((m) => (
             <button
@@ -112,27 +118,39 @@ export function FilterBar({
           ))}
         </div>
         <div className="cb-filter-actions">
-          <button type="button" className="cb-act" onClick={onReset} title="Clear your collection">
-            Reset owned
+          <button
+            type="button"
+            className={`cb-act${open ? " on" : ""}`}
+            onClick={() => setOpen((value) => !value)}
+            aria-expanded={open}
+          >
+            Filters{activeFilters > 0 ? ` · ${activeFilters}` : ""}
           </button>
         </div>
       </div>
 
-      {facets.map((g) => (
-        <FacetRow key={g.facet} group={g} selected={selected} onToggle={onToggle} />
-      ))}
+      {open && (
+        <div className="cb-filter-drawer">
+          {facets.map((g) => (
+            <FacetRow key={g.facet} group={g} selected={selected} onToggle={onToggle} />
+          ))}
 
-      <div className="cb-filter-row">
-        <span className="cb-frow-label">Showing</span>
-        <span style={{ fontFamily: "Barlow Condensed", fontWeight: 600, color: "var(--text-dim)" }}>
-          {visible} of {total}
-        </span>
-        {selected.size > 0 && (
-          <button type="button" className="cb-chip" onClick={onClear}>
-            Clear filters ✕
-          </button>
-        )}
-      </div>
+          <div className="cb-filter-row cb-filter-summary">
+            <span className="cb-frow-label">Showing</span>
+            <span>
+              {visible} of {total}
+            </span>
+            {selected.size > 0 && (
+              <button type="button" className="cb-chip" onClick={onClear}>
+                Clear filters ✕
+              </button>
+            )}
+            <button type="button" className="cb-reset-link" onClick={onReset}>
+              Reset collection tracking
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

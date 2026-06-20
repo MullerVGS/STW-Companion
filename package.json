@@ -1,8 +1,8 @@
 {
-  "name": "stw-collection-book",
+  "name": "stw-companion",
   "private": true,
   "version": "0.1.0",
-  "description": "Tracker for the Fortnite: Save the World Collection Book — data pipeline + interactive web app.",
+  "description": "STW Companion — a Fortnite: Save the World companion: Collection Book wiki/tracker (heroes, personnel, schematics, perks) + Hero Loadout planner. Data pipeline + interactive web app.",
   "workspaces": [
     "data",
     "web"

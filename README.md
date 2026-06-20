@@ -1,6 +1,11 @@
-# STW Collection Book
+# STW Companion
 
-Personal tracker for the **Fortnite: Save the World** Collection Book — collect, document and manage every item (schematics, heroes, survivors, defenders), link them by shared attributes, and view an interactive Collection Book where you toggle what you own.
+A personal companion for **Fortnite: Save the World** — a toolkit with two surfaces:
+
+- **Collection Book** — wiki + tracker for every item (schematics, heroes, survivors, defenders, perks), linked by shared attributes, with an inspect view and click-to-filter. Toggle what you own.
+- **Hero Loadout** — plan a team (commander + support + team perk + gadgets), see the whole team's perks/abilities at a glance, and jump straight to any hero in the Collection Book ("find in book").
+
+More tools are planned.
 
 > 🤖 **Working with an AI agent (or contributing)?** Start with [`AGENTS.md`](AGENTS.md) — it has the architecture, commands, and gotchas. (`CLAUDE.md` is a symlink to it.)
 
@@ -44,4 +49,4 @@ The app boots against the **sample fixture** out of the box. To load the full ga
 
 ## Status
 
-v1 milestone: **Schematics** end-to-end (collect → link → interactive UI). Heroes / Survivors / Defenders and a cross-reference second source come next.
+**Collection Book** is end-to-end across all categories — Heroes (by set), Personnel (defenders / survivors / leads / mythic leads) and Ranged / Melee / Trap schematics — with inspect, facets, and global search. **Hero Loadout** planner ships team perks + gadgets and "find in Collection Book". Next: more companion tools and a cross-reference second source.
