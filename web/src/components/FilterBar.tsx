@@ -1,146 +1,138 @@
-import { useRef, useState } from "react";
+import { useState, type CSSProperties } from "react";
 
 import type { FacetGroup } from "../types";
+import { rarityColor } from "../lib/rarity";
+import type { Rarity } from "../types";
 
 export type OwnedFilter = "all" | "owned" | "missing";
 
 /** Facets with more values than this collapse behind a "+N more" toggle. */
-const COLLAPSE_LIMIT = 14;
+const COLLAPSE_LIMIT = 12;
 
 interface Props {
   query: string;
   onQuery: (q: string) => void;
-  ownedFilter: OwnedFilter;
-  onOwnedFilter: (f: OwnedFilter) => void;
+  owned: OwnedFilter;
+  onOwned: (f: OwnedFilter) => void;
   facets: FacetGroup[];
-  selectedTags: ReadonlySet<string>;
-  onToggleFacet: (tagId: string) => void;
-  onClearFacets: () => void;
-  visibleCount: number;
-  totalCount: number;
-  onExport: () => void;
-  onImportFile: (file: File) => void;
+  selected: ReadonlySet<string>;
+  onToggle: (tagId: string) => void;
+  onClear: () => void;
+  visible: number;
+  total: number;
   onReset: () => void;
 }
 
-const FILTERS: { key: OwnedFilter; label: string }[] = [
-  { key: "all", label: "All" },
-  { key: "owned", label: "Collected" },
-  { key: "missing", label: "Missing" },
-];
+const FILTERS: OwnedFilter[] = ["all", "owned", "missing"];
 
-export function FilterBar(props: Props) {
-  const fileRef = useRef<HTMLInputElement>(null);
-  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
-  const { facets, selectedTags, onToggleFacet } = props;
+function FacetRow({
+  group,
+  selected,
+  onToggle,
+}: {
+  group: FacetGroup;
+  selected: ReadonlySet<string>;
+  onToggle: (id: string) => void;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const isRarity = group.facet === "rarity";
+  const vals = expanded ? group.values : group.values.slice(0, COLLAPSE_LIMIT);
 
   return (
-    <div className="filterbar">
-      <div className="toolbar">
+    <div className="cb-filter-row">
+      <span className="cb-frow-label">{group.label}</span>
+      {vals.map((v) => {
+        const on = selected.has(v.id);
+        const color = isRarity ? rarityColor(v.value as Rarity) : undefined;
+        const style: CSSProperties | undefined =
+          isRarity && on
+            ? {
+                borderColor: color,
+                background: `color-mix(in srgb, ${color} 24%, transparent)`,
+              }
+            : undefined;
+        return (
+          <button
+            key={v.id}
+            type="button"
+            className={`cb-chip${on ? " on" : ""}`}
+            onClick={() => onToggle(v.id)}
+            aria-pressed={on}
+            style={style}
+            title={v.label}
+          >
+            {isRarity && <span className="dot" style={{ background: color }} aria-hidden />}
+            {v.icon && !isRarity && <img className="ci" src={v.icon} alt="" loading="lazy" />}
+            <span>{v.label}</span>
+            <span className="cc">{v.count}</span>
+          </button>
+        );
+      })}
+      {group.values.length > COLLAPSE_LIMIT && (
+        <button type="button" className="cb-chip" onClick={() => setExpanded((x) => !x)}>
+          {expanded ? "− less" : `+${group.values.length - COLLAPSE_LIMIT} more`}
+        </button>
+      )}
+    </div>
+  );
+}
+
+export function FilterBar({
+  query,
+  onQuery,
+  owned,
+  onOwned,
+  facets,
+  selected,
+  onToggle,
+  onClear,
+  visible,
+  total,
+  onReset,
+}: Props) {
+  return (
+    <div className="cb-filter">
+      <div className="cb-filter-row">
         <input
-          type="search"
-          className="search"
-          placeholder="Search this section…"
-          value={props.query}
-          onChange={(e) => props.onQuery(e.target.value)}
+          className="cb-localsearch"
+          value={query}
+          placeholder="Filter this page…"
+          onChange={(e) => onQuery(e.target.value)}
         />
-        <div className="segmented" role="group" aria-label="Collection filter">
-          {FILTERS.map((f) => (
+        <div className="cb-seg" role="group" aria-label="Collection filter">
+          {FILTERS.map((m) => (
             <button
-              key={f.key}
+              key={m}
               type="button"
-              className={props.ownedFilter === f.key ? "is-active" : ""}
-              onClick={() => props.onOwnedFilter(f.key)}
+              className={owned === m ? "on" : ""}
+              onClick={() => onOwned(m)}
             >
-              {f.label}
+              {m}
             </button>
           ))}
         </div>
-        <span className="result-count">
-          {props.visibleCount} / {props.totalCount}
-        </span>
-        <div className="toolbar-actions">
-          <button type="button" onClick={props.onExport} title="Download your collection as JSON">
-            Export
+        <div className="cb-filter-actions">
+          <button type="button" className="cb-act" onClick={onReset} title="Clear your collection">
+            Reset owned
           </button>
-          <button type="button" onClick={() => fileRef.current?.click()} title="Load a collection JSON">
-            Import
-          </button>
-          <button type="button" className="danger" onClick={props.onReset} title="Clear all collected items">
-            Reset
-          </button>
-          <input
-            ref={fileRef}
-            type="file"
-            accept="application/json,.json"
-            hidden
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) props.onImportFile(file);
-              e.target.value = "";
-            }}
-          />
         </div>
       </div>
 
-      {facets.length > 0 && (
-        <div className="facet-rows">
-          {facets.map((group) => {
-            const isOpen = expanded[group.facet];
-            const overflow = group.values.length - COLLAPSE_LIMIT;
-            // when collapsed, keep the head plus any selected values past it visible
-            const forcedSelected =
-              overflow > 0
-                ? group.values.slice(COLLAPSE_LIMIT).filter((v) => selectedTags.has(v.id)).length
-                : 0;
-            const hidden = overflow - forcedSelected; // values actually hidden while collapsed
-            const shown =
-              isOpen || overflow <= 0
-                ? group.values
-                : [
-                    ...group.values.slice(0, COLLAPSE_LIMIT),
-                    ...group.values.slice(COLLAPSE_LIMIT).filter((v) => selectedTags.has(v.id)),
-                  ];
-            return (
-              <div key={group.facet} className="facet-row">
-                <span className="facet-row-label">{group.label}</span>
-                <div className="facet-chips">
-                  {shown.map((v) => (
-                    <button
-                      key={v.id}
-                      type="button"
-                      className={`facet-chip${selectedTags.has(v.id) ? " is-active" : ""}${
-                        group.facet === "rarity" ? ` rarity-${v.value}` : ""
-                      }`}
-                      onClick={() => onToggleFacet(v.id)}
-                      aria-pressed={selectedTags.has(v.id)}
-                      title={v.label}
-                    >
-                      {v.icon && <img className="facet-chip-icon" src={v.icon} alt="" loading="lazy" />}
-                      <span className="facet-chip-label">{v.label}</span>
-                      <span className="facet-chip-count">{v.count}</span>
-                    </button>
-                  ))}
-                  {overflow > 0 && (isOpen || hidden > 0) && (
-                    <button
-                      type="button"
-                      className="facet-chip facet-more"
-                      onClick={() => setExpanded((p) => ({ ...p, [group.facet]: !isOpen }))}
-                    >
-                      {isOpen ? "− less" : `+${hidden} more`}
-                    </button>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-          {selectedTags.size > 0 && (
-            <button type="button" className="link facet-clear" onClick={props.onClearFacets}>
-              Clear filters ({selectedTags.size})
-            </button>
-          )}
-        </div>
-      )}
+      {facets.map((g) => (
+        <FacetRow key={g.facet} group={g} selected={selected} onToggle={onToggle} />
+      ))}
+
+      <div className="cb-filter-row">
+        <span className="cb-frow-label">Showing</span>
+        <span style={{ fontFamily: "Barlow Condensed", fontWeight: 600, color: "var(--text-dim)" }}>
+          {visible} of {total}
+        </span>
+        {selected.size > 0 && (
+          <button type="button" className="cb-chip" onClick={onClear}>
+            Clear filters ✕
+          </button>
+        )}
+      </div>
     </div>
   );
 }

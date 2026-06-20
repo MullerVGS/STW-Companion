@@ -24,6 +24,7 @@ import { buildLookups } from "./lookups.js";
 import { importSchematics } from "./import-banjo.js";
 import { importAbilities, importHeroes } from "./import-heroes.js";
 import { importDefenders, importSurvivors } from "./import-personnel.js";
+import { importGadgets, importTeamPerks } from "./import-loadout.js";
 import type { DatasetMeta, ImageSet, Perk, Rarity } from "./schema.js";
 import type { RawAssets } from "./banjo-types.js";
 import { slug } from "./util.js";
@@ -159,6 +160,8 @@ async function main(): Promise<void> {
   const survivors = importSurvivors(raw);
   const defenders = importDefenders(raw);
   const { schematics, perks } = importSchematics(raw, look);
+  const teamPerks = importTeamPerks(raw);
+  const gadgets = importGadgets(raw);
 
   // fresh output dirs so stale icons/data don't linger
   fs.rmSync(outDir, { recursive: true, force: true });
@@ -180,6 +183,20 @@ async function main(): Promise<void> {
   for (const s of schematics) {
     s.images = icons.rewrite(s.images);
     if (s.craftingCost) for (const c of s.craftingCost) c.icon = icons.one(c.icon);
+  }
+  for (const t of teamPerks) t.images = icons.rewrite(t.images);
+  for (const g of gadgets) g.images = icons.rewrite(g.images);
+
+  // standalone UI art: the hero-class glyphs used by the loadout class filter
+  const classIcons: Record<string, string> = {};
+  for (const [cls, file] of [
+    ["Soldier", "ExportedImages\\T-Icon-Hero-Soldier-128.png"],
+    ["Constructor", "ExportedImages\\T-Icon-Hero-Constructor-128.png"],
+    ["Ninja", "ExportedImages\\T-Icon-Hero-Ninja-128.png"],
+    ["Outlander", "ExportedImages\\T-Icon-Hero-Outlander-128.png"],
+  ] as const) {
+    const url = icons.one(file);
+    if (url) classIcons[cls] = url;
   }
   // perk registry icons must be rewritten BEFORE facets so perk facet chips
   // (which carry the icon) reference the copied URL, not the raw export path.
@@ -210,6 +227,8 @@ async function main(): Promise<void> {
       defenders: defenders.length,
       schematics: schematics.length,
       perks: Object.keys(perks).length,
+      teamPerks: teamPerks.length,
+      gadgets: gadgets.length,
       search: search.length,
       byRarity: tallyRarity(heroes, survivors, defenders, schematics),
     },
@@ -222,13 +241,16 @@ async function main(): Promise<void> {
   writeJson(path.join(outDir, "defenders.json"), defenders);
   writeJson(path.join(outDir, "schematics.json"), schematics);
   writeJson(path.join(outDir, "perks.json"), perks);
+  writeJson(path.join(outDir, "team-perks.json"), teamPerks);
+  writeJson(path.join(outDir, "gadgets.json"), gadgets);
+  writeJson(path.join(outDir, "class-icons.json"), classIcons);
   writeJson(path.join(outDir, "search-index.json"), search);
   writeJson(path.join(outDir, "facets.json"), facets);
   writeJson(path.join(outDir, "book.json"), book);
   writeJson(path.join(outDir, "meta.json"), meta, true);
 
   console.log(
-    `[data] heroes=${heroes.length} abilities=${abilities.length} survivors=${survivors.length} defenders=${defenders.length} schematics=${schematics.length} perks=${Object.keys(perks).length} search=${search.length} icons=${iconsCopied}`,
+    `[data] heroes=${heroes.length} abilities=${abilities.length} survivors=${survivors.length} defenders=${defenders.length} schematics=${schematics.length} perks=${Object.keys(perks).length} teamPerks=${teamPerks.length} gadgets=${gadgets.length} search=${search.length} icons=${iconsCopied}`,
   );
   console.log(`[data] sections: ${book.map((s) => `${s.label}(${s.subcategories.length})`).join(", ")}`);
 }

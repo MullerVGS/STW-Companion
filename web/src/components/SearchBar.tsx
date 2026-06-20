@@ -31,6 +31,7 @@ const KIND_BADGE: Record<SearchKind, string> = {
 
 const PAGE = 30; // rows revealed per lazy step
 
+/** Global search: lazy, ranked dropdown over the prebuilt search index. */
 export function SearchBar({ index, onPickItem, onFilter }: Props) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -112,15 +113,14 @@ export function SearchBar({ index, onPickItem, onFilter }: Props) {
   }
 
   return (
-    <div className="search-global" ref={wrapRef}>
-      <span className="search-global-icon" aria-hidden>
+    <div className="cb-search" ref={wrapRef}>
+      <span className="ico" aria-hidden>
         ⌕
       </span>
       <input
         ref={inputRef}
         type="search"
-        className="search-global-input"
-        placeholder="Search everything — heroes, perks, abilities, weapons…"
+        placeholder="Search heroes, weapons, traps, perks…"
         value={query}
         onChange={(e) => {
           setQuery(e.target.value);
@@ -135,40 +135,43 @@ export function SearchBar({ index, onPickItem, onFilter }: Props) {
       />
 
       {isOpen && (
-        <div className="search-global-pop">
+        <div className="cb-search-pop">
           {results.length === 0 ? (
-            <p className="search-global-empty">No matches for “{query}”.</p>
+            <p className="cb-search-empty">No matches for “{query}”.</p>
           ) : (
             <>
-              <ul id="search-global-list" className="search-global-list" role="listbox" ref={listRef}>
+              <ul id="search-global-list" className="cb-search-list" role="listbox" ref={listRef}>
                 {visible.map((e, i) => (
                   <li key={e.id} role="option" aria-selected={i === active}>
                     <button
                       type="button"
                       data-idx={i}
-                      className={`search-result${i === active ? " is-active" : ""}`}
+                      className={`cb-sresult${i === active ? " act" : ""}`}
                       onMouseEnter={() => setActive(i)}
                       onClick={() => activate(e)}
                     >
                       {e.icon ? (
-                        <img className="search-result-icon" src={e.icon} alt="" loading="lazy" />
+                        <img className="ic" src={e.icon} alt="" loading="lazy" />
                       ) : (
-                        <span className="search-result-icon search-result-icon-fallback" aria-hidden>
+                        <span className="ic ph" aria-hidden>
                           {e.label.slice(0, 1)}
                         </span>
                       )}
-                      <span className="search-result-text">
-                        <span className="search-result-label">{e.label}</span>
-                        {e.sub && <span className="search-result-sub">{e.sub}</span>}
+                      <span className="tx">
+                        <span className="lb">{e.label}</span>
+                        {e.sub && <span className="sb">{e.sub}</span>}
                       </span>
-                      <span className="search-result-kind">{KIND_BADGE[e.kind]}</span>
+                      <span className="kd">{KIND_BADGE[e.kind]}</span>
                     </button>
                   </li>
                 ))}
-                {shown < results.length && <li ref={sentinelRef} className="search-sentinel" aria-hidden />}
+                {shown < results.length && (
+                  <li ref={sentinelRef} className="search-sentinel" aria-hidden />
+                )}
               </ul>
-              <div className="search-global-foot">
-                {results.length === 300 ? "Showing top 300" : `${results.length} result${results.length === 1 ? "" : "s"}`}
+              <div className="cb-search-foot">
+                Enter to open · ↑↓ to navigate · perks &amp; abilities jump to everything that
+                shares them
               </div>
             </>
           )}

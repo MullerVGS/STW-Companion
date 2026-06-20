@@ -211,6 +211,29 @@ export interface Defender {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Hero Loadout entities — Team Perks + Gadgets
+// Standalone lookups the loadout planner selects from. The export has no
+// hero→teamperk / hero→gadget link (both are manual picks in-game), so these
+// are flat identities (no tier dedupe, no rarity).
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface TeamPerk {
+  /** stable id: slug(name) */
+  id: string;
+  name: string;
+  description?: string;
+  images: ImageSet;
+}
+
+export interface Gadget {
+  /** stable id: slug(raw Name, e.g. "g-generic-slowfield") */
+  id: string;
+  name: string;
+  description?: string;
+  images: ImageSet;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Collection Book taxonomy + dataset meta
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -249,6 +272,8 @@ export interface DatasetMeta {
     defenders: number;
     schematics: number;
     perks: number;
+    teamPerks: number;
+    gadgets: number;
     search: number;
     byRarity: Record<string, number>;
   };

@@ -1,98 +1,91 @@
-import { memo, useState, type CSSProperties } from "react";
+import { memo, useEffect, useRef, useState, type CSSProperties } from "react";
 
-import { increment, toggle, useCount } from "../store/collection";
+import { toggle, useCount } from "../store/collection";
 import type { AnyItem, Survivor } from "../types";
-import { rarityColor } from "../lib/rarity";
-import { subtitle, type ItemKind } from "../lib/view";
+import { RARITY_LEVEL, STARS, rarityColor } from "../lib/rarity";
+import type { ItemKind } from "../lib/view";
 
 interface Props {
   kind: ItemKind;
   item: AnyItem;
   onInspect: (item: AnyItem) => void;
+  /** when true, scroll into view and play the locate flash (find-in-book) */
+  highlight?: boolean;
 }
 
-function SurvivorBadges({ item }: { item: Survivor }) {
-  const badges = item.badgeImages;
-  if (!badges?.leader && !badges?.personality && !badges?.squad) return null;
-
+function Stars({ rarity, n }: { rarity: string; n: number }) {
+  const filled = STARS[rarity] ?? 1;
   return (
-    <div className="card-badges" aria-hidden>
-      {badges?.leader && (
-        <span className="card-badge" title="Lead Survivor">
-          <img src={badges.leader} alt="" loading="lazy" />
-        </span>
-      )}
-      {badges?.personality && (
-        <span className="card-badge" title={item.personality}>
-          <img src={badges.personality} alt="" loading="lazy" />
-        </span>
-      )}
-      {badges?.squad && (
-        <span className="card-badge" title={item.squad}>
-          <img src={badges.squad} alt="" loading="lazy" />
-        </span>
-      )}
+    <div className="stars" aria-hidden>
+      {Array.from({ length: n }).map((_, i) => (
+        <i key={i} className={i < filled ? "" : "off"}>
+          ★
+        </i>
+      ))}
     </div>
   );
 }
 
-function ItemCardImpl({ kind, item, onInspect }: Props) {
+function ItemCardImpl({ kind, item, onInspect, highlight = false }: Props) {
   const count = useCount(item.id);
   const owned = count > 0;
-  const [imgBroken, setImgBroken] = useState(false);
+  const [broken, setBroken] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
   const color = rarityColor(item.rarity);
-  const showIcon = item.images.icon && !imgBroken;
+  const lv = RARITY_LEVEL[item.rarity] ?? 1;
+  const img = item.images.icon && !broken ? item.images.icon : null;
+  const isSurv = kind === "survivor" || kind === "defender";
+  const badges = (item as Survivor).badgeImages;
+  const hasBadges = badges && (badges.leader || badges.personality || badges.squad);
+
+  // find-in-book: when this card becomes the locate target, center it in view
+  useEffect(() => {
+    if (highlight) ref.current?.scrollIntoView({ block: "center", behavior: "smooth" });
+  }, [highlight]);
 
   return (
-    <article
-      className={`card${owned ? " is-owned" : " is-missing"}`}
-      style={{ "--rarity": color } as CSSProperties}
+    <div
+      ref={ref}
+      className={`cb-card${owned ? " owned" : " miss"}${isSurv ? " surv" : ""}${highlight ? " is-locate" : ""}`}
+      style={{ "--rc": color } as CSSProperties}
+      onClick={() => onInspect(item)}
+      title={item.name}
     >
-      <button
-        type="button"
-        className="card-tile"
-        onClick={() => onInspect(item)}
-        title={`Inspect ${item.name}`}
-      >
-        {showIcon ? (
-          <img className="card-art" src={item.images.icon} alt="" loading="lazy" onError={() => setImgBroken(true)} />
+      <div className="art">
+        {img ? (
+          <img src={img} alt="" loading="lazy" onError={() => setBroken(true)} />
         ) : (
-          <span className="card-placeholder" aria-hidden>
-            {item.name.slice(0, 2).toUpperCase()}
+          <span className="ph">{item.name.slice(0, 2).toUpperCase()}</span>
+        )}
+        <span className="lv">{lv}</span>
+        {count > 1 && <span className="qty">×{count}</span>}
+        {hasBadges && (
+          <span className="glyphs" aria-hidden>
+            {badges?.leader && <img src={badges.leader} alt="" loading="lazy" />}
+            {badges?.personality && <img src={badges.personality} alt="" loading="lazy" />}
+            {badges?.squad && <img src={badges.squad} alt="" loading="lazy" />}
           </span>
         )}
-        {kind === "survivor" && <SurvivorBadges item={item as Survivor} />}
-        {count > 1 && <span className="card-qty">×{count}</span>}
-      </button>
-
-      <button
-        type="button"
-        className={`card-own${owned ? " is-on" : ""}`}
-        onClick={() => toggle(item.id)}
-        title={owned ? "Collected — click to unmark" : "Mark as collected"}
-        aria-pressed={owned}
-      >
-        {owned ? "✓" : "+"}
-      </button>
-
-      <div className="card-meta">
-        <div className="card-name" title={item.name}>
-          {item.name}
-        </div>
-        <div className="card-sub">{subtitle(kind, item)}</div>
-        {owned && (
-          <div className="card-stepper">
-            <button type="button" onClick={() => increment(item.id, -1)} aria-label="Remove one duplicate">
-              −
-            </button>
-            <span>{count}</span>
-            <button type="button" onClick={() => increment(item.id, 1)} aria-label="Add one duplicate">
-              +
-            </button>
-          </div>
-        )}
+        <button
+          type="button"
+          className={`own${owned ? " on" : ""}`}
+          title={owned ? "Owned — click to unmark" : "Mark as owned"}
+          aria-pressed={owned}
+          onClick={(e) => {
+            e.stopPropagation();
+            toggle(item.id);
+          }}
+        >
+          {owned ? "✓" : "+"}
+        </button>
       </div>
-    </article>
+      <div className="foot">
+        <Stars rarity={item.rarity} n={5} />
+        <div className="xp">
+          <i style={{ width: owned ? "100%" : "0%" }} />
+        </div>
+      </div>
+    </div>
   );
 }
 

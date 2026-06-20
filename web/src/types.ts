@@ -135,6 +135,20 @@ export interface Defender {
   sources: string[];
 }
 
+// ── Hero Loadout entities (team perks / gadgets) ────────────────────────────
+export interface TeamPerk {
+  id: string;
+  name: string;
+  description?: string;
+  images: ImageSet;
+}
+export interface Gadget {
+  id: string;
+  name: string;
+  description?: string;
+  images: ImageSet;
+}
+
 // ── Facets + book taxonomy + meta ───────────────────────────────────────────
 export interface FacetValue {
   id: string;
@@ -216,6 +230,8 @@ export interface DatasetMeta {
     defenders: number;
     schematics: number;
     perks: number;
+    teamPerks: number;
+    gadgets: number;
     search: number;
     byRarity: Record<string, number>;
   };
@@ -230,6 +246,11 @@ export interface Dataset {
   schematics: Schematic[];
   /** shared perk registry referenced by Schematic.perkSlots[].perkIds */
   perks: Record<string, PerkEntity>;
+  /** hero-loadout lookups (standalone, not collection grids) */
+  teamPerks: TeamPerk[];
+  gadgets: Gadget[];
+  /** hero-class glyph urls for the loadout class filter (class name → icon) */
+  classIcons: Partial<Record<HeroClass, string>>;
   /** prebuilt global search index over items + every linkable entity */
   search: SearchEntry[];
   facets: FacetsByDataset;

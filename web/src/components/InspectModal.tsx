@@ -1,9 +1,11 @@
-import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 
 import { toggle, useCount } from "../store/collection";
-import type { Ability, Defender, Hero, PerkEntity, Schematic, Survivor } from "../types";
-import { rarityColor } from "../lib/rarity";
-import { tagId, weaponStatRows, type Selected } from "../lib/view";
+import type { Ability, AnyItem, Defender, Hero, Perk, PerkEntity, Schematic, Survivor } from "../types";
+import { RARITY_LEVEL, STARS, rarityColor } from "../lib/rarity";
+import { KIND_LABEL, heroStatRows, tagId, weaponStatRows, type ItemKind, type Selected } from "../lib/view";
+import { Rich } from "./Rich";
+import { IconBook } from "./icons";
 
 interface Props {
   selected: Selected;
@@ -11,319 +13,238 @@ interface Props {
   /** shared perk registry, to resolve a schematic's perkSlots[].perkIds */
   perks: Record<string, PerkEntity>;
   onClose: () => void;
-  /** jump to a section/subcategory with a facet applied (cross-link / comps) */
-  onCrossLink: (sectionKey: string, subKey: string, tagId: string) => void;
+  /** jump to a section/subcategory, optionally applying a facet tag (cross-link) */
+  onCrossLink: (sectionKey: string, subKey: string, tagId?: string) => void;
+  /** find this item in the Collection Book (navigate + scroll + flash) */
+  onLocate: (kind: ItemKind, item: AnyItem) => void;
 }
 
-const KIND_LABEL: Record<string, string> = {
-  hero: "Hero",
-  survivor: "Survivor",
-  "mythic-lead": "Mythic Lead",
-  lead: "Lead Survivor",
-  defender: "Defender",
-  schematic: "Schematic",
-};
+type Tab = "perks" | "abilities" | "crafting";
 
-export function InspectModal({ selected, abilities, perks, onClose, onCrossLink }: Props) {
-  const { kind, item } = selected;
-  const count = useCount(item.id);
-  const color = rarityColor(item.rarity);
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [onClose]);
-
-  const art = item.images.large ?? item.images.icon;
-
-  return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div
-        className="modal"
-        style={{ "--rarity": color } as CSSProperties}
-        onClick={(e) => e.stopPropagation()}
-        role="dialog"
-        aria-modal="true"
-      >
-        <header className="modal-head">
-          <div className="modal-titles">
-            <span className="modal-kind" style={{ color }}>
-              {item.rarity} · {kind === "survivor" ? KIND_LABEL[(item as Survivor).kind] : KIND_LABEL[kind]}
-            </span>
-            <h2>{item.name}</h2>
-          </div>
-          <button type="button" className="modal-close" onClick={onClose} aria-label="Close">
-            ✕
-          </button>
-        </header>
-
-        <div className="modal-body">
-          <div className="modal-left">
-            <div className="modal-art">
-              {art ? <img src={art} alt="" /> : <span className="card-placeholder">{item.name.slice(0, 2)}</span>}
-            </div>
-            <button
-              type="button"
-              className={`own-btn${count > 0 ? " is-on" : ""}`}
-              onClick={() => toggle(item.id)}
-            >
-              {count > 0 ? "✓ Collected" : "Mark as collected"}
-            </button>
-          </div>
-
-          <div className="modal-main">
-            {kind === "hero" && <HeroBody hero={item as Hero} abilities={abilities} onCrossLink={onCrossLink} />}
-            {kind === "schematic" && <SchematicBody s={item as Schematic} perks={perks} onCrossLink={onCrossLink} />}
-            {(kind === "survivor" || kind === "defender") && (
-              <PersonnelBody item={item as Survivor | Defender} kind={kind} onCrossLink={onCrossLink} />
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
+function PerkIcon({ img, name, cls = "pic" }: { img?: string; name?: string; cls?: string }) {
+  return img ? (
+    <img className={cls} src={img} alt="" loading="lazy" />
+  ) : (
+    <span className={`${cls} ph`}>{(name ?? "?").slice(0, 1)}</span>
   );
 }
 
-function Chips({ children }: { children: ReactNode }) {
-  return <div className="modal-chips">{children}</div>;
-}
-function LinkChip({ label, icon, onClick }: { label: string; icon?: string; onClick: () => void }) {
+function LinkChip({ label, img, onClick }: { label: string; img?: string; onClick: () => void }) {
   return (
-    <button type="button" className="link-chip" onClick={onClick}>
-      {icon && <img className="link-chip-icon" src={icon} alt="" />}
+    <button type="button" className="cb-linkchip" onClick={onClick}>
+      {img && <img src={img} alt="" />}
       {label}
     </button>
   );
 }
 
-function PerkIcon({ perk }: { perk: { name: string; images?: { icon?: string } } }) {
-  return perk.images?.icon ? (
-    <img className="perk-icon" src={perk.images.icon} alt="" />
-  ) : (
-    <span className="perk-icon perk-icon-fallback">{perk.name.slice(0, 1)}</span>
+// ── hero body ────────────────────────────────────────────────────────────────
+function PerkRow({
+  perk,
+  tagText,
+  onClick,
+  title,
+}: {
+  perk: Perk;
+  tagText: string;
+  onClick: () => void;
+  title: string;
+}) {
+  const tagClass = tagText === "Standard" ? "std" : tagText === "Commander" ? "cmd" : "cls";
+  return (
+    <div className="cb-perk">
+      <PerkIcon img={perk.images?.icon} name={perk.name} />
+      <div className="pb">
+        <div className="ph-name">
+          <button type="button" className="pname cb-xlink" title={title} onClick={onClick}>
+            {perk.name}
+          </button>
+          <span className={`ptag ${tagClass}`}>{tagText}</span>
+        </div>
+        <p>
+          <Rich text={perk.description} />
+        </p>
+      </div>
+    </div>
   );
 }
 
 function HeroBody({
   hero,
+  tab,
   abilities,
   onCrossLink,
 }: {
   hero: Hero;
+  tab: Tab;
   abilities: Record<string, Ability>;
   onCrossLink: Props["onCrossLink"];
 }) {
-  const [tab, setTab] = useState<"perks" | "abilities">("perks");
-  const resolved = hero.abilityIds.map((id) => abilities[id]).filter((a): a is Ability => Boolean(a));
-
-  return (
-    <>
-      <Chips>
-        <LinkChip label={hero.class} onClick={() => onCrossLink("heroes", "all", tagId("class", hero.class))} />
-        <LinkChip label={hero.setLabel} onClick={() => onCrossLink("heroes", "all", tagId("set", hero.set))} />
-      </Chips>
-      {hero.location && <p className="modal-location">📍 {hero.location}</p>}
-      {hero.description && <p className="modal-flavor">{hero.description}</p>}
-
-      <div className="tabs">
-        <button type="button" className={tab === "perks" ? "is-active" : ""} onClick={() => setTab("perks")}>
-          Perks
-        </button>
-        <button type="button" className={tab === "abilities" ? "is-active" : ""} onClick={() => setTab("abilities")}>
-          Abilities
-        </button>
+  if (tab === "abilities") {
+    const list = hero.abilityIds.map((id) => abilities[id]).filter((a): a is Ability => Boolean(a));
+    return (
+      <div>
+        {list.length === 0 && <p className="cb-flavor">No active abilities in the data.</p>}
+        {list.map((a) => (
+          <div className="cb-ability" key={a.id}>
+            <PerkIcon img={a.images.icon} name={a.name} cls="aic" />
+            <div className="pb">
+              <button
+                type="button"
+                className="aname cb-xlink"
+                title="Find heroes that share this ability"
+                onClick={() => onCrossLink("heroes", "all", tagId("ability", a.id))}
+              >
+                {a.name}
+              </button>
+              <div className="meta">
+                {a.cooldown !== undefined && <span>COOLDOWN {a.cooldown}s</span>}
+                {a.energyCost !== undefined && <span>COST {a.energyCost}</span>}
+              </div>
+              <p>
+                <Rich text={a.description} />
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
-
-      {tab === "perks" ? (
-        <div className="perk-list">
-          {hero.heroPerk && (
-            <div className="perk">
-              <PerkIcon perk={hero.heroPerk} />
-              <div className="perk-text">
-                <div className="perk-head">
-                  Standard Perk ·{" "}
-                  <button
-                    type="button"
-                    className="perk-link"
-                    title="Find heroes that share this standard perk"
-                    onClick={() => onCrossLink("heroes", "all", tagId("heroPerk", hero.heroPerk!.name))}
-                  >
-                    {hero.heroPerk.name}
-                  </button>
-                </div>
-                <p>{hero.heroPerk.description}</p>
-              </div>
-            </div>
-          )}
-          {hero.commanderPerk && (
-            <div className="perk">
-              <PerkIcon perk={hero.commanderPerk} />
-              <div className="perk-text">
-                <div className="perk-head">
-                  Commander Perk ·{" "}
-                  <button
-                    type="button"
-                    className="perk-link"
-                    title="Find heroes that share this commander perk"
-                    onClick={() => onCrossLink("heroes", "all", tagId("commanderPerk", hero.commanderPerk!.name))}
-                  >
-                    {hero.commanderPerk.name}
-                  </button>
-                </div>
-                <p>{hero.commanderPerk.description}</p>
-                {hero.perkRequirement && <p className="perk-req">{hero.perkRequirement}</p>}
-              </div>
-            </div>
-          )}
-          {hero.classPerks.map((p) => (
-            <div className="perk" key={p.name}>
-              <PerkIcon perk={p} />
-              <div className="perk-text">
-                <div className="perk-head">
-                  Class Perk ·{" "}
-                  <button
-                    type="button"
-                    className="perk-link"
-                    title="Find heroes that share this class perk"
-                    onClick={() => onCrossLink("heroes", "all", tagId("classPerk", p.name))}
-                  >
-                    {p.name}
-                  </button>
-                </div>
-                <p>{p.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="ability-list">
-          {resolved.length === 0 && <p className="note">No active abilities in the source data.</p>}
-          {resolved.map((a) => (
-            <div className="ability" key={a.id}>
-              {a.images.icon && <img className="ability-icon" src={a.images.icon} alt="" />}
-              <div className="ability-text">
+    );
+  }
+  return (
+    <div>
+      {hero.heroPerk && (
+        <>
+          <div className="cb-perkgroup-title">Standard Perk</div>
+          <PerkRow
+            perk={hero.heroPerk}
+            tagText="Standard"
+            title="Find heroes with this standard perk"
+            onClick={() => onCrossLink("heroes", "all", tagId("heroPerk", hero.heroPerk!.name))}
+          />
+        </>
+      )}
+      {hero.commanderPerk && (
+        <>
+          <div className="cb-perkgroup-title">Commander Perk</div>
+          <div className="cb-perk">
+            <PerkIcon img={hero.commanderPerk.images?.icon} name={hero.commanderPerk.name} />
+            <div className="pb">
+              <div className="ph-name">
                 <button
                   type="button"
-                  className="ability-name"
-                  title="Find heroes that share this ability"
-                  onClick={() => onCrossLink("heroes", "all", tagId("ability", a.id))}
+                  className="pname cb-xlink"
+                  title="Find heroes with this commander perk"
+                  onClick={() =>
+                    onCrossLink("heroes", "all", tagId("commanderPerk", hero.commanderPerk!.name))
+                  }
                 >
-                  {a.name}
+                  {hero.commanderPerk.name}
                 </button>
-                <div className="ability-meta">
-                  {a.cooldown !== undefined && <span>Cooldown {a.cooldown}s</span>}
-                  {a.energyCost !== undefined && <span>Cost {a.energyCost}</span>}
-                </div>
-                {a.description && <p>{a.description}</p>}
+                <span className="ptag cmd">Commander</span>
               </div>
+              <p>
+                <Rich text={hero.commanderPerk.description} />
+              </p>
+              {hero.perkRequirement && <p className="req">{hero.perkRequirement}</p>}
             </div>
-          ))}
-        </div>
+          </div>
+        </>
       )}
-    </>
+      {hero.classPerks.length > 0 && (
+        <>
+          <div className="cb-perkgroup-title">Class Perks</div>
+          {hero.classPerks.map((p) => (
+            <PerkRow
+              key={p.name}
+              perk={p}
+              tagText="Class"
+              title="Find heroes with this class perk"
+              onClick={() => onCrossLink("heroes", "all", tagId("classPerk", p.name))}
+            />
+          ))}
+        </>
+      )}
+    </div>
   );
 }
 
+// ── schematic body ───────────────────────────────────────────────────────────
 function SchematicBody({
   s,
+  tab,
   perks,
   onCrossLink,
 }: {
   s: Schematic;
+  tab: Tab;
   perks: Record<string, PerkEntity>;
   onCrossLink: Props["onCrossLink"];
 }) {
-  const [tab, setTab] = useState<"perks" | "crafting">("crafting");
-  const rows = weaponStatRows(s);
-  // category ("trap") and section key ("traps") differ — map before cross-linking
   const sectionKey = s.category === "trap" ? "traps" : s.category;
   const perkFacet = `${s.category}Perk`; // rangedPerk / meleePerk / trapPerk
-
-  return (
-    <>
-      <Chips>
-        {s.subType && <LinkChip label={s.subType} onClick={() => onCrossLink(sectionKey, "all", tagId("subType", s.subType!))} />}
-        {s.ammoType && <LinkChip label={s.ammoType} onClick={() => onCrossLink(sectionKey, "all", tagId("ammoType", s.ammoType!))} />}
-        {s.triggerType && <LinkChip label={s.triggerType} onClick={() => onCrossLink(sectionKey, "all", tagId("triggerType", s.triggerType!))} />}
-        {s.evoType && <LinkChip label={s.evoType} onClick={() => onCrossLink(sectionKey, "all", tagId("evoType", s.evoType!))} />}
-      </Chips>
-      {s.description && <p className="modal-flavor">{s.description}</p>}
-
-      {rows.length > 0 && (
-        <div className="stat-grid">
-          {rows.map((r) => (
-            <div className="stat" key={r.label}>
-              <span className="stat-label">{r.label}</span>
-              <span className="stat-value">{r.value}</span>
+  if (tab === "crafting") {
+    return (
+      <div>
+        <div className="cb-perkgroup-title">Crafting Cost</div>
+        {s.craftingCost?.length ? (
+          s.craftingCost.map((c) => (
+            <div className="cb-craft" key={c.id}>
+              {c.icon && <img src={c.icon} alt="" loading="lazy" />}
+              <span className="cn">{c.name}</span>
+              <span className="cq">×{c.qty}</span>
             </div>
-          ))}
-          <p className="note stat-note">Base values (level 1, unrolled).</p>
-        </div>
-      )}
-
-      <div className="tabs">
-        <button type="button" className={tab === "crafting" ? "is-active" : ""} onClick={() => setTab("crafting")}>
-          Crafting
-        </button>
-        <button type="button" className={tab === "perks" ? "is-active" : ""} onClick={() => setTab("perks")}>
-          Perks
-        </button>
+          ))
+        ) : (
+          <p className="cb-flavor">No crafting cost in the data.</p>
+        )}
       </div>
-
-      {tab === "crafting" ? (
-        <div className="craft-list">
-          {s.craftingCost?.length ? (
-            s.craftingCost.map((c) => (
-              <div className="craft" key={c.id}>
-                {c.icon && <img src={c.icon} alt="" />}
-                <span className="craft-name">{c.name}</span>
-                <span className="craft-qty">×{c.qty}</span>
-              </div>
-            ))
-          ) : (
-            <p className="note">No crafting cost in the source data.</p>
-          )}
-        </div>
+    );
+  }
+  return (
+    <div>
+      <div className="cb-perkgroup-title">
+        Perk Pool — click a perk to find every {s.category === "trap" ? "trap" : "weapon"} that can
+        roll it
+      </div>
+      {s.perkSlots?.length ? (
+        s.perkSlots.map((slot, i) => (
+          <div className="cb-slot" key={i}>
+            <div className="sh">
+              Slot {i + 1}
+              {slot.requiredLevel ? ` · Lv ${slot.requiredLevel}` : ""}
+            </div>
+            <div className="opts">
+              {slot.perkIds.map((id) => {
+                const p = perks[id];
+                if (!p) return null;
+                return (
+                  <button
+                    type="button"
+                    className="cb-slot-opt"
+                    key={id}
+                    title="Cross-link this perk"
+                    onClick={() => onCrossLink(sectionKey, "all", tagId(perkFacet, id))}
+                  >
+                    {p.images?.icon ? (
+                      <img src={p.images.icon} alt="" loading="lazy" />
+                    ) : (
+                      <span className="on">{p.name.slice(0, 1)}</span>
+                    )}
+                    <span className="nm">{p.name}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ))
       ) : (
-        <div className="perk-list">
-          {s.perkSlots?.length ? (
-            s.perkSlots.map((slot, i) => (
-              <div className="perk perk-slot" key={i}>
-                <div className="perk-head">
-                  Perk Slot {i + 1}
-                  {slot.requiredLevel ? ` · Lv ${slot.requiredLevel}` : ""}
-                </div>
-                <ul className="perk-options">
-                  {slot.perkIds.map((id) => {
-                    const p = perks[id];
-                    if (!p) return null;
-                    return (
-                      <li key={id}>
-                        <button
-                          type="button"
-                          className="perk-option"
-                          title={`Find ${s.category === "trap" ? "traps" : "weapons"} that can roll this perk`}
-                          onClick={() => onCrossLink(sectionKey, "all", tagId(perkFacet, id))}
-                        >
-                          <PerkIcon perk={p} />
-                          <span>{p.name}</span>
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            ))
-          ) : (
-            <p className="note">No perk pool in the source data.</p>
-          )}
-        </div>
+        <p className="cb-flavor">No perk pool in the data.</p>
       )}
-    </>
+    </div>
   );
 }
 
+// ── personnel body ───────────────────────────────────────────────────────────
 function PersonnelBody({
   item,
   kind,
@@ -333,32 +254,251 @@ function PersonnelBody({
   kind: "survivor" | "defender";
   onCrossLink: Props["onCrossLink"];
 }) {
-  // squad / personality / weapon become icon+text chips that cross-link, so the
-  // attributes are both visible (with their game badge) and linkable.
-  const chips: { label: string; icon?: string; section: string; sub: string; tag: string }[] = [];
-  if (kind === "survivor") {
-    const s = item as Survivor;
-    if (s.squad)
-      chips.push({ label: s.squad, icon: s.badgeImages?.squad, section: "personnel", sub: "all-survivors", tag: tagId("squad", s.squad) });
-    if (s.personality)
-      chips.push({ label: s.personality, icon: s.badgeImages?.personality, section: "personnel", sub: "all-survivors", tag: tagId("personality", s.personality) });
-  } else {
-    const d = item as Defender;
-    if (d.weaponType)
-      chips.push({ label: d.weaponType, section: "personnel", sub: "defenders", tag: tagId("weaponType", d.weaponType) });
-  }
+  const s = item as Survivor;
+  const d = item as Defender;
+  return (
+    <div>
+      {item.description && <p className="cb-flavor">{item.description}</p>}
+      <div className="cb-perkgroup-title">Cross-links</div>
+      <div className="cb-insp-chips">
+        {kind === "survivor" && s.squad && (
+          <LinkChip
+            label={`Squad · ${s.squad}`}
+            img={s.badgeImages?.squad}
+            onClick={() => onCrossLink("personnel", "all-survivors", tagId("squad", s.squad!))}
+          />
+        )}
+        {kind === "survivor" && s.personality && (
+          <LinkChip
+            label={s.personality}
+            img={s.badgeImages?.personality}
+            onClick={() =>
+              onCrossLink("personnel", "all-survivors", tagId("personality", s.personality!))
+            }
+          />
+        )}
+        {kind === "defender" && d.weaponType && (
+          <LinkChip
+            label={d.weaponType}
+            onClick={() => onCrossLink("personnel", "defenders", tagId("weaponType", d.weaponType!))}
+          />
+        )}
+      </div>
+      <p className="cb-flavor">📍 Found inside Llamas in the Llama Shop.</p>
+    </div>
+  );
+}
+
+// ── shell ────────────────────────────────────────────────────────────────────
+export function InspectModal({ selected, abilities, perks, onClose, onCrossLink, onLocate }: Props) {
+  const { kind, item } = selected;
+  const isHero = kind === "hero";
+  const isSchem = kind === "schematic";
+  const [tab, setTab] = useState<Tab>("perks");
+  const count = useCount(item.id);
+  const owned = count > 0;
+  const color = rarityColor(item.rarity);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  const hero = item as Hero;
+  const schem = item as Schematic;
+
+  const tabs: [Tab, string][] = isHero
+    ? [
+        ["perks", "Perks"],
+        ["abilities", "Abilities"],
+      ]
+    : isSchem
+      ? [
+          ["perks", "Perks"],
+          ["crafting", "Crafting"],
+        ]
+      : [];
+
+  const statRows = isSchem ? weaponStatRows(schem) : isHero ? heroStatRows(hero) : [];
+  const stars = STARS[item.rarity] ?? 1;
+  const kindLabel = KIND_LABEL[kind === "survivor" ? (item as Survivor).kind : kind];
+
+  // header chips (cross-links)
+  const chips =
+    isHero ? (
+      <>
+        <LinkChip
+          label={hero.class}
+          onClick={() => onCrossLink("heroes", "all", tagId("class", hero.class))}
+        />
+        <LinkChip label={hero.setLabel} onClick={() => onCrossLink("heroes", hero.set)} />
+      </>
+    ) : isSchem ? (
+      <>
+        {schem.subType && (
+          <LinkChip
+            label={schem.subType}
+            onClick={() =>
+              onCrossLink(
+                schem.category === "trap" ? "traps" : schem.category,
+                "all",
+                tagId("subType", schem.subType!),
+              )
+            }
+          />
+        )}
+        {schem.ammoType && (
+          <LinkChip
+            label={schem.ammoType}
+            onClick={() =>
+              onCrossLink(
+                schem.category === "trap" ? "traps" : schem.category,
+                "all",
+                tagId("ammoType", schem.ammoType!),
+              )
+            }
+          />
+        )}
+        {schem.evoType && (
+          <LinkChip
+            label={schem.evoType}
+            onClick={() =>
+              onCrossLink(
+                schem.category === "trap" ? "traps" : schem.category,
+                "all",
+                tagId("evoType", schem.evoType!),
+              )
+            }
+          />
+        )}
+      </>
+    ) : null;
 
   return (
-    <>
-      {chips.length > 0 && (
-        <Chips>
-          {chips.map((c) => (
-            <LinkChip key={c.tag} label={c.label} icon={c.icon} onClick={() => onCrossLink(c.section, c.sub, c.tag)} />
+    <div className="cb-inspect-overlay" onClick={onClose}>
+      <div
+        className="cb-inspect"
+        style={{ "--rc": color } as CSSProperties}
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+      >
+        <div className="cb-insp-topbar">
+          {tabs.map(([k, lbl]) => (
+            <button
+              key={k}
+              type="button"
+              className={`tab${tab === k ? " on" : ""}`}
+              onClick={() => setTab(k)}
+            >
+              {lbl}
+            </button>
           ))}
-        </Chips>
-      )}
-      {item.description && <p className="modal-flavor">{item.description}</p>}
-      <p className="note">📍 Found inside Llamas in the Llama Shop.</p>
-    </>
+          {tabs.length === 0 && <span className="tab on">Overview</span>}
+          <button type="button" className="cb-insp-close" onClick={onClose} title="Close (Esc)">
+            ✕
+          </button>
+        </div>
+
+        <div className="cb-insp-body">
+          {/* LEFT: stat panel */}
+          <div className="cb-insp-left">
+            <div className="cb-statpanel" style={{ "--rc": color } as CSSProperties}>
+              <div className="cb-sp-head">
+                <div className="rk">
+                  {item.rarity} · {kindLabel}
+                </div>
+                <h3>{item.name}</h3>
+                {isHero && (
+                  <div className="cls">
+                    {hero.class} · {hero.setLabel}
+                  </div>
+                )}
+                {isSchem && (
+                  <div className="cls">
+                    {[schem.subType, schem.ammoType].filter(Boolean).join(" · ")}
+                  </div>
+                )}
+              </div>
+              <div className="cb-sp-tier">
+                <span className="tnum">{RARITY_LEVEL[item.rarity] ?? "—"}</span>
+                <div className="stars">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <i key={i} className={i < stars ? "" : "off"}>
+                      ★
+                    </i>
+                  ))}
+                </div>
+                <span className="lv">{isHero || isSchem ? "LV 1 / 10" : ""}</span>
+              </div>
+              <div className="cb-sp-scroll">
+                {statRows.map((r) => (
+                  <div className={`cb-statrow${r.big ? " big" : ""}`} key={r.label}>
+                    <span className="k">{r.label}</span>
+                    <span className="v">{r.value}</span>
+                  </div>
+                ))}
+                {isHero && hero.location && (
+                  <div className="cb-loc" style={{ padding: "10px 16px 4px" }}>
+                    📍 {hero.location}
+                  </div>
+                )}
+                {isHero && hero.description && (
+                  <p className="cb-flavor" style={{ padding: "4px 16px 12px" }}>
+                    {hero.description}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* MIDDLE: framed perks / abilities / crafting */}
+          <div className="cb-insp-listframe">
+            <div className="cb-insp-mid">
+              {chips && <div className="cb-insp-chips">{chips}</div>}
+              {isHero && (
+                <HeroBody hero={hero} tab={tab} abilities={abilities} onCrossLink={onCrossLink} />
+              )}
+              {isSchem && (
+                <SchematicBody s={schem} tab={tab} perks={perks} onCrossLink={onCrossLink} />
+              )}
+              {(kind === "survivor" || kind === "defender") && (
+                <PersonnelBody
+                  item={item as Survivor | Defender}
+                  kind={kind}
+                  onCrossLink={onCrossLink}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* bottom action bar */}
+        <div className="cb-insp-actions">
+          <button
+            type="button"
+            className={`ab primary${owned ? " on" : ""}`}
+            onClick={() => toggle(item.id)}
+          >
+            <span className="key">F</span>
+            {owned ? "Owned ✓" : "Mark Owned"}
+          </button>
+          <button
+            type="button"
+            className="ab"
+            title="Find this item in the Collection Book"
+            onClick={() => onLocate(kind, item)}
+          >
+            <IconBook />
+            Find in Book
+          </button>
+          <span className="sp" />
+          <button type="button" className="ab" onClick={onClose}>
+            <span className="key">Esc</span>Back
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }

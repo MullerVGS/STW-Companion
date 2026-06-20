@@ -23,11 +23,14 @@ export const KIND_OF: Record<DatasetName, ItemKind> = {
   schematics: "schematic",
 };
 
-const KIND_LABEL: Record<string, string> = {
+export const KIND_LABEL: Record<string, string> = {
+  hero: "Hero",
   survivor: "Survivor",
   "mythic-survivor": "Mythic Survivor",
   lead: "Lead Survivor",
   "mythic-lead": "Mythic Lead",
+  defender: "Defender",
+  schematic: "Schematic",
 };
 
 /** All records from a named dataset. */
@@ -97,9 +100,50 @@ export function slug(input: string): string {
 
 export const tagId = (facet: string, value: string): string => `${facet}:${slug(value)}`;
 
+/** Where an item lives in the Collection Book — the section + preferred
+ *  subcategory to navigate to when "locating" it. The caller validates the sub
+ *  against the section's actual subcategories and falls back to the first one. */
+export function locateTarget(kind: ItemKind, item: AnyItem): { section: string; sub: string } {
+  if (kind === "hero") return { section: "heroes", sub: (item as Hero).set || "all" };
+  if (kind === "schematic") {
+    const cat = (item as Schematic).category;
+    return { section: cat === "trap" ? "traps" : cat, sub: "all" };
+  }
+  if (kind === "defender") return { section: "personnel", sub: "defenders" };
+  // survivors: jump to the subcategory matching the personnel kind
+  const sub: Record<string, string> = {
+    survivor: "survivors",
+    "mythic-survivor": "mythic-survivors",
+    lead: "leads",
+    "mythic-lead": "mythic-leads",
+  };
+  return { section: "personnel", sub: sub[(item as Survivor).kind] ?? "all-survivors" };
+}
+
+/** Best-effort check: does the commander satisfy a support hero's perk
+ *  requirement ("Requires commander with <Ability> ability.")? Returns the
+ *  unmet requirement text when it isn't satisfied, else undefined. */
+export function unmetRequirement(
+  support: Hero,
+  commander: Hero | undefined,
+  abilities: Record<string, { name: string }>,
+): string | undefined {
+  const req = support.perkRequirement?.trim();
+  if (!req) return undefined;
+  const m = /requires commander with (.+?) ability/i.exec(req);
+  if (!m) return undefined; // unrecognized shape — don't guess
+  const needed = m[1].trim().toLowerCase();
+  const have = (commander?.abilityIds ?? [])
+    .map((id) => abilities[id]?.name?.toLowerCase())
+    .filter(Boolean);
+  return have.includes(needed) ? undefined : req;
+}
+
 export interface StatRow {
   label: string;
   value: string;
+  /** rendered with emphasis in the inspect stat panel (headline stat). */
+  big?: boolean;
 }
 
 const num = (v: unknown): number | undefined => (typeof v === "number" ? v : undefined);
@@ -113,11 +157,11 @@ function get(obj: Record<string, unknown> | undefined, path: string): unknown {
 /** Curated base-stat rows for a schematic's inspect panel (values are level-1 base). */
 export function weaponStatRows(s: Schematic): StatRow[] {
   const rows: StatRow[] = [];
-  const push = (label: string, v: unknown, f: (n: number) => string = fmt) => {
+  const push = (label: string, v: unknown, f: (n: number) => string = fmt, big = false) => {
     const n = num(v);
-    if (n !== undefined) rows.push({ label, value: f(n) });
+    if (n !== undefined) rows.push({ label, value: f(n), big });
   };
-  if (s.dps !== undefined) rows.push({ label: "DPS", value: fmt(s.dps) });
+  if (s.dps !== undefined) rows.push({ label: "DPS", value: fmt(s.dps), big: true });
 
   if (s.category === "ranged") {
     const r = s.stats?.ranged;
@@ -131,7 +175,7 @@ export function weaponStatRows(s: Schematic): StatRow[] {
     push("Durability", get(r, "Durability"));
   } else if (s.category === "melee") {
     const m = s.stats?.melee;
-    push("Damage", get(m, "Damage"));
+    push("Damage", get(m, "Damage"), fmt, true);
     push("Impact", get(m, "ImpactDamage"));
     push("Crit Chance", get(m, "BaseCritChance"), pct);
     push("Crit Damage", get(m, "BaseCritDamage"), pct);
@@ -141,7 +185,7 @@ export function weaponStatRows(s: Schematic): StatRow[] {
     push("Durability", get(m, "Durability"));
   } else {
     const t = s.stats?.trap;
-    push("Damage", get(t, "Damage"));
+    push("Damage", get(t, "Damage"), fmt, true);
     push("Crit Chance", get(t, "BaseCritChance"), pct);
     push("Crit Damage", get(t, "BaseCritDamage"), pct);
     push("Arm Time", get(t, "ArmTime"));
@@ -150,4 +194,15 @@ export function weaponStatRows(s: Schematic): StatRow[] {
     push("Durability", get(t, "Durability"));
   }
   return rows;
+}
+
+/** Curated rows for a hero's inspect stat panel (the export lacks leveled stats). */
+export function heroStatRows(h: Hero): StatRow[] {
+  return [
+    { label: "Class", value: h.class, big: true },
+    { label: "Set", value: h.setLabel?.replace(/ Heroes$/, "") || "—" },
+    { label: "Rarity", value: h.rarity[0].toUpperCase() + h.rarity.slice(1) },
+    { label: "Tier", value: `T${h.tier ?? "—"}` },
+    { label: "Abilities", value: String(h.abilityIds.length) },
+  ];
 }

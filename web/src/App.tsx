@@ -4,11 +4,23 @@ import { BookSidebar } from "./components/BookSidebar";
 import { FilterBar, type OwnedFilter } from "./components/FilterBar";
 import { ItemGrid } from "./components/ItemGrid";
 import { InspectModal } from "./components/InspectModal";
+import { LoadoutScreen } from "./components/LoadoutScreen";
 import { SearchBar } from "./components/SearchBar";
 import { loadDataset } from "./lib/data";
-import { clearAll, exportJson, importJson, useCollectionState } from "./store/collection";
-import { KIND_OF, matches, recordsOf, searchText, type Selected } from "./lib/view";
+import { clearAll, useCollectionState } from "./store/collection";
+import {
+  KIND_OF,
+  locateTarget,
+  matches,
+  recordsOf,
+  searchText,
+  slug,
+  type ItemKind,
+  type Selected,
+} from "./lib/view";
 import type { AnyItem, BookSection, BookSubcategory, Dataset, DatasetName } from "./types";
+
+type Mode = "book" | "loadout";
 
 /** dataset that backs a section's synthetic "All" view (personnel spans two -> none). */
 const SECTION_DATASET: Record<string, DatasetName> = {
@@ -18,11 +30,28 @@ const SECTION_DATASET: Record<string, DatasetName> = {
   traps: "schematics",
 };
 
+/** Map a section to the schematic `category` it represents (for the "All" match). */
+const SECTION_CATEGORY: Record<string, string> = {
+  ranged: "ranged",
+  melee: "melee",
+  traps: "trap",
+};
+
+/** perk facet to surface per weapon/trap section. */
+const PERK_FACET: Record<string, string> = {
+  ranged: "rangedPerk",
+  melee: "meleePerk",
+  traps: "trapPerk",
+};
+
 /** Prepend an "All <section>" subcategory to single-dataset sections. */
 function withAll(section: BookSection, d: Dataset): BookSubcategory[] {
   const ds = SECTION_DATASET[section.key];
   if (!ds) return section.subcategories;
-  const match = ds === "schematics" ? [{ field: "category", value: section.key }] : undefined;
+  const match =
+    ds === "schematics"
+      ? [{ field: "category", value: SECTION_CATEGORY[section.key] }]
+      : undefined;
   const count = recordsOf(d, ds).filter((r) => matches(r, match)).length;
   const all: BookSubcategory = { key: "all", label: `All ${section.label}`, dataset: ds, match, count };
   return [all, ...section.subcategories];
@@ -32,20 +61,29 @@ export default function App() {
   const [dataset, setDataset] = useState<Dataset | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const [mode, setMode] = useState<Mode>("book");
   const [activeSection, setActiveSection] = useState("heroes");
   const [activeSub, setActiveSub] = useState("all");
   const [query, setQuery] = useState("");
   const [ownedFilter, setOwnedFilter] = useState<OwnedFilter>("all");
   const [selectedTags, setSelectedTags] = useState<ReadonlySet<string>>(new Set());
   const [selected, setSelected] = useState<Selected | null>(null);
+  const [highlightId, setHighlightId] = useState<string | null>(null);
 
   const collection = useCollectionState();
 
   useEffect(() => {
-    loadDataset().then(setDataset).catch((e: unknown) =>
-      setError(e instanceof Error ? e.message : String(e)),
-    );
+    loadDataset()
+      .then(setDataset)
+      .catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)));
   }, []);
+
+  // clear the find-in-book flash once it has played
+  useEffect(() => {
+    if (!highlightId) return;
+    const t = setTimeout(() => setHighlightId(null), 2600);
+    return () => clearTimeout(t);
+  }, [highlightId]);
 
   // sections with synthetic "All" subcategories
   const sections = useMemo(
@@ -66,18 +104,15 @@ export default function App() {
   const facets = useMemo(() => {
     if (!dataset || !sub) return [];
     const constrained = new Set((sub.match ?? []).map((m) => m.field));
-    // perk facets are per-category; show only the one matching the active section
-    const perkFacetForSection: Record<string, string> = {
-      ranged: "rangedPerk",
-      melee: "meleePerk",
-      traps: "trapPerk",
-    };
     return dataset.facets[sub.dataset].filter((g) => {
       if (constrained.has(g.facet)) return false;
-      if (g.facet.endsWith("Perk")) return perkFacetForSection[activeSection] === g.facet;
-      return true;
+      // perk facets are per-category; show only the one matching the active section
+      if (g.facet.endsWith("Perk")) return PERK_FACET[activeSection] === g.facet;
+      // the "set" facet is redundant once you're on a specific hero set page
+      if (g.facet === "set" && activeSection === "heroes" && activeSub !== "all") return false;
+      return g.values.length > 1;
     });
-  }, [dataset, sub, activeSection]);
+  }, [dataset, sub, activeSection, activeSub]);
 
   const selectedByFacet = useMemo(() => {
     const m = new Map<string, Set<string>>();
@@ -92,11 +127,12 @@ export default function App() {
 
   const baseFiltered = useMemo(() => {
     const q = query.trim().toLowerCase();
+    const kind = sub ? KIND_OF[sub.dataset] : "hero";
     return records.filter((r) => {
       for (const values of selectedByFacet.values()) {
         if (!r.tags.some((t) => values.has(t))) return false;
       }
-      return !q || searchText(KIND_OF[sub.dataset], r).toLowerCase().includes(q);
+      return !q || searchText(kind, r).toLowerCase().includes(q);
     });
   }, [records, selectedByFacet, query, sub]);
 
@@ -108,7 +144,7 @@ export default function App() {
     });
   }, [baseFiltered, ownedFilter, collection]);
 
-  // per-subcategory owned counts for the sidebar
+  // per-subcategory owned counts for the sidebar + page-completion strip
   const ownedBySub = useMemo(() => {
     const out: Record<string, number> = {};
     if (!dataset) return out;
@@ -134,24 +170,56 @@ export default function App() {
   }, [dataset, collection]);
   const pct = total ? Math.round((owned / total) * 100) : 0;
 
+  // page completion: which real subcategories of the active section are fully owned
+  const pageSegs = useMemo(() => {
+    if (!section) return [];
+    return section.subcategories
+      .filter((s) => s.key !== "all")
+      .map((s) => {
+        const o = ownedBySub[`${section.key}/${s.key}`] ?? 0;
+        return s.count > 0 && o >= s.count;
+      });
+  }, [section, ownedBySub]);
+  const pageDone = pageSegs.filter(Boolean).length;
+
   const selectSub = (sectionKey: string, subKey: string) => {
     setActiveSection(sectionKey);
     setActiveSub(subKey);
     setSelectedTags(new Set());
     setQuery("");
+    setSelected(null);
   };
-  const crossLink = (sectionKey: string, subKey: string, tagId: string) => {
+  const crossLink = (sectionKey: string, subKey: string, tag?: string) => {
+    setMode("book");
     setActiveSection(sectionKey);
-    setActiveSub(subKey);
-    setSelectedTags(new Set([tagId]));
+    setActiveSub(subKey || "all");
+    setSelectedTags(tag ? new Set([tag]) : new Set());
     setQuery("");
     setOwnedFilter("all");
     setSelected(null);
   };
+
+  // find-in-book: jump to where an item lives, clear filters, flash its card
+  const locate = (kind: ItemKind, item: AnyItem) => {
+    const target = locateTarget(kind, item);
+    const sec = sections.find((s) => s.key === target.section);
+    const subKey = sec?.subcategories.some((x) => x.key === target.sub)
+      ? target.sub
+      : (sec?.subcategories[0]?.key ?? "all");
+    setMode("book");
+    setActiveSection(target.section);
+    setActiveSub(subKey);
+    setSelectedTags(new Set());
+    setQuery("");
+    setOwnedFilter("all");
+    setSelected(null);
+    setHighlightId(item.id);
+  };
   const toggleFacet = (tagId: string) =>
     setSelectedTags((prev) => {
       const next = new Set(prev);
-      next.has(tagId) ? next.delete(tagId) : next.add(tagId);
+      if (next.has(tagId)) next.delete(tagId);
+      else next.add(tagId);
       return next;
     });
 
@@ -161,67 +229,169 @@ export default function App() {
     const rec = recordsOf(dataset, datasetName).find((r) => r.id === id);
     if (rec) setSelected({ kind: KIND_OF[datasetName], item: rec });
   };
-  // navigate from a global-search entity hit: apply a facet tag, or just jump
   const searchFilter = (sectionKey: string, subKey: string, tag?: string) => {
+    setMode("book");
     if (tag) crossLink(sectionKey, subKey, tag);
     else selectSub(sectionKey, subKey);
   };
 
-  const handleExport = () => {
-    const blob = new Blob([exportJson()], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `stw-collection-${new Date().toISOString().slice(0, 10)}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-  const handleImportFile = (file: File) => {
-    file
-      .text()
-      .then((text) => importJson(text))
-      .catch((e: unknown) => alert(`Import failed: ${e instanceof Error ? e.message : String(e)}`));
-  };
   const handleReset = () => {
-    if (confirm("Clear your entire collection? This cannot be undone.")) clearAll();
+    if (confirm("Clear your entire owned collection? This cannot be undone.")) clearAll();
   };
+
+  // spotlight: describe an active perk / ability tag above the grid
+  const spotlight = useMemo(() => {
+    if (!dataset || selectedTags.size !== 1) return null;
+    const tag = [...selectedTags][0];
+    const f = tag.slice(0, tag.indexOf(":"));
+    const val = tag.slice(tag.indexOf(":") + 1);
+    if (f === "rangedPerk" || f === "meleePerk" || f === "trapPerk") {
+      const p = dataset.perks[val];
+      if (p)
+        return {
+          k: "Weapon/Trap Perk",
+          n: p.name,
+          d: p.tiers[p.tiers.length - 1] ?? p.description ?? "",
+          icon: p.images?.icon,
+        };
+    }
+    if (f === "ability") {
+      const a = Object.values(dataset.abilities).find((ab) => slug(ab.id) === val);
+      if (a) return { k: "Hero Ability", n: a.name, d: a.description ?? "", icon: a.images.icon };
+    }
+    if (f === "heroPerk" || f === "commanderPerk" || f === "classPerk") {
+      for (const h of dataset.heroes) {
+        for (const p of [h.heroPerk, h.commanderPerk, ...h.classPerks]) {
+          if (p && slug(p.name) === val)
+            return {
+              k:
+                f === "classPerk"
+                  ? "Class Perk"
+                  : f === "commanderPerk"
+                    ? "Commander Perk"
+                    : "Standard Perk",
+              n: p.name,
+              d: p.description,
+              icon: p.images?.icon,
+            };
+        }
+      }
+    }
+    return null;
+  }, [dataset, selectedTags]);
 
   if (error) {
     return (
-      <div className="boot">
-        <h1>STW Collection Book</h1>
-        <p className="error">{error}</p>
+      <div className="cb-loading">
+        <div>
+          <div className="lg">COLLECTION BOOK</div>
+          <div className="ls" style={{ color: "#ff7b72" }}>
+            {error}
+          </div>
+        </div>
       </div>
     );
   }
   if (!dataset || !section || !sub) {
     return (
-      <div className="boot">
-        <h1>STW Collection Book</h1>
-        <p>Loading data…</p>
+      <div className="cb-loading">
+        <div>
+          <div className="lg">COLLECTION BOOK</div>
+          <div className="ls">Loading data…</div>
+        </div>
       </div>
     );
   }
 
+  const kind = KIND_OF[sub.dataset];
+
   return (
-    <div className="app">
-      <header className="app-header">
-        <div className="brand">
-          <h1>STW Collection Book</h1>
-          <span className="subtitle">Wiki + Tracker</span>
+    <div className="cb-root">
+      {/* top bar */}
+      <header className="cb-topbar">
+        <div className="cb-levelbadge">
+          <span className="lvl">{owned > 0 ? Math.min(99, Math.ceil(pct / 2)) : 1}</span>
+          <span className="segs">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <i key={i} className={i < Math.round(pct / 20) ? "on" : ""} />
+            ))}
+          </span>
         </div>
-        <SearchBar index={dataset.search} onPickItem={openItem} onFilter={searchFilter} />
-        <div className="progress">
-          <div className="progress-bar">
-            <div className="progress-fill" style={{ width: `${pct}%` }} />
+        <div className="cb-back">
+          <button type="button" className="chev" title="Back" onClick={() => selectSub("heroes", "all")}>
+            ‹
+          </button>
+          <div className="cb-title">
+            STW Companion<span className="sub">Save the World · Wiki</span>
           </div>
-          <span className="progress-label">
-            {owned} / {total} ({pct}%)
+        </div>
+        <div className="cb-modeswitch" role="tablist" aria-label="View">
+          <button
+            type="button"
+            role="tab"
+            aria-selected={mode === "book"}
+            className={mode === "book" ? "on" : ""}
+            onClick={() => setMode("book")}
+          >
+            Collection Book
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={mode === "loadout"}
+            className={mode === "loadout" ? "on" : ""}
+            onClick={() => setMode("loadout")}
+          >
+            Hero Loadout
+          </button>
+        </div>
+        <div className="cb-top-spacer" />
+        <SearchBar index={dataset.search} onPickItem={openItem} onFilter={searchFilter} />
+        <div className="cb-progress">
+          <div className="pbar">
+            <div className="pfill" style={{ width: `${pct}%` }} />
+          </div>
+          <span className="plabel">
+            <b>{owned}</b> / {total}
           </span>
         </div>
       </header>
 
-      <div className="layout">
+      {mode === "loadout" ? (
+        <LoadoutScreen dataset={dataset} onLocate={locate} onInspect={(sel) => setSelected(sel)} />
+      ) : (
+        <>
+      {/* book header strip */}
+      <div className="cb-bookhead">
+        <div
+          className="seg"
+          style={{ background: "linear-gradient(180deg,#2f6fd0,#2456a8)", color: "#fff", minWidth: 150 }}
+        >
+          <div className="cb-bh-title" style={{ color: "#cfe0ff" }}>
+            Collection
+          </div>
+          <div style={{ fontFamily: "Anton", fontSize: 20, lineHeight: 1 }}>
+            {owned.toLocaleString()}{" "}
+            <span style={{ fontSize: 13, color: "#cfe0ff" }}>/ {total.toLocaleString()} owned</span>
+          </div>
+        </div>
+        <div className="cb-bh-completion seg">
+          <div className="cb-bh-title">Page Completion · {section.label}</div>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <div className="cb-segbar" style={{ flex: 1 }}>
+              {pageSegs.map((on, i) => (
+                <i key={i} className={on ? "on" : ""} />
+              ))}
+            </div>
+            <span style={{ fontFamily: "Barlow Condensed", fontWeight: 700, fontSize: 15 }}>
+              {pageDone}/{pageSegs.length}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* layout */}
+      <div className="cb-layout">
         <BookSidebar
           sections={sections}
           activeSection={section.key}
@@ -229,34 +399,60 @@ export default function App() {
           ownedBySub={ownedBySub}
           onSelect={selectSub}
         />
-        <main className="content">
-          <div className="content-head">
-            <h2>
-              {section.label} <span className="content-sub">{sub.label}</span>
-            </h2>
+        <main className="cb-content">
+          <div className="cb-content-head">
+            <h2>{section.label}</h2>
+            <span className="crumb">{sub.label}</span>
+            <span className="ct">{visible.length} shown</span>
           </div>
+
+          {spotlight && (
+            <div className="cb-spotlight">
+              {spotlight.icon ? (
+                <img className="ic" src={spotlight.icon} alt="" />
+              ) : (
+                <span
+                  className="ic"
+                  style={{ display: "grid", placeItems: "center", fontFamily: "Anton" }}
+                >
+                  {spotlight.n.slice(0, 1)}
+                </span>
+              )}
+              <div className="meta">
+                <div className="k">Cross-link · {spotlight.k}</div>
+                <div className="n">{spotlight.n}</div>
+                <div className="d">{spotlight.d}</div>
+              </div>
+              <button type="button" className="x" onClick={() => setSelectedTags(new Set())}>
+                Clear ✕
+              </button>
+            </div>
+          )}
+
           <FilterBar
             query={query}
             onQuery={setQuery}
-            ownedFilter={ownedFilter}
-            onOwnedFilter={setOwnedFilter}
+            owned={ownedFilter}
+            onOwned={setOwnedFilter}
             facets={facets}
-            selectedTags={selectedTags}
-            onToggleFacet={toggleFacet}
-            onClearFacets={() => setSelectedTags(new Set())}
-            visibleCount={visible.length}
-            totalCount={records.length}
-            onExport={handleExport}
-            onImportFile={handleImportFile}
+            selected={selectedTags}
+            onToggle={toggleFacet}
+            onClear={() => setSelectedTags(new Set())}
+            visible={visible.length}
+            total={records.length}
             onReset={handleReset}
           />
+
           <ItemGrid
-            kind={KIND_OF[sub.dataset]}
+            kind={kind}
             items={visible}
-            onInspect={(item) => setSelected({ kind: KIND_OF[sub.dataset], item })}
+            onInspect={(item) => setSelected({ kind, item })}
+            highlightId={highlightId}
           />
         </main>
       </div>
+        </>
+      )}
 
       {selected && (
         <InspectModal
@@ -265,6 +461,7 @@ export default function App() {
           perks={dataset.perks}
           onClose={() => setSelected(null)}
           onCrossLink={crossLink}
+          onLocate={locate}
         />
       )}
     </div>
