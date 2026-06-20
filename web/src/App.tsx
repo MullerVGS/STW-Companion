@@ -144,44 +144,6 @@ export default function App() {
     });
   }, [baseFiltered, ownedFilter, collection]);
 
-  // per-subcategory owned counts for the sidebar + page-completion strip
-  const ownedBySub = useMemo(() => {
-    const out: Record<string, number> = {};
-    if (!dataset) return out;
-    for (const sec of sections) {
-      for (const sc of sec.subcategories) {
-        let owned = 0;
-        for (const r of recordsOf(dataset, sc.dataset)) {
-          if (matches(r, sc.match) && (collection[r.id] ?? 0) > 0) owned++;
-        }
-        out[`${sec.key}/${sc.key}`] = owned;
-      }
-    }
-    return out;
-  }, [dataset, sections, collection]);
-
-  // overall progress across every collectible
-  const { total, owned } = useMemo(() => {
-    if (!dataset) return { total: 0, owned: 0 };
-    const all = [...dataset.heroes, ...dataset.survivors, ...dataset.defenders, ...dataset.schematics];
-    let o = 0;
-    for (const r of all) if ((collection[r.id] ?? 0) > 0) o++;
-    return { total: all.length, owned: o };
-  }, [dataset, collection]);
-  const pct = total ? Math.round((owned / total) * 100) : 0;
-
-  // page completion: which real subcategories of the active section are fully owned
-  const pageSegs = useMemo(() => {
-    if (!section) return [];
-    return section.subcategories
-      .filter((s) => s.key !== "all")
-      .map((s) => {
-        const o = ownedBySub[`${section.key}/${s.key}`] ?? 0;
-        return s.count > 0 && o >= s.count;
-      });
-  }, [section, ownedBySub]);
-  const pageDone = pageSegs.filter(Boolean).length;
-
   const selectSub = (sectionKey: string, subKey: string) => {
     setActiveSection(sectionKey);
     setActiveSub(subKey);
@@ -304,25 +266,21 @@ export default function App() {
   }
 
   const kind = KIND_OF[sub.dataset];
+  const pageIndex = section.subcategories.findIndex((candidate) => candidate.key === sub.key);
+  const adjacentPage = (direction: -1 | 1) => {
+    const next = section.subcategories[pageIndex + direction];
+    if (next) selectSub(section.key, next.key);
+  };
 
   return (
     <div className="cb-root">
-      {/* top bar */}
       <header className="cb-topbar">
-        <div className="cb-levelbadge">
-          <span className="lvl">{owned > 0 ? Math.min(99, Math.ceil(pct / 2)) : 1}</span>
-          <span className="segs">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <i key={i} className={i < Math.round(pct / 20) ? "on" : ""} />
-            ))}
+        <div className="cb-brand">
+          <span className="mark" aria-hidden>
+            STW
           </span>
-        </div>
-        <div className="cb-back">
-          <button type="button" className="chev" title="Back" onClick={() => selectSub("heroes", "all")}>
-            ‹
-          </button>
           <div className="cb-title">
-            STW Companion<span className="sub">Save the World · Wiki</span>
+            Companion<span className="sub">Save the World</span>
           </div>
         </div>
         <div className="cb-modeswitch" role="tablist" aria-label="View">
@@ -347,110 +305,110 @@ export default function App() {
         </div>
         <div className="cb-top-spacer" />
         <SearchBar index={dataset.search} onPickItem={openItem} onFilter={searchFilter} />
-        <div className="cb-progress">
-          <div className="pbar">
-            <div className="pfill" style={{ width: `${pct}%` }} />
-          </div>
-          <span className="plabel">
-            <b>{owned}</b> / {total}
-          </span>
-        </div>
       </header>
 
       {mode === "loadout" ? (
         <LoadoutScreen dataset={dataset} onLocate={locate} onInspect={(sel) => setSelected(sel)} />
       ) : (
         <>
-      {/* book header strip */}
-      <div className="cb-bookhead">
-        <div
-          className="seg"
-          style={{ background: "linear-gradient(180deg,#2f6fd0,#2456a8)", color: "#fff", minWidth: 150 }}
-        >
-          <div className="cb-bh-title" style={{ color: "#cfe0ff" }}>
-            Collection
-          </div>
-          <div style={{ fontFamily: "Anton", fontSize: 20, lineHeight: 1 }}>
-            {owned.toLocaleString()}{" "}
-            <span style={{ fontSize: 13, color: "#cfe0ff" }}>/ {total.toLocaleString()} owned</span>
-          </div>
-        </div>
-        <div className="cb-bh-completion seg">
-          <div className="cb-bh-title">Page Completion · {section.label}</div>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <div className="cb-segbar" style={{ flex: 1 }}>
-              {pageSegs.map((on, i) => (
-                <i key={i} className={on ? "on" : ""} />
-              ))}
-            </div>
-            <span style={{ fontFamily: "Barlow Condensed", fontWeight: 700, fontSize: 15 }}>
-              {pageDone}/{pageSegs.length}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* layout */}
-      <div className="cb-layout">
-        <BookSidebar
-          sections={sections}
-          activeSection={section.key}
-          activeSub={sub.key}
-          ownedBySub={ownedBySub}
-          onSelect={selectSub}
-        />
-        <main className="cb-content">
-          <div className="cb-content-head">
-            <h2>{section.label}</h2>
-            <span className="crumb">{sub.label}</span>
-            <span className="ct">{visible.length} shown</span>
+          <div className="cb-book-titlebar">
+            <h1>Collection Book</h1>
           </div>
 
-          {spotlight && (
-            <div className="cb-spotlight">
-              {spotlight.icon ? (
-                <img className="ic" src={spotlight.icon} alt="" />
-              ) : (
-                <span
-                  className="ic"
-                  style={{ display: "grid", placeItems: "center", fontFamily: "Anton" }}
-                >
-                  {spotlight.n.slice(0, 1)}
-                </span>
-              )}
-              <div className="meta">
-                <div className="k">Cross-link · {spotlight.k}</div>
-                <div className="n">{spotlight.n}</div>
-                <div className="d">{spotlight.d}</div>
+          <div className="cb-layout">
+            <BookSidebar
+              sections={sections}
+              activeSection={section.key}
+              activeSub={sub.key}
+              onSelect={selectSub}
+            />
+            <main className="cb-content">
+              <div className="cb-content-head">
+                <div>
+                  <span className="eyebrow">Collection category</span>
+                  <h2>{section.label}</h2>
+                </div>
+                <div className="cb-page-nav">
+                  <button
+                    type="button"
+                    className="arrow"
+                    onClick={() => adjacentPage(-1)}
+                    disabled={pageIndex <= 0}
+                    title="Previous page"
+                  >
+                    ‹
+                  </button>
+                  <label>
+                    <span>Page</span>
+                    <select
+                      value={sub.key}
+                      onChange={(event) => selectSub(section.key, event.target.value)}
+                    >
+                      {section.subcategories.map((candidate) => (
+                        <option key={candidate.key} value={candidate.key}>
+                          {candidate.label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <button
+                    type="button"
+                    className="arrow"
+                    onClick={() => adjacentPage(1)}
+                    disabled={pageIndex >= section.subcategories.length - 1}
+                    title="Next page"
+                  >
+                    ›
+                  </button>
+                </div>
               </div>
-              <button type="button" className="x" onClick={() => setSelectedTags(new Set())}>
-                Clear ✕
-              </button>
-            </div>
-          )}
 
-          <FilterBar
-            query={query}
-            onQuery={setQuery}
-            owned={ownedFilter}
-            onOwned={setOwnedFilter}
-            facets={facets}
-            selected={selectedTags}
-            onToggle={toggleFacet}
-            onClear={() => setSelectedTags(new Set())}
-            visible={visible.length}
-            total={records.length}
-            onReset={handleReset}
-          />
+              {spotlight && (
+                <div className="cb-spotlight">
+                  {spotlight.icon ? (
+                    <img className="ic" src={spotlight.icon} alt="" />
+                  ) : (
+                    <span
+                      className="ic"
+                      style={{ display: "grid", placeItems: "center", fontFamily: "Anton" }}
+                    >
+                      {spotlight.n.slice(0, 1)}
+                    </span>
+                  )}
+                  <div className="meta">
+                    <div className="k">Cross-link · {spotlight.k}</div>
+                    <div className="n">{spotlight.n}</div>
+                    <div className="d">{spotlight.d}</div>
+                  </div>
+                  <button type="button" className="x" onClick={() => setSelectedTags(new Set())}>
+                    Clear ✕
+                  </button>
+                </div>
+              )}
 
-          <ItemGrid
-            kind={kind}
-            items={visible}
-            onInspect={(item) => setSelected({ kind, item })}
-            highlightId={highlightId}
-          />
-        </main>
-      </div>
+              <FilterBar
+                query={query}
+                onQuery={setQuery}
+                owned={ownedFilter}
+                onOwned={setOwnedFilter}
+                facets={facets}
+                selected={selectedTags}
+                onToggle={toggleFacet}
+                onClear={() => setSelectedTags(new Set())}
+                visible={visible.length}
+                total={records.length}
+                onReset={handleReset}
+              />
+
+              <ItemGrid
+                kind={kind}
+                items={visible}
+                onInspect={(item) => setSelected({ kind, item })}
+                highlightId={highlightId}
+                classIcons={dataset.classIcons}
+              />
+            </main>
+          </div>
         </>
       )}
 
