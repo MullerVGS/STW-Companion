@@ -275,6 +275,7 @@ export interface DatasetMeta {
     teamPerks: number;
     gadgets: number;
     search: number;
+    rewards: number;
     byRarity: Record<string, number>;
   };
   iconsCopied: number;

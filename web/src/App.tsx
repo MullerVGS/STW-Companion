@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { BookSidebar } from "./components/BookSidebar";
 import { FilterBar, type OwnedFilter } from "./components/FilterBar";
 import { ItemGrid } from "./components/ItemGrid";
+import { HomeScreen } from "./components/HomeScreen";
 import { InspectModal } from "./components/InspectModal";
 import { LoadoutScreen } from "./components/LoadoutScreen";
 import { SearchBar } from "./components/SearchBar";
@@ -20,7 +21,7 @@ import {
 } from "./lib/view";
 import type { AnyItem, BookSection, BookSubcategory, Dataset, DatasetName } from "./types";
 
-type Mode = "book" | "loadout";
+type Mode = "home" | "book" | "loadout";
 
 /** dataset that backs a section's synthetic "All" view (personnel spans two -> none). */
 const SECTION_DATASET: Record<string, DatasetName> = {
@@ -35,6 +36,14 @@ const SECTION_CATEGORY: Record<string, string> = {
   ranged: "ranged",
   melee: "melee",
   traps: "trap",
+};
+
+/** Home reward kind -> Collection Book dataset, for click-through on named loot. */
+const NAMED_REWARD_DATASET: Record<string, DatasetName> = {
+  hero: "heroes",
+  survivor: "survivors",
+  defender: "defenders",
+  schematic: "schematics",
 };
 
 /** perk facet to surface per weapon/trap section. */
@@ -61,7 +70,7 @@ export default function App() {
   const [dataset, setDataset] = useState<Dataset | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const [mode, setMode] = useState<Mode>("book");
+  const [mode, setMode] = useState<Mode>("home");
   const [activeSection, setActiveSection] = useState("heroes");
   const [activeSub, setActiveSub] = useState("all");
   const [query, setQuery] = useState("");
@@ -197,6 +206,18 @@ export default function App() {
     else selectSub(sectionKey, subKey);
   };
 
+  // Home cross-link: open a named reward (hero/survivor/defender/schematic) by name.
+  const openReward = (kind: string, name: string) => {
+    if (!dataset) return;
+    const ds = NAMED_REWARD_DATASET[kind];
+    if (!ds) return;
+    const norm = name.trim().toLowerCase();
+    const rec = recordsOf(dataset, ds).find(
+      (r) => (r as { name?: string }).name?.trim().toLowerCase() === norm,
+    );
+    if (rec) setSelected({ kind: KIND_OF[ds], item: rec });
+  };
+
   const handleReset = () => {
     if (confirm("Clear your entire owned collection? This cannot be undone.")) clearAll();
   };
@@ -242,6 +263,51 @@ export default function App() {
     return null;
   }, [dataset, selectedTags]);
 
+  // Shared top bar (brand + Home/Book/Loadout switch + global search).
+  const header = () => (
+    <header className="cb-topbar">
+      <div className="cb-brand">
+        <span className="mark" aria-hidden>
+          STW
+        </span>
+        <div className="cb-title">
+          Companion<span className="sub">Save the World</span>
+        </div>
+      </div>
+      <div className="cb-modeswitch" role="tablist" aria-label="View">
+        <button
+          type="button"
+          role="tab"
+          aria-selected={mode === "home"}
+          className={mode === "home" ? "on" : ""}
+          onClick={() => setMode("home")}
+        >
+          Home
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={mode === "book"}
+          className={mode === "book" ? "on" : ""}
+          onClick={() => setMode("book")}
+        >
+          Collection Book
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={mode === "loadout"}
+          className={mode === "loadout" ? "on" : ""}
+          onClick={() => setMode("loadout")}
+        >
+          Hero Loadout
+        </button>
+      </div>
+      <div className="cb-top-spacer" />
+      {dataset && <SearchBar index={dataset.search} onPickItem={openItem} onFilter={searchFilter} />}
+    </header>
+  );
+
   if (error) {
     return (
       <div className="cb-loading">
@@ -254,12 +320,33 @@ export default function App() {
       </div>
     );
   }
+  if (mode === "home") {
+    return (
+      <div className="cb-root">
+        {header()}
+        <HomeScreen onOpenReward={openReward} />
+        {dataset && selected && (
+          <InspectModal
+            selected={selected}
+            abilities={dataset.abilities}
+            perks={dataset.perks}
+            onClose={() => setSelected(null)}
+            onCrossLink={crossLink}
+            onLocate={locate}
+          />
+        )}
+      </div>
+    );
+  }
   if (!dataset || !section || !sub) {
     return (
-      <div className="cb-loading">
-        <div>
-          <div className="lg">STW COMPANION</div>
-          <div className="ls">Loading data…</div>
+      <div className="cb-root">
+        {header()}
+        <div className="cb-loading">
+          <div>
+            <div className="lg">STW COMPANION</div>
+            <div className="ls">Loading data…</div>
+          </div>
         </div>
       </div>
     );
@@ -274,38 +361,7 @@ export default function App() {
 
   return (
     <div className="cb-root">
-      <header className="cb-topbar">
-        <div className="cb-brand">
-          <span className="mark" aria-hidden>
-            STW
-          </span>
-          <div className="cb-title">
-            Companion<span className="sub">Save the World</span>
-          </div>
-        </div>
-        <div className="cb-modeswitch" role="tablist" aria-label="View">
-          <button
-            type="button"
-            role="tab"
-            aria-selected={mode === "book"}
-            className={mode === "book" ? "on" : ""}
-            onClick={() => setMode("book")}
-          >
-            Collection Book
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected={mode === "loadout"}
-            className={mode === "loadout" ? "on" : ""}
-            onClick={() => setMode("loadout")}
-          >
-            Hero Loadout
-          </button>
-        </div>
-        <div className="cb-top-spacer" />
-        <SearchBar index={dataset.search} onPickItem={openItem} onFilter={searchFilter} />
-      </header>
+      {header()}
 
       {mode === "loadout" ? (
         <LoadoutScreen dataset={dataset} onLocate={locate} onInspect={(sel) => setSelected(sel)} />

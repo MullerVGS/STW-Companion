@@ -5,9 +5,12 @@
   "description": "STW Companion — a Fortnite: Save the World companion: Collection Book wiki/tracker (heroes, personnel, schematics, perks) + Hero Loadout planner. Data pipeline + interactive web app.",
   "workspaces": [
     "data",
-    "web"
+    "web",
+    "worker"
   ],
   "scripts": {
+    "worker:collect": "npm run collect --workspace worker",
+    "worker:home": "npm run build:home:fixture --workspace worker",
     "data:build": "npm run build --workspace data",
     "web:dev": "npm run dev --workspace web",
     "web:build": "npm run build --workspace web",

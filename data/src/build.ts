@@ -25,6 +25,7 @@ import { importSchematics } from "./import-banjo.js";
 import { importAbilities, importHeroes } from "./import-heroes.js";
 import { importDefenders, importSurvivors } from "./import-personnel.js";
 import { importGadgets, importTeamPerks } from "./import-loadout.js";
+import { importRewards } from "./import-rewards.js";
 import type { DatasetMeta, ImageSet, Perk, Rarity } from "./schema.js";
 import type { RawAssets } from "./banjo-types.js";
 import { slug } from "./util.js";
@@ -162,6 +163,7 @@ async function main(): Promise<void> {
   const { schematics, perks } = importSchematics(raw, look);
   const teamPerks = importTeamPerks(raw);
   const gadgets = importGadgets(raw);
+  const rewards = importRewards(raw);
 
   // fresh output dirs so stale icons/data don't linger
   fs.rmSync(outDir, { recursive: true, force: true });
@@ -206,6 +208,12 @@ async function main(): Promise<void> {
     if (Object.keys(imgs).length > 0) p.images = imgs;
     else delete p.images;
   }
+  // reward-registry icons (live home data): resolve each to a copied URL, drop misses.
+  for (const entry of Object.values(rewards)) {
+    const url = icons.one(entry.icon);
+    if (url) entry.icon = url;
+    else delete entry.icon;
+  }
 
   const facets = buildAllFacets({ heroes, survivors, defenders, schematics, perks });
   const search = buildSearchIndex({ heroes, survivors, defenders, schematics, perks, abilities, facets });
@@ -230,6 +238,7 @@ async function main(): Promise<void> {
       teamPerks: teamPerks.length,
       gadgets: gadgets.length,
       search: search.length,
+      rewards: Object.keys(rewards).length,
       byRarity: tallyRarity(heroes, survivors, defenders, schematics),
     },
     iconsCopied,
@@ -243,6 +252,7 @@ async function main(): Promise<void> {
   writeJson(path.join(outDir, "perks.json"), perks);
   writeJson(path.join(outDir, "team-perks.json"), teamPerks);
   writeJson(path.join(outDir, "gadgets.json"), gadgets);
+  writeJson(path.join(outDir, "reward-registry.json"), rewards);
   writeJson(path.join(outDir, "class-icons.json"), classIcons);
   writeJson(path.join(outDir, "search-index.json"), search);
   writeJson(path.join(outDir, "facets.json"), facets);
@@ -250,7 +260,7 @@ async function main(): Promise<void> {
   writeJson(path.join(outDir, "meta.json"), meta, true);
 
   console.log(
-    `[data] heroes=${heroes.length} abilities=${abilities.length} survivors=${survivors.length} defenders=${defenders.length} schematics=${schematics.length} perks=${Object.keys(perks).length} teamPerks=${teamPerks.length} gadgets=${gadgets.length} search=${search.length} icons=${iconsCopied}`,
+    `[data] heroes=${heroes.length} abilities=${abilities.length} survivors=${survivors.length} defenders=${defenders.length} schematics=${schematics.length} perks=${Object.keys(perks).length} teamPerks=${teamPerks.length} gadgets=${gadgets.length} search=${search.length} rewards=${Object.keys(rewards).length} icons=${iconsCopied}`,
   );
   console.log(`[data] sections: ${book.map((s) => `${s.label}(${s.subcategories.length})`).join(", ")}`);
 }

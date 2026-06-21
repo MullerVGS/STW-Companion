@@ -1,0 +1,23 @@
+name = "stw-companion-api"
+main = "src/index.ts"
+compatibility_date = "2024-09-23"
+workers_dev = true
+
+# KV: create once, then paste the id here:
+#   npx wrangler kv namespace create STW_KV
+#   npx wrangler kv namespace create STW_KV --preview
+[[kv_namespaces]]
+binding = "STW_KV"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
+preview_id = "REPLACE_WITH_PREVIEW_KV_NAMESPACE_ID"
+
+# Daily refresh just after the STW reset (00:00 UTC); second tick for safety.
+[triggers]
+crons = ["5 0 * * *", "20 0 * * *"]
+
+[vars]
+PAGES_ORIGIN = "https://stw-companion.pages.dev"
+
+# Secrets (NOT here — set with `npx wrangler secret put <NAME>`):
+#   EPIC_ACCOUNT_ID  EPIC_DEVICE_ID  EPIC_DEVICE_SECRET   (from env/.env)
+#   RAW_DEBUG_TOKEN  (optional, guards /api/raw)

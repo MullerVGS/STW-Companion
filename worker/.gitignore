@@ -1,0 +1,3 @@
+# Raw API dumps produced by `npm run collect` (large, regenerable, may contain account-shaped data)
+.data/
+dist/

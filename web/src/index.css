@@ -1399,3 +1399,280 @@ img { -webkit-user-drag: none; user-select: none; }
     width: 69px;
   }
 }
+
+/* ───────────────────────── Home (live daily STW data) ───────────────────────── */
+.home {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 18px 20px 56px;
+}
+.home .dim { color: var(--text-dim); }
+.home-state {
+  display: grid;
+  place-items: center;
+  gap: 10px;
+  min-height: 50vh;
+  text-align: center;
+  padding: 24px;
+}
+.home-state h2 { font-family: "Anton", sans-serif; letter-spacing: 0.5px; }
+.home-state code {
+  background: var(--navy-1);
+  border: 1px solid var(--navy-line);
+  border-radius: 5px;
+  padding: 1px 5px;
+  font-size: 0.85em;
+}
+.spinner {
+  width: 30px; height: 30px;
+  border: 3px solid var(--navy-line);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: home-spin 0.8s linear infinite;
+}
+@keyframes home-spin { to { transform: rotate(360deg); } }
+
+.home-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+  font-size: 0.86rem;
+}
+.home-meta__title {
+  font-family: "Anton", sans-serif;
+  font-size: 1.05rem;
+  letter-spacing: 0.4px;
+  color: var(--text);
+}
+.home-meta .sep { color: var(--text-mute); }
+.home-pill {
+  border-radius: 999px;
+  padding: 2px 9px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.home-pill--warn { background: rgba(240, 131, 42, 0.18); color: var(--r-legendary); }
+
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 14px;
+}
+.span-1 { grid-column: span 1; }
+.span-2 { grid-column: span 2; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+
+.home-panel {
+  background: linear-gradient(180deg, var(--navy-2), var(--navy-1));
+  border: 1px solid var(--navy-line);
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: var(--shadow-card);
+  min-width: 0;
+}
+.home-panel__head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--navy-line);
+  padding-bottom: 8px;
+}
+.home-panel__head h3 {
+  font-family: "Anton", sans-serif;
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+  margin: 0;
+  color: var(--text);
+}
+.home-panel__sub { font-size: 0.76rem; }
+.home-panel__badge {
+  margin-left: auto;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--gold);
+  background: rgba(255, 210, 61, 0.12);
+  border-radius: 999px;
+  padding: 2px 9px;
+}
+.home-empty { color: var(--text-mute); font-size: 0.86rem; padding: 8px 2px; }
+.home-foot { font-size: 0.72rem; margin-top: 8px; }
+
+/* badges */
+.pl-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+  font-weight: 800;
+  font-size: 0.78rem;
+  color: var(--gold);
+  background: rgba(255, 210, 61, 0.1);
+  border: 1px solid rgba(255, 210, 61, 0.25);
+  border-radius: 6px;
+  padding: 1px 6px;
+  min-width: 42px;
+  justify-content: center;
+}
+.th-tag {
+  font-weight: 800;
+  font-size: 0.7rem;
+  border-radius: 5px;
+  padding: 2px 6px;
+  letter-spacing: 0.4px;
+}
+.th-tag--main { background: rgba(47, 127, 224, 0.18); color: #6fb0ff; border: 1px solid rgba(47, 127, 224, 0.35); }
+.th-tag--vent { background: rgba(255, 210, 61, 0.14); color: var(--gold); border: 1px solid rgba(255, 210, 61, 0.3); }
+
+/* V-Bucks missions */
+.vb-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.vb-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: var(--navy-0);
+  border: 1px solid var(--navy-line);
+  border-left: 3px solid var(--gold);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+.vb-amount { font-weight: 800; color: var(--gold); }
+.vb-obj { margin-left: auto; font-size: 0.8rem; text-align: right; }
+.vb-coin, .vb-coin {
+  display: inline-grid;
+  place-items: center;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: #2a1c00;
+  font-weight: 900;
+  font-size: 0.72rem;
+  margin-right: 5px;
+}
+
+/* V-Bucks history */
+.vbh-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.vbh-cell {
+  background: var(--navy-0);
+  border: 1px solid var(--navy-line);
+  border-radius: 9px;
+  padding: 10px 8px;
+  text-align: center;
+}
+.vbh-k { font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.4px; }
+.vbh-v {
+  display: flex; align-items: center; justify-content: center;
+  font-family: "Anton", sans-serif;
+  font-size: 1.25rem;
+  color: var(--text);
+  margin-top: 4px;
+}
+
+/* supercharger */
+.sc-card { display: flex; align-items: center; gap: 10px; }
+.sc-icon { width: 46px; height: 46px; border-radius: 8px; object-fit: contain; background: var(--navy-0); }
+.sc-icon--ph { display: grid; place-items: center; font-size: 1.3rem; }
+.sc-label { font-weight: 700; }
+
+/* alert summary table */
+.as-wrap { overflow-x: auto; }
+.as-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+.as-table th, .as-table td { padding: 5px 8px; text-align: right; white-space: nowrap; }
+.as-table thead th { color: var(--text-dim); font-size: 0.72rem; text-transform: uppercase; border-bottom: 1px solid var(--navy-line); }
+.as-table tbody tr:nth-child(even) { background: rgba(255, 255, 255, 0.02); }
+.as-reward { text-align: left !important; display: flex; align-items: center; gap: 8px; }
+.as-total { font-weight: 800; color: var(--text); }
+.as-zero { color: var(--text-mute); }
+
+/* honorable rewards */
+.hr-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; max-height: 360px; overflow-y: auto; }
+.hr-row {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--navy-0);
+  border: 1px solid var(--navy-line);
+  border-left: 3px solid var(--text-mute);
+  border-radius: 7px;
+  padding: 6px 9px;
+  font-size: 0.85rem;
+}
+.hr-name { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hr-kind { margin-left: auto; font-size: 0.74rem; }
+
+/* reward glyph + chips */
+.rw-icon { width: 22px; height: 22px; border-radius: 5px; object-fit: contain; background: var(--navy-0); flex: none; }
+.rw-icon--ph { display: grid; place-items: center; font-weight: 800; font-size: 0.72rem; color: #0a1326; }
+.rw-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--navy-0);
+  border: 1px solid var(--navy-line);
+  border-radius: 7px;
+  padding: 3px 7px 3px 4px;
+  font-size: 0.78rem;
+  max-width: 100%;
+}
+.rw-qty { font-weight: 800; color: var(--gold); }
+.rw-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rw-lvl { color: var(--text-mute); font-size: 0.72rem; }
+.mod-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 0.72rem; color: var(--text-dim);
+  background: rgba(162, 63, 240, 0.12);
+  border: 1px solid rgba(162, 63, 240, 0.28);
+  border-radius: 6px;
+  padding: 2px 6px;
+}
+.mod-chip img { width: 14px; height: 14px; }
+
+/* clickable cross-links (Home -> Collection Book) */
+.hr-row.is-link { cursor: pointer; transition: border-color 0.12s, background 0.12s; }
+.hr-row.is-link:hover { background: var(--navy-2); }
+button.rw-chip {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.rw-chip--link:hover { background: var(--navy-2); filter: brightness(1.15); }
+
+/* alerts drill-down */
+.ab { margin-top: 16px; }
+.ab-filters { display: flex; flex-direction: column; gap: 7px; margin-bottom: 12px; }
+.ab-frow { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.home-chip {
+  background: var(--navy-0);
+  border: 1px solid var(--navy-line);
+  color: var(--text-dim);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+.home-chip:hover { color: var(--text); border-color: var(--text-mute); }
+.home-chip.on { background: var(--navy-3); color: var(--text); border-color: var(--gold); }
+.ab-reset { background: none; border: none; color: var(--text-mute); cursor: pointer; font-size: 0.78rem; text-decoration: underline; }
+.ab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.ab-card {
+  background: linear-gradient(180deg, var(--navy-2), var(--navy-1));
+  border: 1px solid var(--navy-line);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.ab-card__head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.ab-card__obj { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ab-card__zone { margin-left: auto; font-size: 0.76rem; }
+.ab-rewards { display: flex; flex-wrap: wrap; gap: 6px; }
+.ab-mods { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+
+@media (max-width: 1100px) {
+  .home-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .home-grid > * { grid-column: span 2 !important; }
+}
+@media (max-width: 640px) {
+  .vbh-grid { grid-template-columns: repeat(3, 1fr); }
+  .home { padding: 14px 12px 40px; }
+}
