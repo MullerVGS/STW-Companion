@@ -1,7 +1,5 @@
-// Etapa 1 — local collector. Authenticates with the device auth in env/.env and
-// dumps the raw world/info + catalog into worker/.data/ (git-ignored) for the
-// normalizer and for fixture generation. This is the exact logic the Worker's
-// cron handler will run (minus the KV write).
+// Local collector. Authenticates with device auth and dumps world/info + catalog
+// into live-data/.data/ (git-ignored) for normalization and diagnostics.
 import { mkdirSync, writeFileSync } from "node:fs";
 
 import { fetchCatalog, fetchWorldInfo, getAccessToken } from "./epic";

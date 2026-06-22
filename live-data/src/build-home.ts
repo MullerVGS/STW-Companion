@@ -37,8 +37,7 @@ const home = normalizeHome(world, catalog, { generatedAt, registry });
 const outPath = dataDir() + "home.json";
 writeFileSync(outPath, JSON.stringify(home, null, 2));
 
-// Also publish for local SPA dev (served by Vite at /data/home.json). In prod the
-// SPA points VITE_HOME_URL at the deployed Worker instead.
+// Also publish for the SPA (served by Vite and GitHub Pages at /data/home.json).
 try {
   mkdirSync(repoRoot() + "web/public/data", { recursive: true });
   writeFileSync(repoRoot() + "web/public/data/home.json", JSON.stringify(home));

@@ -26,3 +26,4 @@ web/public/icons/
 !data/raw/sample.assets.json
 docs/*
 !docs/extraction.md
+!docs/github-pages.md

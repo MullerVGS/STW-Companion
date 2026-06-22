@@ -13,8 +13,8 @@ import type {
 import { useHomeData } from "../lib/home";
 import type { Rarity } from "../types";
 
-// V-Bucks history seed (FortniteDB reference) — a v1 placeholder shown for the
-// longer windows until the Worker's KV `daily` history accumulates real data.
+// V-Bucks history seed (FortniteDB reference) — a placeholder shown for the
+// longer windows until the scheduled daily snapshots accumulate enough data.
 const VBUCKS_SEED = { last7: 250, last30: 400, year: 4900 };
 
 const MAIN_SHORTS = ["SW", "PT", "CV", "TP"] as const;
@@ -32,9 +32,8 @@ export function HomeScreen({
         <h2>Daily STW data unavailable</h2>
         <p>{error}</p>
         <p className="dim">
-          Run <code>npm run build:home:fixture -w worker</code> to generate{" "}
-          <code>web/public/data/home.json</code> for local dev, or point{" "}
-          <code>VITE_HOME_URL</code> at the deployed Worker.
+          Run <code>npm run daily:fixture</code> to generate{" "}
+          <code>web/public/data/home.json</code> for local development.
         </p>
       </div>
     );
@@ -80,7 +79,7 @@ function MetaStrip({ data }: { data: HomeData }) {
       </span>
       <span className="sep">·</span>
       <span className="dim">Updated {timeAgo(data.meta.generatedAt)}</span>
-      {data.meta.stale && <span className="home-pill home-pill--warn">stale — refreshing…</span>}
+      {data.meta.stale && <span className="home-pill home-pill--warn">outdated snapshot</span>}
     </div>
   );
 }

@@ -6,17 +6,19 @@
   "workspaces": [
     "data",
     "web",
-    "worker"
+    "live-data"
   ],
   "scripts": {
-    "worker:collect": "npm run collect --workspace worker",
-    "worker:home": "npm run build:home:fixture --workspace worker",
+    "daily:collect": "npm run collect --workspace live-data",
+    "daily:update": "npm run update --workspace live-data",
+    "daily:fixture": "npm run build:home:fixture --workspace live-data",
     "data:build": "npm run build --workspace data",
     "web:dev": "npm run dev --workspace web",
     "web:build": "npm run build --workspace web",
-    "dev": "npm run data:build && npm run web:dev",
-    "build": "npm run data:build && npm run web:build",
-    "typecheck": "npm run typecheck --workspace data && npm run typecheck --workspace web",
+    "dev": "npm run data:build && npm run daily:fixture && npm run web:dev",
+    "build": "npm run data:build && npm run daily:fixture && npm run web:build",
+    "pages:build": "npm run data:build && npm run daily:update && npm run web:build",
+    "typecheck": "npm run typecheck --workspace data && npm run typecheck --workspace live-data && npm run typecheck --workspace web",
     "verify": "npm run typecheck && npm run build",
     "docker:dev": "docker compose -p stw-dev -f docker-compose.dev.yml up --build",
     "docker:dev:down": "docker compose -p stw-dev -f docker-compose.dev.yml down",

@@ -13,7 +13,5 @@
     "noEmit": true,
     "types": ["node"]
   },
-  "include": ["src", "scripts"],
-  "comment": "src/index.ts is the Worker entry — typechecked by tsconfig.worker.json (Workers globals), excluded here so Node types don't apply to it.",
-  "exclude": ["src/index.ts"]
+  "include": ["src", "scripts"]
 }

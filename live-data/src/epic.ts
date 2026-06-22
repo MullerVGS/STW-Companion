@@ -1,6 +1,4 @@
-// Epic Games auth + Save the World data fetch. Runtime-agnostic: uses global `fetch`
-// (available in Node 20 and Cloudflare Workers) and takes credentials as arguments,
-// so the same code runs in the local collector CLI and in the Worker.
+// Epic Games auth + Save the World data fetch. Uses Node 20+'s global fetch.
 
 const TOKEN_URL =
   "https://account-public-service-prod.ol.epicgames.com/account/api/oauth/token";
@@ -32,8 +30,7 @@ export interface TokenResult {
 }
 
 function toBase64(s: string): string {
-  // `btoa` is a global in both Node 20+ and Cloudflare Workers (ASCII creds only).
-  return btoa(s);
+  return Buffer.from(s, "utf8").toString("base64");
 }
 
 /** Exchange a device auth for a user access token, trying each client until one works. */

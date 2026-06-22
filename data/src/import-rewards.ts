@@ -1,19 +1,19 @@
 /**
  * Reward registry: template id -> { name, rarity, icon } for every NamedItem that
- * can show up as a live mission/alert/store reward. This is what lets the Worker
+ * can show up as a live mission/alert/store reward. This lets the daily collector
  * turn raw `world/info` reward ids (e.g. "Hero:hid_commando_007_uc_t01",
  * "AccountResource:currency_mtxswap", "GameplayModifier:minibossenable...") into
  * real names + icons + rarity without shipping the whole Collection Book dataset.
  *
  * Also includes MissionGen entries (keyed by the full generator path), so the
- * Worker resolves real objective names ("Ride The Lightning", "Backstage", …)
+ * static snapshot resolves real objective names ("Ride The Lightning", "Backstage", …)
  * instead of guessing from the token — the export's DisplayName is authoritative
  * (the world/info `missionGenerator` path IS the NamedItems key).
  *
  * Keyed by the **lowercased** template id, because `world/info` serializes ids in
  * lowercase while NamedItems are PascalCase (same convention as lookups.ts).
  *
- * Output: web/public/data/reward-registry.json (fetched once/day by the Worker).
+ * Output: web/public/data/reward-registry.json (read by the daily collector).
  */
 
 import type { RawAssets, RawNamedItem } from "./banjo-types.js";
@@ -23,7 +23,7 @@ import { compact } from "./util.js";
 export interface RewardEntry {
   name: string;
   rarity?: Rarity;
-  /** raw image path; rewritten to a web `/icons/*.webp` URL by the build step */
+  /** raw image path; rewritten to a web `icons/*.webp` URL by the build step */
   icon?: string;
 }
 

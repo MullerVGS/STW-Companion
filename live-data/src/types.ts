@@ -1,5 +1,5 @@
-// Public contract for the live STW "Home" surface. Produced by the Worker (cron),
-// consumed by the SPA. Everything here is render-ready (no client-side joins required).
+// Public contract for the daily STW "Home" surface. Produced by the scheduled
+// GitHub Action and consumed as static JSON by the SPA.
 
 export type Rarity =
   | "common"
@@ -145,7 +145,7 @@ export interface HomeData {
   meta: HomeMeta;
   theaters: HomeTheater[];
   vbucks: VBucksMission[];
-  vbucksHistory?: VBucksHistory; // accumulated in KV over time (later steps)
+  vbucksHistory?: VBucksHistory; // carried forward from the previous Pages deployment
   supercharger?: Supercharger | null;
   alertSummary: AlertSummaryRow[];
   honorable: HonorableReward[];

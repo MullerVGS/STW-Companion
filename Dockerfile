@@ -11,15 +11,15 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 COPY data/package.json ./data/package.json
 COPY web/package.json ./web/package.json
+COPY live-data/package.json ./live-data/package.json
 RUN npm ci
 
 # Bring in the rest of the sources (node_modules & generated output are
 # excluded via .dockerignore).
 COPY . .
 
-# Build the dataset (uses data/raw/assets.json if present, else the committed
-# fixture) then the static site. Output: /app/web/dist
-RUN npm run data:build && npm run web:build
+# Build the dataset, offline daily fixture, and static site. Output: /app/web/dist
+RUN npm run build
 
 # ─── Stage 1b: dev server with hot reload (Vite HMR) ────────────────────────
 # Same deps as the builder, but no source baked in — the repo is bind-mounted
@@ -30,10 +30,12 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 COPY data/package.json ./data/package.json
 COPY web/package.json ./web/package.json
+COPY live-data/package.json ./live-data/package.json
 RUN npm ci
 EXPOSE 5173
-# Rebuild data (raw assets are bind-mounted) then start Vite with HMR.
-CMD ["sh", "-c", "npm run data:build && npm run web:dev"]
+# Rebuild data (raw assets are bind-mounted), generate the daily fixture, then
+# start Vite with HMR.
+CMD ["sh", "-c", "npm run data:build && npm run daily:fixture && npm run web:dev"]
 
 # ─── Stage 2: serve static files with nginx ─────────────────────────────────
 FROM nginx:1.27-alpine AS runner

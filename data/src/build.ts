@@ -45,7 +45,7 @@ function resolveSource(): { file: string; kind: DatasetMeta["source"] } {
   throw new Error(`No input found. Expected ${real} (real extraction) or ${sample} (fixture).`);
 }
 
-/** Resolve referenced icons → `/icons/<name>.webp` URLs (assigned synchronously,
+/** Resolve referenced icons → `icons/<name>.webp` URLs (assigned synchronously,
  *  so facets/search can embed them), converting the real files to WebP in a
  *  batched async flush() — this shrinks the shipped art ~75% vs. the raw PNGs.
  *  Missing files are dropped so the UI falls back to a rarity-colored tile. */
@@ -67,7 +67,7 @@ function makeIconCopier() {
     for (let i = 1; usedNames.has(name); i++) name = `${stem}-${i}.webp`;
     usedNames.add(name);
 
-    const url = `/icons/${name}`;
+    const url = `icons/${name}`;
     jobs.push({ src: srcAbs, dest: path.join(iconsDir, name) });
     bySource.set(srcAbs, url);
     return url;

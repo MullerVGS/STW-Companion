@@ -21,6 +21,7 @@ services:
       - /app/node_modules
       - /app/web/node_modules
       - /app/data/node_modules
+      - /app/live-data/node_modules
     environment:
       # flip to 1 if HMR misses file changes (e.g. on a /mnt/c bind mount)
       - CHOKIDAR_USEPOLLING=${CHOKIDAR_USEPOLLING:-}

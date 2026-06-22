@@ -1,24 +1,21 @@
 {
-  "name": "stw-worker",
+  "name": "stw-live-data",
   "private": true,
   "version": "0.1.0",
-  "description": "STW Companion live data: Epic world/info + catalog collector and pure normalizer (Cloudflare Worker target).",
+  "description": "STW Companion daily data collector and static home.json generator.",
   "type": "module",
   "scripts": {
     "extract:power": "node scripts/extract-power-levels.mjs",
     "collect": "tsx src/collect.ts",
+    "update": "tsx src/update-home.ts",
     "make:fixture": "tsx src/make-fixture.ts",
     "build:home": "tsx src/build-home.ts",
     "build:home:fixture": "tsx src/build-home.ts --fixture",
-    "dev": "wrangler dev",
-    "deploy": "wrangler deploy",
-    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.worker.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20240909.0",
     "@types/node": "^20.14.0",
     "tsx": "^4.16.0",
-    "typescript": "^5.5.0",
-    "wrangler": "^3.78.0"
+    "typescript": "^5.5.0"
   }
 }
