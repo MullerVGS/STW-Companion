@@ -382,7 +382,9 @@ export default function App() {
     return (
       <div className="cb-root">
         {header()}
-        <HomeScreen onOpenReward={openReward} />
+        <div className="home-scroll">
+          <HomeScreen onOpenReward={openReward} />
+        </div>
         {dataset && selected && (
           <InspectModal
             selected={selected}

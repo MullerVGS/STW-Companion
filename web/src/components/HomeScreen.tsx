@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import type {
   AlertLite,
@@ -176,7 +176,7 @@ function VBucksHistoryPanel({
   generatedAt: string;
   vbucks: VBucksMission[];
 }) {
-  const { cells, seeded } = useMemo(() => {
+  const cells = useMemo(() => {
     const daily = history?.daily ?? {};
     const base = generatedAt.slice(0, 10);
     const shift = (date: string, delta: number) => {
@@ -217,7 +217,7 @@ function VBucksHistoryPanel({
       },
       { k: "This year", v: yearSum || VBUCKS_SEED.year, delta: null as Delta | null, today: false },
     ];
-    return { cells, seeded: !has7 || !has30 };
+    return cells;
   }, [history, generatedAt, vbucks]);
 
   return (
@@ -241,9 +241,6 @@ function VBucksHistoryPanel({
           </div>
         ))}
       </div>
-      {seeded ? (
-        <p className="home-foot dim">Longer windows are seeded; real history accumulates daily.</p>
-      ) : null}
     </section>
   );
 }
@@ -809,10 +806,18 @@ function timeAgo(iso: string): string {
   return `${Math.round(h / 24)}d ago`;
 }
 
+// Ticks every second so the countdown stays live. The reset target comes from
+// the data's `resetAt` (Epic's next world refresh, 00:00 UTC). Until the data
+// actually refreshes past that instant we show "soon" rather than a fake clock.
 function useCountdown(iso: string): string {
+  const [, tick] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => tick((n) => n + 1), 1000);
+    return () => clearInterval(id);
+  }, []);
   const ms = Date.parse(iso) - Date.now();
   if (!Number.isFinite(ms) || ms <= 0) return "soon";
-  const h = Math.floor(ms / 3600000);
-  const m = Math.floor((ms % 3600000) / 60000);
-  return h > 0 ? `${h}h ${m}m` : `${m}m`;
+  const s = Math.floor(ms / 1000);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${pad(Math.floor(s / 3600))}:${pad(Math.floor((s % 3600) / 60))}:${pad(s % 60)}`;
 }
