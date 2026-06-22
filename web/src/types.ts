@@ -127,6 +127,7 @@ export interface Defender {
   id: string;
   name: string;
   weaponType?: string;
+  gender?: "Female" | "Male";
   rarity: Rarity;
   description?: string;
   tier?: number;
@@ -171,21 +172,25 @@ export interface FacetsByDataset {
   schematics: FacetGroup[];
 }
 
-export interface BookFilter {
-  field: string;
-  value: string;
+export interface BookSlot {
+  dataset: DatasetName;
+  id: string;
 }
-export interface BookSubcategory {
+export interface BookEntry {
   key: string;
   label: string;
-  dataset: DatasetName;
-  match?: BookFilter[];
+  slots: BookSlot[];
+}
+export interface BookDivision {
+  key: string;
+  label: string;
+  entries: BookEntry[];
   count: number;
 }
 export interface BookSection {
   key: string;
   label: string;
-  subcategories: BookSubcategory[];
+  divisions: BookDivision[];
 }
 
 // ── Global search index ─────────────────────────────────────────────────────

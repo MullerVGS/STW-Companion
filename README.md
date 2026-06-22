@@ -49,4 +49,4 @@ The app boots against the **sample fixture** out of the box. To load the full ga
 
 ## Status
 
-**Collection Book** is end-to-end across all categories — Heroes (by set), Personnel (defenders / survivors / leads / mythic leads) and Ranged / Melee / Trap schematics — with inspect, facets, and global search. **Hero Loadout** planner ships team perks + gadgets and "find in Collection Book". Next: more companion tools and a cross-reference second source.
+**Collection Book** follows the in-game section/page/panel ordering across Heroes, Personnel, core schematics, Starter Packs, Event and Expansion categories, with inspect, facets, and global search. **Hero Loadout** planner ships team perks + gadgets and "find in Collection Book". Next: more companion tools and a cross-reference second source.

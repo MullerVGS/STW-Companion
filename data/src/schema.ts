@@ -202,6 +202,8 @@ export interface Defender {
   name: string;
   /** weapon specialization, e.g. "Assault" (from "Assault Defender") */
   weaponType?: string;
+  /** Collection Book identity; same-name defenders have distinct male/female slots. */
+  gender?: "Female" | "Male";
   rarity: Rarity;
   description?: string;
   tier?: number;
@@ -239,27 +241,33 @@ export interface Gadget {
 
 export type DatasetName = "heroes" | "survivors" | "defenders" | "schematics";
 
-/** A field=value predicate the web applies to select a subcategory's records. */
-export interface BookFilter {
-  field: string;
-  value: string;
+/** One concrete collectible occupying a slot inside an in-game panel. */
+export interface BookSlot {
+  dataset: DatasetName;
+  id: string;
 }
 
-/** A clickable subcategory inside a section (a set, weapon type, squad, ...). */
-export interface BookSubcategory {
+/** One named panel on a Collection Book page. */
+export interface BookEntry {
   key: string;
   label: string;
-  dataset: DatasetName;
-  /** all predicates must match (e.g. category=ranged AND subType=Sniper) */
-  match?: BookFilter[];
+  slots: BookSlot[];
+}
+
+/** One in-game page/division inside a section. */
+export interface BookDivision {
+  key: string;
+  label: string;
+  entries: BookEntry[];
+  /** number of resolved collectible slots; informational only */
   count: number;
 }
 
-/** A top-level Collection Book section (Heroes, Personnel, Ranged, ...). */
+/** A top-level in-game Collection Book section. */
 export interface BookSection {
   key: string;
   label: string;
-  subcategories: BookSubcategory[];
+  divisions: BookDivision[];
 }
 
 export interface DatasetMeta {

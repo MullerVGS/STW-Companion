@@ -13,7 +13,7 @@ interface Props {
   /** shared perk registry, to resolve a schematic's perkSlots[].perkIds */
   perks: Record<string, PerkEntity>;
   onClose: () => void;
-  /** jump to a section/subcategory, optionally applying a facet tag (cross-link) */
+  /** jump to a section/division (or hidden aggregate), optionally applying a facet tag */
   onCrossLink: (sectionKey: string, subKey: string, tagId?: string) => void;
   /** find this item in the Collection Book (navigate + scroll + flash) */
   onLocate: (kind: ItemKind, item: AnyItem) => void;
@@ -265,7 +265,7 @@ function PersonnelBody({
           <LinkChip
             label={`Squad · ${s.squad}`}
             img={s.badgeImages?.squad}
-            onClick={() => onCrossLink("personnel", "all-survivors", tagId("squad", s.squad!))}
+            onClick={() => onCrossLink("personnel", "all", tagId("squad", s.squad!))}
           />
         )}
         {kind === "survivor" && s.personality && (
@@ -273,14 +273,20 @@ function PersonnelBody({
             label={s.personality}
             img={s.badgeImages?.personality}
             onClick={() =>
-              onCrossLink("personnel", "all-survivors", tagId("personality", s.personality!))
+              onCrossLink("personnel", "all", tagId("personality", s.personality!))
             }
           />
         )}
         {kind === "defender" && d.weaponType && (
           <LinkChip
             label={d.weaponType}
-            onClick={() => onCrossLink("personnel", "defenders", tagId("weaponType", d.weaponType!))}
+            onClick={() => onCrossLink("personnel", "all", tagId("weaponType", d.weaponType!))}
+          />
+        )}
+        {kind === "defender" && d.gender && (
+          <LinkChip
+            label={d.gender}
+            onClick={() => onCrossLink("personnel", "all", tagId("gender", d.gender!))}
           />
         )}
       </div>
@@ -332,7 +338,10 @@ export function InspectModal({ selected, abilities, perks, onClose, onCrossLink,
           label={hero.class}
           onClick={() => onCrossLink("heroes", "all", tagId("class", hero.class))}
         />
-        <LinkChip label={hero.setLabel} onClick={() => onCrossLink("heroes", hero.set)} />
+        <LinkChip
+          label={hero.setLabel}
+          onClick={() => onCrossLink("heroes", "all", tagId("set", hero.set))}
+        />
       </>
     ) : isSchem ? (
       <>

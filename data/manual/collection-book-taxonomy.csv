@@ -1,0 +1,498 @@
+section_order,division_order,item_order,section,division,item
+1,1,1,Heroes,Soldiers,Support Specialist Hawk
+1,1,2,Heroes,Soldiers,Special Forces Banshee
+1,1,3,Heroes,Soldiers,Colonel Wildcat
+1,1,4,Heroes,Soldiers,Sergeant Jonesy
+1,1,5,Heroes,Soldiers,Commando Spitfire
+1,1,6,Heroes,Soldiers,Rescue Trooper Ramirez
+1,1,7,Heroes,Soldiers,Urban Assault Headhunter
+1,1,8,Heroes,Soldiers,Survivalist Jonesy
+1,1,9,Heroes,Soldiers,Shock Trooper Renegade
+1,1,10,Heroes,Soldiers,Master Grenadier Ramirez
+1,1,11,Heroes,Soldiers,Autumn Queen
+1,1,12,Heroes,Soldiers,Campaign Soldiers
+1,2,1,Heroes,Constructors,Controller Harper
+1,2,2,Heroes,Constructors,Power B.A.S.E. Knox
+1,2,3,Heroes,Constructors,Sentinel Hype
+1,2,4,Heroes,Constructors,Guardian Bull
+1,2,5,Heroes,Constructors,Hotfixer Hazard
+1,2,6,Heroes,Constructors,Electro-pulse Penny
+1,2,7,Heroes,Constructors,Tank Penny
+1,2,8,Heroes,Constructors,Plasma Specialist Izza
+1,2,9,Heroes,Constructors,B.A.S.E. Kyle
+1,2,10,Heroes,Constructors,MEGA B.A.S.E. Kyle
+1,2,11,Heroes,Constructors,Campaign Constructors
+1,3,1,Heroes,Ninjas,Brawler Luna
+1,3,2,Heroes,Ninjas,Stonefoot Crash
+1,3,3,Heroes,Ninjas,Skirmisher Edge
+1,3,4,Heroes,Ninjas,Deadly Star Scorpion
+1,3,5,Heroes,Ninjas,Dragon Scorch
+1,3,6,Heroes,Ninjas,Fleetfoot Ken
+1,3,7,Heroes,Ninjas,Dim Mak Mari
+1,3,8,Heroes,Ninjas,Assassin Sarah
+1,3,9,Heroes,Ninjas,Shuriken Master Sarah
+1,3,10,Heroes,Ninjas,Swordmaster Ken
+1,3,11,Heroes,Ninjas,Campaign Ninjas
+1,4,1,Heroes,Outlanders,Enforcer Grizzly
+1,4,2,Heroes,Outlanders,Recon Scout Eagle Eye
+1,4,3,Heroes,Outlanders,Vanguard Southie
+1,4,4,Heroes,Outlanders,Striker A.C.
+1,4,5,Heroes,Outlanders,Shockblaster Buzz
+1,4,6,Heroes,Outlanders,Shock Specialist A.C.
+1,4,7,Heroes,Outlanders,Trailblazer Quinn
+1,4,8,Heroes,Outlanders,Pathfinder Jess
+1,4,9,Heroes,Outlanders,Ranger Deadeye
+1,4,10,Heroes,Outlanders,Phase Scout Jess
+1,4,11,Heroes,Outlanders,Campaign Outlanders
+2,1,1,Personnel,Defenders,Rifleman Defenders (Female)
+2,1,2,Personnel,Defenders,Rifleman Defenders (Male)
+2,1,3,Personnel,Defenders,Gunslinger Defenders (Male)
+2,1,4,Personnel,Defenders,Gunslinger Defenders (Female)
+2,1,5,Personnel,Defenders,Shotgunner Defenders (Male)
+2,1,6,Personnel,Defenders,Shotgunner Defenders (Female)
+2,1,7,Personnel,Defenders,Sniper Defenders (Female)
+2,1,8,Personnel,Defenders,Sniper Defenders (Male)
+2,1,9,Personnel,Defenders,Bruiser Defenders (Male)
+2,1,10,Personnel,Defenders,Bruiser Defenders (Female)
+2,2,1,Personnel,Survivors,Common Survivors
+2,2,2,Personnel,Survivors,Common Survivors
+2,2,3,Personnel,Survivors,Uncommon Survivors
+2,2,4,Personnel,Survivors,Uncommon Survivors
+2,2,5,Personnel,Survivors,Rare Survivors
+2,2,6,Personnel,Survivors,Rare Survivors
+2,2,7,Personnel,Survivors,Epic Survivors
+2,2,8,Personnel,Survivors,Epic Survivors
+2,2,9,Personnel,Survivors,Legendary Survivors
+2,2,10,Personnel,Survivors,Legendary Survivors
+2,3,1,Personnel,Lead Survivors,Lead Doctors
+2,3,2,Personnel,Lead Survivors,Lead Engineers
+2,3,3,Personnel,Lead Survivors,Lead Explorers
+2,3,4,Personnel,Lead Survivors,Lead Gadgeteers
+2,3,5,Personnel,Lead Survivors,Lead Inventors
+2,3,6,Personnel,Lead Survivors,Lead Martial Artists
+2,3,7,Personnel,Lead Survivors,Lead Marksmen
+2,3,8,Personnel,Lead Survivors,Lead Trainers
+2,4,1,Personnel,Mythic Leads,Mythic Doctors
+2,4,2,Personnel,Mythic Leads,Mythic Engineers
+2,4,3,Personnel,Mythic Leads,Mythic Explorers
+2,4,4,Personnel,Mythic Leads,Mythic Gadgeteers
+2,4,5,Personnel,Mythic Leads,Mythic Inventors
+2,4,6,Personnel,Mythic Leads,Mythic Martial Artists
+2,4,7,Personnel,Mythic Leads,Mythic Marksmen
+2,4,8,Personnel,Mythic Leads,Mythic Personal Trainers
+3,1,1,Ranged Weapons,Assault Rifles,Auto Rifles
+3,1,2,Ranged Weapons,Assault Rifles,Burst Rifles
+3,1,3,Ranged Weapons,Assault Rifles,Doubleshot Rifles
+3,1,4,Ranged Weapons,Assault Rifles,LMG Rifles
+3,1,5,Ranged Weapons,Assault Rifles,Semi-Auto Rifles
+3,1,6,Ranged Weapons,Assault Rifles,Single-Shot Rifles
+3,1,7,Ranged Weapons,Assault Rifles,Surgical Rifles
+3,1,8,Ranged Weapons,Assault Rifles,Raygun
+3,2,1,Ranged Weapons,Shotguns,Auto Shotguns
+3,2,2,Ranged Weapons,Shotguns,Break Action Shotguns
+3,2,3,Ranged Weapons,Shotguns,Heavy Shotguns
+3,2,4,Ranged Weapons,Shotguns,Pump-Action Shotguns
+3,2,5,Ranged Weapons,Shotguns,Tactical Shotguns
+3,2,6,Ranged Weapons,Shotguns,Precision Tactical Shotguns
+3,2,7,Ranged Weapons,Shotguns,Over-Under Shotguns
+3,2,8,Ranged Weapons,Shotguns,Semi Auto Shotguns
+3,3,1,Ranged Weapons,Pistols,Bolt Revolver Pistols
+3,3,2,Ranged Weapons,Pistols,Dragon's Breath
+3,3,3,Ranged Weapons,Pistols,Firecracker Pistols
+3,3,4,Ranged Weapons,Pistols,Handcannon Pistols
+3,3,5,Ranged Weapons,Pistols,Semi-Auto Handcannon Pistols
+3,3,6,Ranged Weapons,Pistols,Rapid Fire Pistols
+3,3,7,Ranged Weapons,Pistols,Semi-Auto Pistols
+3,3,8,Ranged Weapons,Pistols,Six Shooter Pistols
+3,3,9,Ranged Weapons,Pistols,Energy Pistols
+3,4,1,Ranged Weapons,SMGs,Machine Pistols
+3,4,2,Ranged Weapons,SMGs,Heavy Auto SMGs
+3,4,3,Ranged Weapons,SMGs,Typewriter
+3,5,1,Ranged Weapons,Sniper Rifles,Laser Sniper
+3,5,2,Ranged Weapons,Sniper Rifles,Auto Sniper
+3,5,3,Ranged Weapons,Sniper Rifles,Standard Scoped Snipers
+3,5,4,Ranged Weapons,Sniper Rifles,Bolt-Action Sniper
+3,5,5,Ranged Weapons,Sniper Rifles,Scoped Bolt-Action Sniper
+3,5,6,Ranged Weapons,Sniper Rifles,Shredder Sniper
+3,5,7,Ranged Weapons,Sniper Rifles,Standard Sniper
+3,5,8,Ranged Weapons,Sniper Rifles,Triple-Shot Sniper
+3,6,1,Ranged Weapons,Explosive Weapons,Grenade Launchers
+3,6,2,Ranged Weapons,Explosive Weapons,Rocket Launchers
+4,1,1,Melee Weapons,Axes,Improvised Axes
+4,1,2,Melee Weapons,Axes,Medium Axes
+4,1,3,Melee Weapons,Axes,Heavy Axes
+4,1,4,Melee Weapons,Axes,Laser Axes
+4,2,1,Melee Weapons,Clubs,Baseball Bats
+4,2,2,Melee Weapons,Clubs,Golf Clubs
+4,2,3,Melee Weapons,Clubs,Cricket Bats
+4,3,1,Melee Weapons,Scythes,Scythes
+4,3,2,Melee Weapons,Scythes,Laser Scythes
+4,4,1,Melee Weapons,Spears,Spears
+4,4,2,Melee Weapons,Spears,Military Spears
+4,4,3,Melee Weapons,Spears,Laser Spears
+4,5,1,Melee Weapons,Swords,Light Swords
+4,5,2,Melee Weapons,Swords,Medium Swords
+4,5,3,Melee Weapons,Swords,Heavy Swords
+4,5,4,Melee Weapons,Swords,Laser Swords
+4,6,1,Melee Weapons,Hardware,Crowbars
+4,6,2,Melee Weapons,Hardware,Wrenches
+4,6,3,Melee Weapons,Hardware,Rocket Sledges
+4,6,4,Melee Weapons,Hardware,Heavy Hammers
+5,1,1,Traps,Wall Traps,Wall Darts
+5,1,2,Traps,Wall Traps,Wall Dynamo
+5,1,3,Traps,Wall Traps,Wall Launcher
+5,1,4,Traps,Wall Traps,Wall Lights
+5,1,5,Traps,Wall Traps,Wall Spikes
+5,1,6,Traps,Wall Traps,Broadside
+5,1,7,Traps,Wall Traps,Sound Wall
+5,2,1,Traps,Ceiling Traps,Ceiling Electric Field
+5,2,2,Traps,Ceiling Traps,Ceiling Zapper
+5,2,3,Traps,Ceiling Traps,Ceiling Gas Trap
+5,2,4,Traps,Ceiling Traps,Ceiling Drop Trap
+5,3,1,Traps,Floor Traps,Floor Launcher
+5,3,2,Traps,Floor Traps,Retractable Floor Spikes
+5,3,3,Traps,Floor Traps,Wooden Floor Spikes
+5,3,4,Traps,Floor Traps,Healing Pad
+5,3,5,Traps,Floor Traps,Anti-Air Trap
+5,3,6,Traps,Floor Traps,Floor Freeze Trap
+5,3,7,Traps,Floor Traps,Cozy Campfire
+5,3,8,Traps,Floor Traps,Flame Grill Floor Trap
+5,3,9,Traps,Floor Traps,Tar Pit
+6,1,1,Starter Packs,Robo-Kevin,Robo-Kevin
+6,2,1,Starter Packs,Lars,Lars
+6,3,1,Starter Packs,Lok-Bot,Lok-Bot
+6,4,1,Starter Packs,Robo-Ray,Robo-Ray
+6,5,1,Starter Packs,Machinist Mina,Machinist Mina
+6,5,2,Starter Packs,Machinist Mina,Zap-o-max
+6,6,1,Starter Packs,Powerhouse,Powerhouse
+6,6,2,Starter Packs,Powerhouse,Lectro Shock Rifle
+6,7,1,Starter Packs,Samurai Scrapper,Samurai Scrapper
+6,7,2,Starter Packs,Samurai Scrapper,Scrapper Spear
+6,8,1,Starter Packs,Metal Team Leader,Metal Team Leader
+6,8,2,Starter Packs,Metal Team Leader,Papa Bear
+7,1,1,Event People,Wild Heroes,Gia
+7,1,2,Event People,Wild Heroes,Fennix
+7,2,1,Event People,Birthday Heroes,Birthday Brigade Ramirez
+7,2,2,Event People,Birthday Heroes,Birthday Brigade Jonesy
+7,2,3,Event People,Birthday Heroes,Birthday Brigade Penny
+7,3,1,Event People,Homebase Heroes,Director Riggs
+7,3,2,Event People,Homebase Heroes,Dennis
+7,3,3,Event People,Homebase Heroes,"Cassie ""Clip"" Lipman"
+7,3,4,Event People,Homebase Heroes,Major Oswald
+7,4,1,Event People,Steel Wool,Steel Wool Carlos
+7,4,2,Event People,Steel Wool,Steel Wool Syd
+7,4,3,Event People,Steel Wool,Steel Wool Anthony
+7,5,1,Event People,Historic Heroes,Tricera Ops Ramirez
+7,5,2,Event People,Historic Heroes,Rex Jonesy
+7,5,3,Event People,Historic Heroes,Ankylo Kyle
+7,5,4,Event People,Historic Heroes,Prehistoric Izza
+7,5,5,Event People,Historic Heroes,Jurassic Ken
+7,5,6,Event People,Historic Heroes,Paleo Luna
+7,5,7,Event People,Historic Heroes,Fossil Southie
+7,5,8,Event People,Historic Heroes,Black Knight Garridan
+7,5,9,Event People,Historic Heroes,Parasaur Jess
+7,6,1,Event People,Art Deco Heroes,Noir
+7,6,2,Event People,Art Deco Heroes,Sleuth
+7,6,3,Event People,Art Deco Heroes,Venturion
+7,6,4,Event People,Art Deco Heroes,Gumshoe
+7,7,1,Event People,Rad Heroes,Breakbeat Wildcat
+7,7,2,Event People,Rad Heroes,Power Pop Penny
+7,7,3,Event People,Rad Heroes,Varsity Hiro
+7,7,4,Event People,Rad Heroes,Main Stage Quinn
+7,7,5,Event People,Rad Heroes,Dennis Jr.
+7,8,1,Event People,Road Trip Heroes,Road Trip Heroes
+7,8,2,Event People,Road Trip Heroes,Ragnarok
+7,8,3,Event People,Road Trip Heroes,Prickly Patroller
+7,8,4,Event People,Road Trip Heroes,Eternal Wanderer
+7,9,1,Event People,Pirate Heroes,Buccaneer Jonesy
+7,9,2,Event People,Pirate Heroes,Buccaneer Ramirez
+7,9,3,Event People,Pirate Heroes,Sea Wolf Jonesy
+7,9,4,Event People,Pirate Heroes,Privateer Hype
+7,9,5,Event People,Pirate Heroes,Freebooter Ken
+7,9,6,Event People,Pirate Heroes,Swashbuckler Keelhaul
+7,9,7,Event People,Pirate Heroes,Crossbones Barret
+7,9,8,Event People,Pirate Heroes,Blakebeard the Blackhearted
+7,9,9,Event People,Pirate Heroes,Hybrid
+7,10,1,Event People,Blockbuster Heroes,Blockbuster Heroes
+7,10,2,Event People,Blockbuster Heroes,Blockbuster Mythics
+7,11,1,Event People,Spy Heroes,BombSquad Kyle
+7,11,2,Event People,Spy Heroes,Gold Knox
+7,11,3,Event People,Spy Heroes,Bladestorm Enforcer
+7,11,4,Event People,Spy Heroes,Field Agent Rio
+7,11,5,Event People,Spy Heroes,Undercover Buzz
+7,12,1,Event People,Springtime Heroes,Stoneheart Farrah
+7,12,2,Event People,Springtime Heroes,Lucky Folk
+7,12,3,Event People,Springtime Heroes,Spring Folk
+7,12,4,Event People,Springtime Heroes,Matchmakers & Heartbreakers
+7,12,5,Event People,Springtime Heroes,Flag-Bearers
+7,12,6,Event People,Springtime Heroes,Horde Heroes (2025)
+7,13,1,Event People,Lunar New Year Heroes,Lunar Soldiers
+7,13,2,Event People,Lunar New Year Heroes,Lunar Constructors
+7,13,3,Event People,Lunar New Year Heroes,Lunar Ninjas
+7,13,4,Event People,Lunar New Year Heroes,Lunar Outlanders
+7,13,5,Event People,Lunar New Year Heroes,Wukong
+7,14,1,Event People,Holiday Heroes,Red Willow
+7,14,2,Event People,Holiday Heroes,Ted
+7,14,3,Event People,Holiday Heroes,Sgt. Tank Gatling
+7,14,4,Event People,Holiday Heroes,Monks
+7,14,5,Event People,Holiday Heroes,Jilly Teacup
+7,14,6,Event People,Holiday Heroes,Frostnite Heroes (2018)
+7,14,7,Event People,Holiday Heroes,Frostnite Mythics (2018)
+7,14,8,Event People,Holiday Heroes,Demolisher Jonesy
+7,14,9,Event People,Holiday Heroes,Jolly Headhunter
+7,14,10,Event People,Holiday Heroes,Sgt. Winter
+7,14,11,Event People,Holiday Heroes,Warden Kyle
+7,14,12,Event People,Holiday Heroes,Alchemist Sarah
+7,14,13,Event People,Holiday Heroes,Fragment Flurry Jess
+7,14,14,Event People,Holiday Heroes,Jingle Jess
+7,14,15,Event People,Holiday Heroes,Snowstrike
+7,15,1,Event People,Wild West Heroes,First Shot Rio
+7,15,2,Event People,Wild West Heroes,Vintage-Tech Penny
+7,15,3,Event People,Wild West Heroes,Infiltrator Ken
+7,15,4,Event People,Wild West Heroes,Wild Fragment Deadeye
+7,15,5,Event People,Wild West Heroes,Quickdraw Calamity
+7,16,1,Event People,Fortnitemares Heroes,JONESEE-BOT
+7,16,2,Event People,Fortnitemares Heroes,Swamp Knight
+7,16,3,Event People,Fortnitemares Heroes,"""Arrlene"" Izza"
+7,16,4,Event People,Fortnitemares Heroes,Mermonster Ken
+7,16,5,Event People,Fortnitemares Heroes,Willow
+7,16,6,Event People,Fortnitemares Heroes,Fortnitemares (2018)
+7,16,7,Event People,Fortnitemares Heroes,Fortnitemares (2018) (Promotional)
+7,16,8,Event People,Fortnitemares Heroes,Fortnitemares (2017) (Soldiers)
+7,16,9,Event People,Fortnitemares Heroes,Fortnitemares (2017) (Constructors)
+7,16,10,Event People,Fortnitemares Heroes,Fortnitemares (2017) (Ninjas)
+7,16,11,Event People,Fortnitemares Heroes,Fortnitemares (2017) (Outlanders)
+7,16,12,Event People,Fortnitemares Heroes,Chaos Agent
+7,16,13,Event People,Fortnitemares Heroes,Brainstorm
+7,16,14,Event People,Fortnitemares Heroes,Aerobic Assassin
+7,17,1,Event People,Costume Party 'Attendees',Common Husk 'Cosplayers'
+7,17,2,Event People,Costume Party 'Attendees',Uncommon Husk 'Cosplayers'
+7,17,3,Event People,Costume Party 'Attendees',Rare Husk 'Cosplayers'
+7,17,4,Event People,Costume Party 'Attendees',Epic Husk 'Cosplayers'
+7,17,5,Event People,Costume Party 'Attendees',Legendary Husk 'Cosplayers'
+7,18,1,Event People,Retro SciFi Heroes,Extraterrestrial Rio
+7,18,2,Event People,Retro SciFi Heroes,ED-EE
+7,18,3,Event People,Retro SciFi Heroes,Intergalactic Ken
+7,18,4,Event People,Retro SciFi Heroes,Cyberclops
+7,18,5,Event People,Retro SciFi Heroes,Azalea Clark
+7,19,1,Event People,Outlandish Heroes,Mayhem
+7,19,2,Event People,Outlandish Heroes,Madcap
+8,1,1,Event Schematics,Primal Weapons,Primal Rifle
+8,1,2,Event Schematics,Primal Weapons,Primal SMG
+8,1,3,Event Schematics,Primal Weapons,Primal Pistol
+8,1,4,Event Schematics,Primal Weapons,Primal Shotgun
+8,1,5,Event Schematics,Primal Weapons,Primal Stink Bow
+8,1,6,Event Schematics,Primal Weapons,Primal Flame Bow
+8,2,1,Event Schematics,Art Deco Weapons,The Floor Flusher
+8,2,2,Event Schematics,Art Deco Weapons,The Big Shot
+8,2,3,Event Schematics,Art Deco Weapons,The Brush Off
+8,2,4,Event Schematics,Art Deco Weapons,The Mouth Piece
+8,2,5,Event Schematics,Art Deco Weapons,The Take Down
+8,2,6,Event Schematics,Art Deco Weapons,The Sod Buster
+8,2,7,Event Schematics,Art Deco Weapons,The Great Axeby
+8,2,8,Event Schematics,Art Deco Weapons,The Killjoy
+8,2,9,Event Schematics,Art Deco Weapons,The Heavyweight
+8,3,1,Event Schematics,Boombox Weapons,Beat Blaster
+8,3,2,Event Schematics,Boombox Weapons,Woofer
+8,3,3,Event Schematics,Boombox Weapons,Crescendo
+8,3,4,Event Schematics,Boombox Weapons,Hot Mix
+8,3,5,Event Schematics,Boombox Weapons,Staccato Shotto
+8,3,6,Event Schematics,Boombox Weapons,Deciblaster
+8,3,7,Event Schematics,Boombox Weapons,Mic Drop
+8,3,8,Event Schematics,Boombox Weapons,Earsplitter
+8,3,9,Event Schematics,Boombox Weapons,Surround Pound
+8,4,1,Event Schematics,Pirate Weapons,Duelist
+8,4,2,Event Schematics,Pirate Weapons,Dragoon
+8,4,3,Event Schematics,Pirate Weapons,Ol' Betsy
+8,4,4,Event Schematics,Pirate Weapons,Bundlebuss
+8,4,5,Event Schematics,Pirate Weapons,Spyglass
+8,4,6,Event Schematics,Pirate Weapons,Bowler
+8,4,7,Event Schematics,Pirate Weapons,Sir Hootie
+8,4,8,Event Schematics,Pirate Weapons,Fishing Hook
+8,4,9,Event Schematics,Pirate Weapons,Walloper
+8,4,10,Event Schematics,Pirate Weapons,Corsair
+8,4,11,Event Schematics,Pirate Weapons,Jack's Revenge
+8,4,12,Event Schematics,Pirate Weapons,The Powder Keg
+8,5,1,Event Schematics,Spy Weapons,The Grunt
+8,5,2,Event Schematics,Spy Weapons,The Browbeater
+8,5,3,Event Schematics,Spy Weapons,The Turncoat
+8,5,4,Event Schematics,Spy Weapons,The Cyclops
+8,5,5,Event Schematics,Spy Weapons,The Pepper Sprayer
+8,5,6,Event Schematics,Spy Weapons,The Trinity
+8,5,7,Event Schematics,Spy Weapons,The Cleaner
+8,5,8,Event Schematics,Spy Weapons,The Instigator
+8,5,9,Event Schematics,Spy Weapons,The Potshot
+8,6,1,Event Schematics,Dragon Weapons,Dragon's Roar
+8,6,2,Event Schematics,Dragon Weapons,Dragon's Breath Shotgun
+8,6,3,Event Schematics,Dragon Weapons,Dragonfire
+8,6,4,Event Schematics,Dragon Weapons,Dragon's Claw
+8,6,5,Event Schematics,Dragon Weapons,Dragon's Fury
+8,6,6,Event Schematics,Dragon Weapons,Dragon's Fang
+8,6,7,Event Schematics,Dragon Weapons,Dragon's Tooth
+8,6,8,Event Schematics,Dragon Weapons,Dragon's Fist
+8,7,1,Event Schematics,Holiday Weapons,Frostbite
+8,7,2,Event Schematics,Holiday Weapons,Blizzard Blitzer
+8,7,3,Event Schematics,Holiday Weapons,Pain Train
+8,7,4,Event Schematics,Holiday Weapons,Popshot
+8,7,5,Event Schematics,Holiday Weapons,The Paper Shredder
+8,7,6,Event Schematics,Holiday Weapons,Ginger Blaster
+8,7,7,Event Schematics,Holiday Weapons,Cocoa .45
+8,7,8,Event Schematics,Holiday Weapons,Ralphie's Revenge
+8,7,9,Event Schematics,Holiday Weapons,Shark Attack!
+8,7,10,Event Schematics,Holiday Weapons,Santa's Little Helper
+8,7,11,Event Schematics,Holiday Weapons,Snowball Launcher
+8,7,12,Event Schematics,Holiday Weapons,Heartbreaker
+8,7,13,Event Schematics,Holiday Weapons,Love Song
+8,7,14,Event Schematics,Holiday Weapons,Easter Egg Launcher
+8,7,15,Event Schematics,Holiday Weapons,Supersonic Slasher
+8,7,16,Event Schematics,Holiday Weapons,The Contender
+8,7,17,Event Schematics,Holiday Weapons,Tree Of Light
+8,7,18,Event Schematics,Holiday Weapons,Boom Bow
+8,7,19,Event Schematics,Holiday Weapons,Slicicle
+8,8,1,Event Schematics,Black Metal Weapons,Blackout
+8,8,2,Event Schematics,Black Metal Weapons,Black Drum
+8,8,3,Event Schematics,Black Metal Weapons,Dirge Song
+8,8,4,Event Schematics,Black Metal Weapons,Midnight Stalker
+8,8,5,Event Schematics,Black Metal Weapons,Metal Marauder
+8,8,6,Event Schematics,Black Metal Weapons,Night Owl
+8,8,7,Event Schematics,Black Metal Weapons,Husk Grinder
+8,8,8,Event Schematics,Black Metal Weapons,Brood Slicer
+8,8,9,Event Schematics,Black Metal Weapons,Nightfall
+8,8,10,Event Schematics,Black Metal Weapons,Black Blade
+8,9,1,Event Schematics,Fortnitemares Weapons,Ghost Pistol
+8,9,2,Event Schematics,Fortnitemares Weapons,Candy Corn LMG
+8,9,3,Event Schematics,Fortnitemares Weapons,Grave Digger
+8,9,4,Event Schematics,Fortnitemares Weapons,Jack-O-Launcher
+8,9,5,Event Schematics,Fortnitemares Weapons,Six Feet Under
+8,9,6,Event Schematics,Fortnitemares Weapons,Spectral Blade
+8,9,7,Event Schematics,Fortnitemares Weapons,Pulse Pounder
+8,9,8,Event Schematics,Fortnitemares Weapons,Plasmatic Discharger
+8,9,9,Event Schematics,Fortnitemares Weapons,Shooting Star
+8,9,10,Event Schematics,Fortnitemares Weapons,Third Rail
+8,10,1,Event Schematics,Rat Rod Weapons,Drifter
+8,10,2,Event Schematics,Rat Rod Weapons,Axle
+8,10,3,Event Schematics,Rat Rod Weapons,Lead Sled
+8,10,4,Event Schematics,Rat Rod Weapons,Two Step
+8,10,5,Event Schematics,Rat Rod Weapons,Swan
+8,10,6,Event Schematics,Rat Rod Weapons,Crankshot
+8,10,7,Event Schematics,Rat Rod Weapons,Ratatat
+8,10,8,Event Schematics,Rat Rod Weapons,Rat King
+8,10,9,Event Schematics,Rat Rod Weapons,V6 Launcher
+8,11,1,Event Schematics,Retro SciFi Weapons,Husk Warper
+8,11,2,Event Schematics,Retro SciFi Weapons,Atomic Light Expander
+8,11,3,Event Schematics,Retro SciFi Weapons,Gammatron 9000
+8,11,4,Event Schematics,Retro SciFi Weapons,Blastotron Mini
+8,11,5,Event Schematics,Retro SciFi Weapons,Blastotron 9000
+8,11,6,Event Schematics,Retro SciFi Weapons,Plasmatron 9000
+8,11,7,Event Schematics,Retro SciFi Weapons,Astro Bat 9000
+8,11,8,Event Schematics,Retro SciFi Weapons,De-Atomizer 9000
+8,11,9,Event Schematics,Retro SciFi Weapons,Pulsar 9000
+8,12,1,Event Schematics,Steampunk Weapons,Steam Piston
+8,12,2,Event Schematics,Steampunk Weapons,Steamroller
+8,12,3,Event Schematics,Steampunk Weapons,Bon Voyage
+8,12,4,Event Schematics,Steampunk Weapons,Cannonade
+8,12,5,Event Schematics,Steampunk Weapons,Cloudburst
+8,12,6,Event Schematics,Steampunk Weapons,The Baron
+8,12,7,Event Schematics,Steampunk Weapons,Steam Thrasher
+8,12,8,Event Schematics,Steampunk Weapons,Double Boiler
+8,12,9,Event Schematics,Steampunk Weapons,Duet
+8,12,10,Event Schematics,Steampunk Weapons,Steam Skewer
+8,12,11,Event Schematics,Steampunk Weapons,Last Word
+8,13,1,Event Schematics,Medieval Weapons,Basilisk
+8,13,2,Event Schematics,Medieval Weapons,Hemlock
+8,13,3,Event Schematics,Medieval Weapons,Stalwart Squire
+8,13,4,Event Schematics,Medieval Weapons,The Jabberwocky
+8,13,5,Event Schematics,Medieval Weapons,Smasher Basher
+8,13,6,Event Schematics,Medieval Weapons,Wicked Wind
+8,13,7,Event Schematics,Medieval Weapons,Knightfire
+8,13,8,Event Schematics,Medieval Weapons,Guardian's Will
+8,13,9,Event Schematics,Medieval Weapons,Sir Lancelot
+8,13,10,Event Schematics,Medieval Weapons,Yeoman
+8,14,1,Event Schematics,Ancient's Weapons,Ancient's Launcher
+9,1,1,Expansion People,Battle Breakers!!,Razor
+9,1,2,Expansion People,Battle Breakers!!,Kurohomura
+9,2,1,Expansion People,ShadowOps Heroes,Double Agent Evelynn
+9,2,2,Expansion People,ShadowOps Heroes,Undercover Vaughn
+9,2,3,Expansion People,ShadowOps Heroes,Demolitionist Penny
+9,2,4,Expansion People,ShadowOps Heroes,Saboteur Bull
+9,2,5,Expansion People,ShadowOps Heroes,Piercing Lotus Edge
+9,2,6,Expansion People,ShadowOps Heroes,Deadly Lotus Luna
+9,2,7,Expansion People,ShadowOps Heroes,Shockgunner Grizzly
+9,2,8,Expansion People,ShadowOps Heroes,Ambush Buzz
+9,3,1,Expansion People,CyberPunk Heroes,Bullet Storm Jonesy
+9,3,2,Expansion People,CyberPunk Heroes,Heavy B.A.S.E. Kyle
+9,3,3,Expansion People,CyberPunk Heroes,Harvester Sarah
+9,3,4,Expansion People,CyberPunk Heroes,T.E.D.D. Shot Jess
+9,4,1,Expansion People,Storm Zone Heroes,Centurion Hawk
+9,4,2,Expansion People,Storm Zone Heroes,Deadly Blade Crash
+9,4,3,Expansion People,Storm Zone Heroes,Trailblaster A.C.
+9,4,4,Expansion People,Storm Zone Heroes,Marathon Hype
+9,5,1,Expansion People,Scavenger Heroes,Shrapnel Headhunter
+9,5,2,Expansion People,Scavenger Heroes,Energy Thief Mari
+9,5,3,Expansion People,Scavenger Heroes,Gunblazer Southie
+9,5,4,Expansion People,Scavenger Heroes,Machinist Harper
+10,1,1,Expansion Schematics,Storm King Weapons,Storm King's Scourge
+10,1,2,Expansion Schematics,Storm King Weapons,Storm King's Onslaught
+10,1,3,Expansion Schematics,Storm King Weapons,Storm King's Wrath
+10,1,4,Expansion Schematics,Storm King Weapons,Storm King's Ravager
+10,1,5,Expansion Schematics,Storm King Weapons,Storm King's Fury
+10,2,1,Expansion Schematics,Vacuum Tube Weapons,Tube Assault Rifles
+10,2,2,Expansion Schematics,Vacuum Tube Weapons,Tube SMGs and Pistols
+10,2,3,Expansion Schematics,Vacuum Tube Weapons,Tube Shotguns
+10,2,4,Expansion Schematics,Vacuum Tube Weapons,Tube Snipers
+10,2,5,Expansion Schematics,Vacuum Tube Weapons,Tube Launchers
+10,2,6,Expansion Schematics,Vacuum Tube Weapons,Vacuum Tube Bow
+10,2,7,Expansion Schematics,Vacuum Tube Weapons,Tube Axes
+10,2,8,Expansion Schematics,Vacuum Tube Weapons,Tube Swords
+10,2,9,Expansion Schematics,Vacuum Tube Weapons,Tube Spears
+10,3,1,Expansion Schematics,Military Weapons,Whisper .45
+10,3,2,Expansion Schematics,Military Weapons,Specter
+10,3,3,Expansion Schematics,Military Weapons,Bald Eagle
+10,3,4,Expansion Schematics,Military Weapons,Crossbow
+10,3,5,Expansion Schematics,Military Weapons,Ground Pounder
+10,3,6,Expansion Schematics,Military Weapons,HackSAW
+10,3,7,Expansion Schematics,Military Weapons,Bobcat
+10,3,8,Expansion Schematics,Military Weapons,Lynx
+10,3,9,Expansion Schematics,Military Weapons,Tiger
+10,3,10,Expansion Schematics,Military Weapons,Wraith
+10,3,11,Expansion Schematics,Military Weapons,Obliterator
+10,3,12,Expansion Schematics,Military Weapons,Quad Launcher
+10,4,1,Expansion Schematics,Neon Weapons,Krypton Pistols
+10,4,2,Expansion Schematics,Neon Weapons,Helium Shotguns
+10,4,3,Expansion Schematics,Neon Weapons,Argon Assault Rifles
+10,4,4,Expansion Schematics,Neon Weapons,Neon Sniper
+10,4,5,Expansion Schematics,Neon Weapons,Mercury LMG
+10,4,6,Expansion Schematics,Neon Weapons,Noble Launcher
+10,4,7,Expansion Schematics,Neon Weapons,Argon Axes
+10,4,8,Expansion Schematics,Neon Weapons,Neon Scythes
+10,4,9,Expansion Schematics,Neon Weapons,Krypton Swords
+10,4,10,Expansion Schematics,Neon Weapons,Xenon Bow
+10,5,1,Expansion Schematics,VinderTech Weapons,Vindertech Pulse Rifles
+10,5,2,Expansion Schematics,VinderTech Weapons,Vindertech SMGs
+10,5,3,Expansion Schematics,VinderTech Weapons,Vindertech Burst Pistols
+10,5,4,Expansion Schematics,VinderTech Weapons,Vindertech Blaster Pistol
+10,5,5,Expansion Schematics,VinderTech Weapons,Vindertech Shotguns
+10,5,6,Expansion Schematics,VinderTech Weapons,Vindertech Snipers
+10,5,7,Expansion Schematics,VinderTech Weapons,Vindertech Seeker
+10,5,8,Expansion Schematics,VinderTech Weapons,Vindertech Rocket Hammers
+10,5,9,Expansion Schematics,VinderTech Weapons,Vindertech Laser Axes
+10,5,10,Expansion Schematics,VinderTech Weapons,Vindertech Laser Swords
+10,6,1,Expansion Schematics,Hydraulic Weapons,Hydraulic Assault Rifles
+10,6,2,Expansion Schematics,Hydraulic Weapons,Hydraulic Shotguns
+10,6,3,Expansion Schematics,Hydraulic Weapons,Hydraulic Pistols
+10,6,4,Expansion Schematics,Hydraulic Weapons,Hydraulic Snipers
+10,6,5,Expansion Schematics,Hydraulic Weapons,Hydraulic Launchers
+10,6,6,Expansion Schematics,Hydraulic Weapons,Compression Burster
+10,6,7,Expansion Schematics,Hydraulic Weapons,Hydraulic Swords
+10,6,8,Expansion Schematics,Hydraulic Weapons,Hydraulic Spears
+10,6,9,Expansion Schematics,Hydraulic Weapons,Hydraulic Hammers
+10,7,1,Expansion Schematics,Scavenger Weapons,Scavenger Assault Rifles
+10,7,2,Expansion Schematics,Scavenger Weapons,Scavenger Double-Barreled Shotguns
+10,7,3,Expansion Schematics,Scavenger Weapons,Scavenger Semi-Auto Shotguns
+10,7,4,Expansion Schematics,Scavenger Weapons,Scavenger SMGs
+10,7,5,Expansion Schematics,Scavenger Weapons,Scavenger Snipers
+10,7,6,Expansion Schematics,Scavenger Weapons,Scavenger Launcher
+10,7,7,Expansion Schematics,Scavenger Weapons,Scavenger Axes
+10,7,8,Expansion Schematics,Scavenger Weapons,Scavenger Spears
+10,7,9,Expansion Schematics,Scavenger Weapons,Scavenger Hardware
+10,7,10,Expansion Schematics,Scavenger Weapons,Scrap Shot

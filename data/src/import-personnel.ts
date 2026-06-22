@@ -119,6 +119,25 @@ interface Group {
   templateId: string;
   tier: number;
 }
+
+function defenderGender(templateId: string, weaponType: string | undefined): Defender["gender"] {
+  const explicit = /_Basic_([FM])_/.exec(templateId)?.[1];
+  if (explicit === "F") return "Female";
+  if (explicit === "M") return "Male";
+  if (/_Founders_/i.test(templateId)) {
+    if (/Assault/i.test(templateId)) return "Female";
+    if (/Pistol/i.test(templateId)) return "Male";
+  }
+  if (/_Basic_F_/i.test(templateId)) return "Female";
+  const baseGender: Record<string, Defender["gender"]> = {
+    Assault: "Female",
+    Melee: "Male",
+    Pistol: "Male",
+    Shotgun: "Male",
+    Sniper: "Female",
+  };
+  return weaponType ? baseGender[weaponType] : undefined;
+}
 function dedupe(
   raw: RawAssets,
   type: string,
@@ -180,21 +199,28 @@ export function importSurvivors(raw: RawAssets): Survivor[] {
 export function importDefenders(raw: RawAssets): Defender[] {
   const out: Defender[] = [];
   for (const g of dedupe(raw, "Defender", (it) =>
-    `${slug(it.DisplayName!)}|${normalizeRarity(it.Rarity)}`,
+    `${slug(it.DisplayName!)}|${normalizeRarity(it.Rarity)}|${
+      /_Basic_F_/.test(it.Name ?? "") ? "female" :
+      /_Basic_M_/.test(it.Name ?? "") ? "male" :
+      slug(it.ImagePaths?.SmallPreview ?? it.ImagePaths?.Icon ?? "base")
+    }`,
   )) {
     const item = g.rep;
     const name = item.DisplayName!.trim();
     const rarity = normalizeRarity(item.Rarity);
     const weaponType = item.SubType?.replace(/\s*Defender$/i, "").trim() || undefined;
+    const gender = defenderGender(g.templateId, weaponType);
 
     const tags = [tagId("rarity", rarity)];
     if (weaponType) tags.push(tagId("weaponType", weaponType));
+    if (gender) tags.push(tagId("gender", gender));
 
     out.push({
-      id: `${slug(name)}-${rarity}`,
+      id: `${slug(name)}-${rarity}-${slug(gender ?? "unknown")}`,
       templateId: g.templateId,
       name,
       weaponType,
+      gender,
       rarity,
       description: item.Description?.trim() || undefined,
       tier: g.tier || undefined,

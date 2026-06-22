@@ -134,13 +134,13 @@ export function buildSearchIndex(d: {
   // Perk facets are per-category (rangedPerk / meleePerk / trapPerk), so each
   // routes to its own section — keeping search and inspect cross-links in sync.
   const FACET_MAP: Record<string, FacetSearchMap | undefined> = {
-    set: { kind: "set", subLabel: "Collection Set", section: "heroes", sub: "__value__" },
+    set: { kind: "set", subLabel: "Collection Set", section: "heroes", sub: "all" },
     class: { kind: "class", subLabel: "Class", section: "heroes", sub: "all" },
     heroPerk: { kind: "heroPerk", subLabel: "Standard Perk", section: "heroes", sub: "all", descOf: (v) => heroPerkDesc.get(v) },
     commanderPerk: { kind: "commanderPerk", subLabel: "Commander Perk", section: "heroes", sub: "all", descOf: (v) => cmdPerkDesc.get(v) },
     classPerk: { kind: "classPerk", subLabel: "Class Perk", section: "heroes", sub: "all", descOf: (v) => classPerkDesc.get(v) },
-    personality: { kind: "personality", subLabel: "Personality", section: "personnel", sub: "all-survivors" },
-    squad: { kind: "squad", subLabel: "Squad", section: "personnel", sub: "all-survivors" },
+    personality: { kind: "personality", subLabel: "Personality", section: "personnel", sub: "all" },
+    squad: { kind: "squad", subLabel: "Squad", section: "personnel", sub: "all" },
     rangedPerk: { kind: "weaponPerk", subLabel: "Weapon Perk", section: "ranged", sub: "all", descOf: perkText },
     meleePerk: { kind: "weaponPerk", subLabel: "Weapon Perk", section: "melee", sub: "all", descOf: perkText },
     trapPerk: { kind: "trapPerk", subLabel: "Trap Perk", section: "traps", sub: "all", descOf: perkText },

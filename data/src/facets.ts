@@ -102,6 +102,7 @@ const SURVIVOR_DEFS: FacetDef<Survivor>[] = [
 ];
 const DEFENDER_DEFS: FacetDef<Defender>[] = [
   { facet: "weaponType", label: "Weapon", get: (d) => d.weaponType },
+  { facet: "gender", label: "Gender", get: (d) => d.gender },
   { facet: "rarity", label: "Rarity", get: (d) => d.rarity },
 ];
 /** unique perk families a schematic can roll, across all of its slots */

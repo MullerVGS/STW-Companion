@@ -7,7 +7,7 @@ interface Props {
   index: SearchEntry[];
   /** open a record's inspect view */
   onPickItem: (dataset: DatasetName, id: string) => void;
-  /** navigate to a section/subcategory, optionally applying a facet tag */
+  /** navigate to a section/division (or hidden aggregate), optionally applying a facet tag */
   onFilter: (section: string, sub: string, tag?: string) => void;
 }
 

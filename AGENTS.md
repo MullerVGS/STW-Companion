@@ -7,9 +7,9 @@ re-derive them.
 > **What this is:** **STW Companion** — a companion app for **Fortnite: Save the
 > World**. Two surfaces today, toggled in the header:
 >
-> 1. **Collection Book** — an interactive wiki + tracker covering all sections:
->    Heroes (by set), Personnel (Defenders / Survivors / Lead Survivors / Mythic
->    Leads), and Ranged / Melee / Trap schematics. Inspect view (perks,
+> 1. **Collection Book** — an interactive wiki + tracker following the in-game
+>    section → page → panel → slot taxonomy across Heroes, Personnel, core
+>    schematics, Starter Packs, Event and Expansion sections. Inspect view (perks,
 >    abilities, stats, crafting) + click-to-filter (facets) + global search.
 > 2. **Hero Loadout** — a team planner (commander + 5 support + team perk + 2
 >    gadgets) with an aggregated team summary and a "find in Collection Book"
@@ -89,7 +89,7 @@ the only dynamic state is the user's collection, kept in `localStorage`.
  web/public/data/class-icons.json hero-class glyph urls (drives the loadout class filter)
  web/public/data/search-index.json prebuilt global search: items + every linkable entity (incl. perk text)
  web/public/data/facets.json      per-dataset clickable attribute indices (values carry an icon)
- web/public/data/book.json        section → subcategory taxonomy (drives the left rail)
+ web/public/data/book.json        section → division/page → panel → slot taxonomy
  web/public/data/meta.json        counts / provenance
  web/public/icons/*.webp          only the icons referenced & present on disk, converted to WebP (sharp)
         │  vite build (copies public/ into dist/)
@@ -110,7 +110,7 @@ data/src/
   schema.ts        ★ canonical domain model (Hero, Survivor, Defender, Schematic, ...). SOURCE OF TRUTH.
   banjo-types.ts     types for the raw export — PascalCase, defensive/optional
   hero-sets.ts     ★ derive Collection Book set + location from template/image tokens (curated map)
-  book.ts            builds the section → subcategory taxonomy (book.json)
+  book.ts            resolves data/manual/collection-book-taxonomy.csv to collectible ids
   lookups.ts         id → ingredient / alteration indexes (crafting + perk-pool resolution)
   import-heroes.ts ★ heroes (dedupe) + the abilities they reference
   import-personnel.ts survivors (survivor/lead/mythic-lead) + defenders
@@ -124,10 +124,12 @@ data/raw/
   assets.json        real export (git-ignored)
   ExportedImages/    full image export (git-ignored; needed for hero/ability/etc. art)
   sample.assets.json committed fixture (real subset; keeps the pipeline runnable)
+data/manual/
+  collection-book-taxonomy.csv  authoritative in-game section/page/panel ordering
 
 web/src/
   types.ts         ★ public data contract — mirror of schema.ts
-  App.tsx            mode toggle (Collection Book ⇄ Hero Loadout) + section/subcategory state, filtering (facets: OR within, AND across), inspect, find-in-book
+  App.tsx            mode toggle + section/division navigation, filtering, inspect, find-in-book
   store/collection.ts  owned-items localStorage state via useSyncExternalStore (+ export/import)
   store/loadouts.ts  Hero Loadout state: named loadouts (commander/support/teamPerk/gadgets) in localStorage
   lib/data.ts        fetches web/public/data/*.json into one Dataset (incl. perks + team perks + gadgets + search)

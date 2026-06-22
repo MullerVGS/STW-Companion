@@ -2,7 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 
 import { BookSidebar } from "./components/BookSidebar";
 import { FilterBar, type OwnedFilter } from "./components/FilterBar";
-import { ItemGrid } from "./components/ItemGrid";
+import {
+  ItemGrid,
+  type DisplayEntry,
+  type DisplaySlot,
+} from "./components/ItemGrid";
 import { HomeScreen } from "./components/HomeScreen";
 import { InspectModal } from "./components/InspectModal";
 import { LoadoutScreen } from "./components/LoadoutScreen";
@@ -12,26 +16,24 @@ import { clearAll, useCollectionState } from "./store/collection";
 import {
   KIND_OF,
   locateTarget,
-  matches,
   recordsOf,
   searchText,
   slug,
   type ItemKind,
   type Selected,
 } from "./lib/view";
-import type { AnyItem, BookSection, BookSubcategory, Dataset, DatasetName } from "./types";
+import type {
+  AnyItem,
+  BookEntry,
+  Dataset,
+  DatasetName,
+  FacetGroup,
+  FacetValue,
+} from "./types";
 
 type Mode = "home" | "book" | "loadout";
 
-/** dataset that backs a section's synthetic "All" view (personnel spans two -> none). */
-const SECTION_DATASET: Record<string, DatasetName> = {
-  heroes: "heroes",
-  ranged: "schematics",
-  melee: "schematics",
-  traps: "schematics",
-};
-
-/** Map a section to the schematic `category` it represents (for the "All" match). */
+/** Map core sections to the schematic category used by hidden cross-link views. */
 const SECTION_CATEGORY: Record<string, string> = {
   ranged: "ranged",
   melee: "melee",
@@ -46,24 +48,58 @@ const NAMED_REWARD_DATASET: Record<string, DatasetName> = {
   schematic: "schematics",
 };
 
-/** perk facet to surface per weapon/trap section. */
-const PERK_FACET: Record<string, string> = {
-  ranged: "rangedPerk",
-  melee: "meleePerk",
-  traps: "trapPerk",
+const DATASET_OF_KIND: Record<ItemKind, DatasetName> = {
+  hero: "heroes",
+  survivor: "survivors",
+  defender: "defenders",
+  schematic: "schematics",
 };
 
-/** Prepend an "All <section>" subcategory to single-dataset sections. */
-function withAll(section: BookSection, d: Dataset): BookSubcategory[] {
-  const ds = SECTION_DATASET[section.key];
-  if (!ds) return section.subcategories;
-  const match =
-    ds === "schematics"
-      ? [{ field: "category", value: SECTION_CATEGORY[section.key] }]
-      : undefined;
-  const count = recordsOf(d, ds).filter((r) => matches(r, match)).length;
-  const all: BookSubcategory = { key: "all", label: `All ${section.label}`, dataset: ds, match, count };
-  return [all, ...section.subcategories];
+function resolveBookEntry(dataset: Dataset, entry: BookEntry): DisplayEntry {
+  const slots: DisplaySlot[] = [];
+  for (const ref of entry.slots) {
+    const item = recordsOf(dataset, ref.dataset).find((candidate) => candidate.id === ref.id);
+    if (item) slots.push({ dataset: ref.dataset, kind: KIND_OF[ref.dataset], item });
+  }
+  return { key: entry.key, label: entry.label, slots };
+}
+
+/** Hidden aggregate views keep cross-links useful without adding fake sidebar pages. */
+function virtualEntries(dataset: Dataset, sectionKey: string): DisplayEntry[] {
+  const refs: { dataset: DatasetName; item: AnyItem }[] = [];
+  if (sectionKey === "heroes") {
+    refs.push(...dataset.heroes.map((item) => ({ dataset: "heroes" as const, item })));
+  } else if (sectionKey === "personnel") {
+    refs.push(...dataset.defenders.map((item) => ({ dataset: "defenders" as const, item })));
+    refs.push(...dataset.survivors.map((item) => ({ dataset: "survivors" as const, item })));
+  } else if (SECTION_CATEGORY[sectionKey]) {
+    refs.push(
+      ...dataset.schematics
+        .filter((item) => item.category === SECTION_CATEGORY[sectionKey])
+        .map((item) => ({ dataset: "schematics" as const, item })),
+    );
+  } else {
+    const section = dataset.book.find((candidate) => candidate.key === sectionKey);
+    return (
+      section?.divisions.flatMap((division) =>
+        division.entries.map((entry) => resolveBookEntry(dataset, entry)),
+      ) ?? []
+    );
+  }
+
+  const groups = new Map<string, DisplaySlot[]>();
+  for (const ref of refs) {
+    const slots = groups.get(ref.item.name) ?? [];
+    slots.push({ dataset: ref.dataset, kind: KIND_OF[ref.dataset], item: ref.item });
+    groups.set(ref.item.name, slots);
+  }
+  return [...groups.entries()]
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([label, slots]) => ({
+      key: `all-${slug(label)}`,
+      label,
+      slots,
+    }));
 }
 
 export default function App() {
@@ -72,7 +108,7 @@ export default function App() {
 
   const [mode, setMode] = useState<Mode>("home");
   const [activeSection, setActiveSection] = useState("heroes");
-  const [activeSub, setActiveSub] = useState("all");
+  const [activeDivision, setActiveDivision] = useState("soldiers");
   const [query, setQuery] = useState("");
   const [ownedFilter, setOwnedFilter] = useState<OwnedFilter>("all");
   const [selectedTags, setSelectedTags] = useState<ReadonlySet<string>>(new Set());
@@ -94,34 +130,55 @@ export default function App() {
     return () => clearTimeout(t);
   }, [highlightId]);
 
-  // sections with synthetic "All" subcategories
-  const sections = useMemo(
-    () => (dataset ? dataset.book.map((s) => ({ ...s, subcategories: withAll(s, dataset) })) : []),
-    [dataset],
-  );
+  const sections = dataset?.book ?? [];
+  const section = sections.find((candidate) => candidate.key === activeSection) ?? sections[0];
+  const division =
+    activeDivision === "all"
+      ? undefined
+      : section?.divisions.find((candidate) => candidate.key === activeDivision) ??
+        section?.divisions[0];
 
-  const section = sections.find((s) => s.key === activeSection) ?? sections[0];
-  const sub = section?.subcategories.find((x) => x.key === activeSub) ?? section?.subcategories[0];
+  const entries = useMemo<DisplayEntry[]>(() => {
+    if (!dataset || !section) return [];
+    if (activeDivision === "all") return virtualEntries(dataset, section.key);
+    return (division?.entries ?? []).map((entry) => resolveBookEntry(dataset, entry));
+  }, [dataset, section, division, activeDivision]);
 
-  // records for the active subcategory
-  const records = useMemo<AnyItem[]>(() => {
-    if (!dataset || !sub) return [];
-    return recordsOf(dataset, sub.dataset).filter((r) => matches(r, sub.match));
-  }, [dataset, sub]);
+  const records = useMemo(() => entries.flatMap((entry) => entry.slots), [entries]);
 
-  // facets for the active dataset, hiding ones already constrained by the subcategory
-  const facets = useMemo(() => {
-    if (!dataset || !sub) return [];
-    const constrained = new Set((sub.match ?? []).map((m) => m.field));
-    return dataset.facets[sub.dataset].filter((g) => {
-      if (constrained.has(g.facet)) return false;
-      // perk facets are per-category; show only the one matching the active section
-      if (g.facet.endsWith("Perk")) return PERK_FACET[activeSection] === g.facet;
-      // the "set" facet is redundant once you're on a specific hero set page
-      if (g.facet === "set" && activeSection === "heroes" && activeSub !== "all") return false;
-      return g.values.length > 1;
-    });
-  }, [dataset, sub, activeSection, activeSub]);
+  // Recount facets against this page, including mixed hero/schematic pages.
+  const facets = useMemo<FacetGroup[]>(() => {
+    if (!dataset) return [];
+    const merged = new Map<string, { label: string; values: Map<string, FacetValue> }>();
+    for (const datasetName of ["heroes", "survivors", "defenders", "schematics"] as DatasetName[]) {
+      const pageSlots = records.filter((slot) => slot.dataset === datasetName);
+      if (pageSlots.length === 0) continue;
+      for (const group of dataset.facets[datasetName]) {
+        let target = merged.get(group.facet);
+        if (!target) {
+          target = { label: group.label, values: new Map() };
+          merged.set(group.facet, target);
+        }
+        for (const value of group.values) {
+          const count = pageSlots.filter((slot) => slot.item.tags.includes(value.id)).length;
+          if (count === 0) continue;
+          const existing = target.values.get(value.id);
+          target.values.set(value.id, {
+            ...value,
+            count: (existing?.count ?? 0) + count,
+            icon: existing?.icon ?? value.icon,
+          });
+        }
+      }
+    }
+    return [...merged.entries()]
+      .map(([facet, group]) => ({
+        facet,
+        label: group.label,
+        values: [...group.values.values()],
+      }))
+      .filter((group) => group.values.length > 1);
+  }, [dataset, records]);
 
   const selectedByFacet = useMemo(() => {
     const m = new Map<string, Set<string>>();
@@ -134,28 +191,32 @@ export default function App() {
     return m;
   }, [selectedTags]);
 
-  const baseFiltered = useMemo(() => {
+  const visibleEntries = useMemo(() => {
     const q = query.trim().toLowerCase();
-    const kind = sub ? KIND_OF[sub.dataset] : "hero";
-    return records.filter((r) => {
-      for (const values of selectedByFacet.values()) {
-        if (!r.tags.some((t) => values.has(t))) return false;
-      }
-      return !q || searchText(kind, r).toLowerCase().includes(q);
-    });
-  }, [records, selectedByFacet, query, sub]);
+    return entries
+      .map((entry) => ({
+        ...entry,
+        slots: entry.slots.filter((slot) => {
+          for (const values of selectedByFacet.values()) {
+            if (!slot.item.tags.some((tag) => values.has(tag))) return false;
+          }
+          if (q && !searchText(slot.kind, slot.item).toLowerCase().includes(q)) return false;
+          if (ownedFilter === "all") return true;
+          const owned = (collection[slot.item.id] ?? 0) > 0;
+          return ownedFilter === "owned" ? owned : !owned;
+        }),
+      }))
+      .filter((entry) => entry.slots.length > 0);
+  }, [entries, selectedByFacet, query, ownedFilter, collection]);
 
-  const visible = useMemo(() => {
-    if (ownedFilter === "all") return baseFiltered;
-    return baseFiltered.filter((r) => {
-      const owned = (collection[r.id] ?? 0) > 0;
-      return ownedFilter === "owned" ? owned : !owned;
-    });
-  }, [baseFiltered, ownedFilter, collection]);
+  const visibleCount = useMemo(
+    () => visibleEntries.reduce((total, entry) => total + entry.slots.length, 0),
+    [visibleEntries],
+  );
 
-  const selectSub = (sectionKey: string, subKey: string) => {
+  const selectDivision = (sectionKey: string, divisionKey: string) => {
     setActiveSection(sectionKey);
-    setActiveSub(subKey);
+    setActiveDivision(divisionKey);
     setSelectedTags(new Set());
     setQuery("");
     setSelected(null);
@@ -163,7 +224,7 @@ export default function App() {
   const crossLink = (sectionKey: string, subKey: string, tag?: string) => {
     setMode("book");
     setActiveSection(sectionKey);
-    setActiveSub(subKey || "all");
+    setActiveDivision(subKey || "all");
     setSelectedTags(tag ? new Set([tag]) : new Set());
     setQuery("");
     setOwnedFilter("all");
@@ -172,14 +233,11 @@ export default function App() {
 
   // find-in-book: jump to where an item lives, clear filters, flash its card
   const locate = (kind: ItemKind, item: AnyItem) => {
-    const target = locateTarget(kind, item);
-    const sec = sections.find((s) => s.key === target.section);
-    const subKey = sec?.subcategories.some((x) => x.key === target.sub)
-      ? target.sub
-      : (sec?.subcategories[0]?.key ?? "all");
+    if (!dataset) return;
+    const target = locateTarget(dataset.book, DATASET_OF_KIND[kind], item);
     setMode("book");
     setActiveSection(target.section);
-    setActiveSub(subKey);
+    setActiveDivision(target.sub);
     setSelectedTags(new Set());
     setQuery("");
     setOwnedFilter("all");
@@ -203,7 +261,7 @@ export default function App() {
   const searchFilter = (sectionKey: string, subKey: string, tag?: string) => {
     setMode("book");
     if (tag) crossLink(sectionKey, subKey, tag);
-    else selectSub(sectionKey, subKey);
+    else selectDivision(sectionKey, subKey);
   };
 
   // Home cross-link: open a named reward (hero/survivor/defender/schematic) by name.
@@ -338,7 +396,7 @@ export default function App() {
       </div>
     );
   }
-  if (!dataset || !section || !sub) {
+  if (!dataset || !section) {
     return (
       <div className="cb-root">
         {header()}
@@ -352,11 +410,13 @@ export default function App() {
     );
   }
 
-  const kind = KIND_OF[sub.dataset];
-  const pageIndex = section.subcategories.findIndex((candidate) => candidate.key === sub.key);
+  const pageIndex = division
+    ? section.divisions.findIndex((candidate) => candidate.key === division.key)
+    : -1;
   const adjacentPage = (direction: -1 | 1) => {
-    const next = section.subcategories[pageIndex + direction];
-    if (next) selectSub(section.key, next.key);
+    if (pageIndex < 0) return;
+    const next = section.divisions[pageIndex + direction];
+    if (next) selectDivision(section.key, next.key);
   };
 
   return (
@@ -375,8 +435,8 @@ export default function App() {
             <BookSidebar
               sections={sections}
               activeSection={section.key}
-              activeSub={sub.key}
-              onSelect={selectSub}
+              activeDivision={activeDivision === "all" ? "" : (division?.key ?? "")}
+              onSelect={selectDivision}
             />
             <main className="cb-content">
               <div className="cb-content-head">
@@ -397,10 +457,13 @@ export default function App() {
                   <label>
                     <span>Page</span>
                     <select
-                      value={sub.key}
-                      onChange={(event) => selectSub(section.key, event.target.value)}
+                      value={activeDivision === "all" ? "all" : (division?.key ?? "")}
+                      onChange={(event) => selectDivision(section.key, event.target.value)}
                     >
-                      {section.subcategories.map((candidate) => (
+                      {activeDivision === "all" && (
+                        <option value="all">All {section.label}</option>
+                      )}
+                      {section.divisions.map((candidate) => (
                         <option key={candidate.key} value={candidate.key}>
                           {candidate.label}
                         </option>
@@ -411,7 +474,7 @@ export default function App() {
                     type="button"
                     className="arrow"
                     onClick={() => adjacentPage(1)}
-                    disabled={pageIndex >= section.subcategories.length - 1}
+                    disabled={pageIndex < 0 || pageIndex >= section.divisions.length - 1}
                     title="Next page"
                   >
                     ›
@@ -451,15 +514,14 @@ export default function App() {
                 selected={selectedTags}
                 onToggle={toggleFacet}
                 onClear={() => setSelectedTags(new Set())}
-                visible={visible.length}
+                visible={visibleCount}
                 total={records.length}
                 onReset={handleReset}
               />
 
               <ItemGrid
-                kind={kind}
-                items={visible}
-                onInspect={(item) => setSelected({ kind, item })}
+                entries={visibleEntries}
+                onInspect={(slot) => setSelected({ kind: slot.kind, item: slot.item })}
                 highlightId={highlightId}
                 classIcons={dataset.classIcons}
               />

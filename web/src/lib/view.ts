@@ -1,6 +1,6 @@
 import type {
   AnyItem,
-  BookFilter,
+  BookSection,
   Dataset,
   DatasetName,
   Defender,
@@ -38,18 +38,6 @@ export function recordsOf(dataset: Dataset, name: DatasetName): AnyItem[] {
   return dataset[name] as AnyItem[];
 }
 
-/** Read a record field by name (used by book filters: kind / category / subType / set). */
-export function field(rec: AnyItem, name: string): string | undefined {
-  const v = (rec as unknown as Record<string, unknown>)[name];
-  return typeof v === "string" ? v : undefined;
-}
-
-/** Does a record satisfy all of a subcategory's predicates? */
-export function matches(rec: AnyItem, filters: BookFilter[] | undefined): boolean {
-  if (!filters) return true;
-  return filters.every((f) => field(rec, f.field) === f.value);
-}
-
 /** Short subtitle shown under a card name. */
 export function subtitle(kind: ItemKind, rec: AnyItem): string {
   if (kind === "hero") {
@@ -61,7 +49,8 @@ export function subtitle(kind: ItemKind, rec: AnyItem): string {
     return [KIND_LABEL[s.kind], s.squad].filter(Boolean).join(" · ");
   }
   if (kind === "defender") {
-    return (rec as Defender).weaponType ?? "Defender";
+    const d = rec as Defender;
+    return [d.weaponType, d.gender].filter(Boolean).join(" · ") || "Defender";
   }
   const s = rec as Schematic;
   return [s.subType, s.dps ? `${s.dps.toLocaleString()} DPS` : undefined]
@@ -100,24 +89,30 @@ export function slug(input: string): string {
 
 export const tagId = (facet: string, value: string): string => `${facet}:${slug(value)}`;
 
-/** Where an item lives in the Collection Book — the section + preferred
- *  subcategory to navigate to when "locating" it. The caller validates the sub
- *  against the section's actual subcategories and falls back to the first one. */
-export function locateTarget(kind: ItemKind, item: AnyItem): { section: string; sub: string } {
-  if (kind === "hero") return { section: "heroes", sub: (item as Hero).set || "all" };
-  if (kind === "schematic") {
-    const cat = (item as Schematic).category;
-    return { section: cat === "trap" ? "traps" : cat, sub: "all" };
+/** Where an item lives in the Collection Book — exact section + division when
+ *  assigned, otherwise a hidden aggregate cross-link view. */
+export function locateTarget(
+  book: BookSection[],
+  dataset: DatasetName,
+  item: AnyItem,
+): { section: string; sub: string } {
+  for (const section of book) {
+    for (const division of section.divisions) {
+      if (
+        division.entries.some((entry) =>
+          entry.slots.some((slot) => slot.dataset === dataset && slot.id === item.id),
+        )
+      ) {
+        return { section: section.key, sub: division.key };
+      }
+    }
   }
-  if (kind === "defender") return { section: "personnel", sub: "defenders" };
-  // survivors: jump to the subcategory matching the personnel kind
-  const sub: Record<string, string> = {
-    survivor: "survivors",
-    "mythic-survivor": "mythic-survivors",
-    lead: "leads",
-    "mythic-lead": "mythic-leads",
-  };
-  return { section: "personnel", sub: sub[(item as Survivor).kind] ?? "all-survivors" };
+  if (dataset === "heroes") return { section: "heroes", sub: "all" };
+  if (dataset === "survivors" || dataset === "defenders") {
+    return { section: "personnel", sub: "all" };
+  }
+  const category = (item as Schematic).category;
+  return { section: category === "trap" ? "traps" : category, sub: "all" };
 }
 
 /** Best-effort check: does the commander satisfy a support hero's perk

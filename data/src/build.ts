@@ -35,6 +35,7 @@ const rawDir = path.join(dataRoot, "raw");
 const webPublic = path.resolve(dataRoot, "..", "web", "public");
 const outDir = path.join(webPublic, "data");
 const iconsDir = path.join(webPublic, "icons");
+const taxonomyFile = path.join(dataRoot, "manual", "collection-book-taxonomy.csv");
 
 function resolveSource(): { file: string; kind: DatasetMeta["source"] } {
   const real = path.join(rawDir, "assets.json");
@@ -217,7 +218,11 @@ async function main(): Promise<void> {
 
   const facets = buildAllFacets({ heroes, survivors, defenders, schematics, perks });
   const search = buildSearchIndex({ heroes, survivors, defenders, schematics, perks, abilities, facets });
-  const book = buildBook({ heroes, survivors, defenders, schematics });
+  const book = buildBook(
+    { heroes, survivors, defenders, schematics },
+    taxonomyFile,
+    kind === "assets.json",
+  );
 
   // URLs were assigned above; now actually write the WebP files.
   const iconsCopied = await icons.flush();
@@ -262,7 +267,7 @@ async function main(): Promise<void> {
   console.log(
     `[data] heroes=${heroes.length} abilities=${abilities.length} survivors=${survivors.length} defenders=${defenders.length} schematics=${schematics.length} perks=${Object.keys(perks).length} teamPerks=${teamPerks.length} gadgets=${gadgets.length} search=${search.length} rewards=${Object.keys(rewards).length} icons=${iconsCopied}`,
   );
-  console.log(`[data] sections: ${book.map((s) => `${s.label}(${s.subcategories.length})`).join(", ")}`);
+  console.log(`[data] sections: ${book.map((s) => `${s.label}(${s.divisions.length})`).join(", ")}`);
 }
 
 main().catch((e: unknown) => {

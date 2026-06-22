@@ -6,15 +6,15 @@ import { SectionIcon } from "./icons";
 interface Props {
   sections: BookSection[];
   activeSection: string;
-  activeSub: string;
-  onSelect: (sectionKey: string, subKey: string) => void;
+  activeDivision: string;
+  onSelect: (sectionKey: string, divisionKey: string) => void;
 }
 
 /** Expandable Collection Book navigation: category → in-game page/division. */
 export function BookSidebar({
   sections,
   activeSection,
-  activeSub,
+  activeDivision,
   onSelect,
 }: Props) {
   const [expanded, setExpanded] = useState<string | null>(activeSection);
@@ -29,7 +29,7 @@ export function BookSidebar({
       return;
     }
     setExpanded(section.key);
-    onSelect(section.key, section.subcategories[0]?.key ?? "all");
+    onSelect(section.key, section.divisions[0]?.key ?? "all");
   };
 
   return (
@@ -56,18 +56,17 @@ export function BookSidebar({
             </button>
             {open && (
               <div className="cb-side-subs">
-                {sec.subcategories.map((sub) => {
-                  const selected = active && sub.key === activeSub;
+                {sec.divisions.map((division) => {
+                  const selected = active && division.key === activeDivision;
                   return (
                     <button
-                      key={sub.key}
+                      key={division.key}
                       type="button"
                       className={`cb-sub${selected ? " act" : ""}`}
-                      onClick={() => onSelect(sec.key, sub.key)}
+                      onClick={() => onSelect(sec.key, division.key)}
                       aria-current={selected ? "page" : undefined}
                     >
-                      <span className="lbl">{sub.label}</span>
-                      <span className="ct">{sub.count}</span>
+                      <span className="lbl">{division.label}</span>
                     </button>
                   );
                 })}
