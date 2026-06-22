@@ -137,9 +137,11 @@ data/manual/
 
 live-data/src/
   epic.ts          Epic device-auth + world/catalog fetch
+  history.ts       merges collected snapshots with editable official history
   normalize.ts     pure Epic payload → HomeData transform
   update-home.ts   one-shot scheduled collector; writes static home.json
   types.ts         daily HomeData contract mirrored by web/src/lib/home.ts
+live-data/src/data/vbucks-history.json  editable official totals + daily corrections
 live-data/fixtures/ committed payload samples for offline builds
 
 web/src/

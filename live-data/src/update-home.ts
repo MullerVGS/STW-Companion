@@ -7,8 +7,9 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 import { dataDir, loadDeviceAuth, repoRoot } from "./env";
 import { fetchCatalog, fetchWorldInfo, getAccessToken } from "./epic";
+import { buildVBucksHistory } from "./history";
 import { normalizeHome } from "./normalize";
-import type { HomeData, RewardRegistry, VBucksHistory } from "./types";
+import type { HomeData, RewardRegistry } from "./types";
 
 const publicDataDir = repoRoot() + "web/public/data/";
 const homePath = publicDataDir + "home.json";
@@ -42,13 +43,6 @@ async function readPreviousHome(): Promise<HomeData | undefined> {
   return undefined;
 }
 
-function attachHistory(home: HomeData, previous?: HomeData): VBucksHistory {
-  const day = home.meta.generatedAt.slice(0, 10);
-  const today = home.vbucks.reduce((sum, mission) => sum + mission.amount, 0);
-  const daily = { ...(previous?.vbucksHistory?.daily ?? {}), [day]: today };
-  return { today, daily };
-}
-
 function assertFresh(home: HomeData): void {
   const generated = Date.parse(home.meta.generatedAt);
   const expires = Date.parse(home.meta.expiresAt);
@@ -73,7 +67,7 @@ const home = normalizeHome(world, catalog, {
   registry: readRegistry(),
 });
 assertFresh(home);
-home.vbucksHistory = attachHistory(home, previous);
+home.vbucksHistory = buildVBucksHistory(home, previous);
 
 mkdirSync(dataDir(), { recursive: true });
 mkdirSync(publicDataDir, { recursive: true });

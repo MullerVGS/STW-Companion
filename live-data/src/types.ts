@@ -122,6 +122,17 @@ export interface Supercharger {
 export interface VBucksHistory {
   today: number;
   daily: Record<string, number>; // { "2026-06-20": 100 }
+  official?: VBucksHistoryOfficial;
+}
+
+/** Editable official totals used while the local daily series is incomplete. */
+export interface VBucksHistoryOfficial {
+  asOf: string;
+  today: number;
+  yesterday: number;
+  last7Days: number;
+  last30Days: number;
+  thisYear: number;
 }
 
 export interface HomeMeta {

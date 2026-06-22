@@ -46,3 +46,28 @@ The scheduled job downloads the previous deployed `home.json` before replacing
 it so the V-Bucks daily history survives across stateless Action runners. If
 Epic returns an already-expired rotation, the job fails and GitHub Pages keeps
 serving the previous successful deployment.
+
+## Editing V-Bucks history
+
+Edit `src/data/vbucks-history.json` to correct the official history totals or
+individual dates:
+
+```json
+{
+  "asOf": "2026-06-22",
+  "today": 50,
+  "yesterday": 0,
+  "last7Days": 300,
+  "last30Days": 450,
+  "thisYear": 4950,
+  "daily": {
+    "2026-06-21": 0,
+    "2026-06-22": 50
+  }
+}
+```
+
+Entries in `daily` are manual corrections and take precedence over previously
+deployed snapshots, including explicit zero values. The aggregate totals are
+used while there are not enough individual daily entries to calculate a full
+7-day or 30-day window.

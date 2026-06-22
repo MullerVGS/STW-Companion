@@ -50,6 +50,11 @@ the currently deployed site, so the last successful snapshot remains available.
 The previous deployed `data/home.json` is downloaded during each build to carry
 forward V-Bucks history.
 
+Official baseline totals and manual daily corrections live in
+`live-data/src/data/vbucks-history.json`. Commit changes to that file to correct
+the displayed history. A value of `0` is treated as a recorded value, not as
+missing data.
+
 ## Dataset limitation in hosted builds
 
 `data/raw/assets.json` and `data/raw/ExportedImages/` are intentionally ignored

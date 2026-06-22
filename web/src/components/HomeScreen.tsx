@@ -13,10 +13,6 @@ import type {
 import { useHomeData } from "../lib/home";
 import type { Rarity } from "../types";
 
-// V-Bucks history seed (FortniteDB reference) — a placeholder shown for the
-// longer windows until the scheduled daily snapshots accumulate enough data.
-const VBUCKS_SEED = { last7: 250, last30: 400, year: 4900 };
-
 const MAIN_SHORTS = ["SW", "PT", "CV", "TP"] as const;
 
 export function HomeScreen({
@@ -177,44 +173,76 @@ function VBucksHistoryPanel({
 }) {
   const cells = useMemo(() => {
     const daily = history?.daily ?? {};
+    const official = history?.official;
     const base = generatedAt.slice(0, 10);
     const shift = (date: string, delta: number) => {
       const d = new Date(`${date}T00:00:00Z`);
       d.setUTCDate(d.getUTCDate() + delta);
       return d.toISOString().slice(0, 10);
     };
+    const hasDay = (date: string) => Object.hasOwn(daily, date);
     // sum [offset, offset+n) days back from base (offset 0 = window ending today)
     const windowSum = (n: number, offset: number) => {
       let s = 0;
       for (let i = 0; i < n; i++) s += daily[shift(base, -(i + offset))] ?? 0;
       return s;
     };
+    const hasWindow = (n: number, offset: number) => {
+      for (let i = 0; i < n; i++) {
+        if (!hasDay(shift(base, -(i + offset)))) return false;
+      }
+      return true;
+    };
     const yearSum = Object.entries(daily)
       .filter(([d]) => d.startsWith(base.slice(0, 4)))
       .reduce((s, [, v]) => s + v, 0);
-    const today = history?.today ?? vbucks.reduce((s, v) => s + v.amount, 0);
-
+    const todayDate = base;
+    const yesterdayDate = shift(base, -1);
+    const today = hasDay(todayDate)
+      ? daily[todayDate]
+      : official?.asOf === base
+        ? official.today
+        : history?.today ?? vbucks.reduce((s, v) => s + v.amount, 0);
+    const yesterday = hasDay(yesterdayDate)
+      ? daily[yesterdayDate]
+      : official?.asOf === base
+        ? official.yesterday
+        : 0;
     const real7 = windowSum(7, 0);
     const real30 = windowSum(30, 0);
-    const has7 = real7 > 0;
-    const has30 = real30 > 0;
+    const has7 = hasWindow(7, 0);
+    const has30 = hasWindow(30, 0);
+    const previous7 = hasWindow(7, 7) ? windowSum(7, 7) : null;
+    const previous30 = hasWindow(30, 30) ? windowSum(30, 30) : null;
+    const officialYear =
+      official && official.asOf.startsWith(base.slice(0, 4))
+        ? official.thisYear +
+          Object.entries(daily)
+            .filter(([date]) => date > official.asOf && date.startsWith(base.slice(0, 4)))
+            .reduce((sum, [, value]) => sum + value, 0)
+        : null;
 
     const cells = [
       { k: "Today", v: today, delta: null as Delta | null, today: true },
-      { k: "Yesterday", v: daily[shift(base, -1)] ?? 0, delta: null as Delta | null, today: false },
+      { k: "Yesterday", v: yesterday, delta: null as Delta | null, today: false },
       {
         k: "Last 7 days",
-        v: has7 ? real7 : VBUCKS_SEED.last7,
-        delta: has7 ? pctDelta(real7, windowSum(7, 7)) : null,
+        v: has7 ? real7 : official?.last7Days ?? real7,
+        delta: has7 && previous7 !== null ? pctDelta(real7, previous7) : null,
         today: false,
       },
       {
         k: "Last 30 days",
-        v: has30 ? real30 : VBUCKS_SEED.last30,
-        delta: has30 ? pctDelta(real30, windowSum(30, 30)) : null,
+        v: has30 ? real30 : official?.last30Days ?? real30,
+        delta: has30 && previous30 !== null ? pctDelta(real30, previous30) : null,
         today: false,
       },
-      { k: "This year", v: yearSum || VBUCKS_SEED.year, delta: null as Delta | null, today: false },
+      {
+        k: "This year",
+        v: officialYear ?? yearSum,
+        delta: null as Delta | null,
+        today: false,
+      },
     ];
     return cells;
   }, [history, generatedAt, vbucks]);

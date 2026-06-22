@@ -4,6 +4,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 import { dataDir, fixturesDir, repoRoot } from "./env";
+import { buildVBucksHistory } from "./history";
 import { normalizeHome } from "./normalize";
 import type { RewardRegistry } from "./types";
 
@@ -33,6 +34,7 @@ try {
 
 const generatedAt = new Date().toISOString();
 const home = normalizeHome(world, catalog, { generatedAt, registry });
+home.vbucksHistory = buildVBucksHistory(home);
 
 const outPath = dataDir() + "home.json";
 writeFileSync(outPath, JSON.stringify(home, null, 2));

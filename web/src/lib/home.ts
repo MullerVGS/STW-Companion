@@ -116,6 +116,16 @@ export interface Supercharger {
 export interface VBucksHistory {
   today: number;
   daily: Record<string, number>;
+  official?: VBucksHistoryOfficial;
+}
+
+export interface VBucksHistoryOfficial {
+  asOf: string;
+  today: number;
+  yesterday: number;
+  last7Days: number;
+  last30Days: number;
+  thisYear: number;
 }
 
 export interface HomeMeta {
