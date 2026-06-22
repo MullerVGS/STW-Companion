@@ -8,12 +8,12 @@ workers_dev = true
 #   npx wrangler kv namespace create STW_KV --preview
 [[kv_namespaces]]
 binding = "STW_KV"
-id = "REPLACE_WITH_KV_NAMESPACE_ID"
+id = "80a1db1f5ca04a5f8d1897a24981f324"
 preview_id = "REPLACE_WITH_PREVIEW_KV_NAMESPACE_ID"
 
 # Daily refresh just after the STW reset (00:00 UTC); second tick for safety.
 [triggers]
-crons = ["5 0 * * *", "20 0 * * *"]
+crons = ["1 0 * * *", "5 0 * * *"]
 
 [vars]
 PAGES_ORIGIN = "https://stw-companion.pages.dev"
